@@ -1,30 +1,60 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <flow-chart :graph="graph">
+
+    </flow-chart>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import HelloWorld from './components/HelloWorld.vue';
+import { IGraph } from '@/types/graph';
+import FlowChart from './components/FlowChart/FlowChart.vue';
+
+const graph: IGraph = {
+  offset: {
+    x: 0,
+    y: 0,
+  },
+  scale: 1,
+  nodes: {
+    node1: {
+      id: 'node1',
+      position: {
+        x: 0,
+        y: 0,
+      },
+    },
+    node2: {
+      id: 'node2',
+      position: {
+        x: 150,
+        y: 150,
+      },
+    },
+  },
+};
 
 export default defineComponent({
   name: 'App',
 
   components: {
-    HelloWorld,
+    FlowChart,
+  },
+
+  setup () {
+    return {
+      graph,
+    };
   },
 });
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 </style>

@@ -48,15 +48,6 @@ module.exports = {
       'error',
       'always-multiline',
     ],
-    'max-len': [
-      'error',
-      {
-        ignoreUrls: true,
-        ignoreStrings: true,
-        ignoreTemplateLiterals: true,
-        ignoreRegExpLiterals: true,
-      },
-    ],
     'no-underscore-dangle': [
       'off',
     ],
@@ -115,6 +106,10 @@ module.exports = {
     'arrow-parens': [
       'error',
       'as-needed',
+    ],
+    '@typescript-eslint/interface-name-prefix': [
+      'error',
+      'always',
     ],
   },
   overrides: [

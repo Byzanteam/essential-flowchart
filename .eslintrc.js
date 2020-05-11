@@ -34,6 +34,7 @@ module.exports = {
       'error',
       'single',
     ],
+    'max-len': ['off'],
     semi: [
       'error',
       'always',
@@ -111,6 +112,7 @@ module.exports = {
       'error',
       'always',
     ],
+    '@typescript-eslint/ban-ts-ignore': ['off'],
   },
   overrides: [
     {
@@ -123,4 +125,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ['**/tests/**/*.ts'],
 };

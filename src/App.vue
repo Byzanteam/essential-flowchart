@@ -7,8 +7,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, onMounted } from '@vue/composition-api';
 import { IGraph } from '@/types/graph';
+import store from '@/store/index';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
 const graph: IGraph = {
@@ -43,6 +44,12 @@ export default defineComponent({
   },
 
   setup () {
+    onMounted(() => {
+      console.log(store);
+
+      store.commit('increment');
+    });
+
     return {
       graph,
     };

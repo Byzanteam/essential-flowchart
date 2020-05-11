@@ -1,6 +1,5 @@
-import { INode } from '@/types/graph';
-// eslint-disable-next-line import/no-cycle
-import { IState } from './index';
+
+import { IState, INode } from '@/types';
 
 export default {
   addNode (state: IState, node: INode) {

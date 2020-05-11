@@ -1,7 +1,7 @@
 import Vuex, { MutationTree, ActionTree } from 'vuex';
 import allMutations from '@/store/mutations';
 import allActions from '@/store/actions';
-import { IState } from '@/store';
+import { IState } from '@/types';
 
 interface ICreateStoreObject<T> {
   state: T;

@@ -1,17 +1,10 @@
 import Vue from 'vue';
 import Vuex, { Store, MutationPayload } from 'vuex';
-import { IGraph } from '@/types/graph';
-// eslint-disable-next-line import/no-cycle
+import { IState } from '@/types';
 import mutations from './mutations';
-// eslint-disable-next-line import/no-cycle
 import actions from './actions';
 
 Vue.use(Vuex);
-
-export interface IState {
-  history: any[];
-  graph: IGraph;
-}
 
 type FlowStore = Store<IState>;
 

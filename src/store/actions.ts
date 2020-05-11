@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/no-cycle
-import { IState } from '@/store';
-import { IPosition } from '@/types/generics';
-import { INode } from '@/types/graph';
+import { IState, IPosition, INode } from '@/types';
 import { ActionContext } from 'vuex';
 
 export function addNode (context: ActionContext<IState, IState>, { id, position }: { id: string; position: IPosition }) {

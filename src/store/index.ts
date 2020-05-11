@@ -1,12 +1,11 @@
 import Vue from 'vue';
-import Vuex, { Store, MutationPayload } from 'vuex';
-import { IState } from '@/types';
+import Vuex from 'vuex';
+import { IState, FlowChartStore } from '@/types';
 import mutations from './mutations';
 import actions from './actions';
+import plugins from './plugins';
 
 Vue.use(Vuex);
-
-type FlowStore = Store<IState>;
 
 const state: IState = {
   history: [],
@@ -19,19 +18,11 @@ const state: IState = {
   },
 };
 
-// TODO: plugin
-const historyPlugin = (store: FlowStore) => {
-  // eslint-disable-next-line no-shadow
-  store.subscribe((mutation: MutationPayload, state: IState) => {
-    state.history.push({ mutation });
-  });
-};
-
-const store: FlowStore = new Vuex.Store({
+const store: FlowChartStore = new Vuex.Store({
   state,
   mutations,
   actions,
-  plugins: [historyPlugin],
+  plugins,
 });
 
 export default store;

@@ -1,8 +1,13 @@
 import { Store } from 'vuex';
 import { IGraph } from './graph';
 
+interface IHistoryEntry {
+  action: string;
+  payload: any;
+}
+
 export interface IState {
-  history: any[];
+  history: IHistoryEntry[];
   graph: IGraph;
 }
 

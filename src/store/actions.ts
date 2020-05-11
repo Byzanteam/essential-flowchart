@@ -1,10 +1,18 @@
-import { IState, IPosition, INode } from '@/types';
+import { IState, INode, INodeAttrs } from '@/types';
 import { ActionContext } from 'vuex';
 
-export function addNode (context: ActionContext<IState, IState>, { id, position }: { id: string; position: IPosition }) {
+export function addNode (context: ActionContext<IState, IState>, nodeAttrs: INodeAttrs) {
+  const [x, y, width, height] = nodeAttrs.rect;
+
   const node: INode = {
-    id,
-    position,
+    id: nodeAttrs.id,
+
+    x,
+    y,
+    width,
+    height,
+
+    ports: [],
   };
 
   context.commit('addNode', node);

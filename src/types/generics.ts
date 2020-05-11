@@ -1,11 +1,9 @@
+// TODO: use uuid
+export type ID = string;
+
 export interface IPosition {
   x: number;
   y: number;
-}
-
-export interface ISize {
-  width: number;
-  height: number;
 }
 
 export interface IOffset {

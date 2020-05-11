@@ -17,12 +17,18 @@ describe('actions', () => {
 
     const node = {
       id: '1',
-      position: { x: 100, y: 100 },
-      dimension: { width: 200, height: 200 },
+      rect: [100, 100, 100, 100],
     };
 
     store.dispatch('addNode', node);
 
-    expect(store.state.graph.nodes['1']).toEqual(node);
+    expect(store.state.graph.nodes['1']).toEqual({
+      id: '1',
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+      ports: [],
+    });
   });
 });

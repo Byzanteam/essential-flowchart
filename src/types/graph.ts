@@ -68,13 +68,15 @@ enum Walkability {
   Blocked = 1,
 }
 
+export type Matrix = Walkability[][];
+
 interface IGrid {
   origin: Position;
 
   width: width;
   height: height;
 
-  matrix: Walkability[][];
+  matrix: Matrix;
 }
 
 export interface IGraph {

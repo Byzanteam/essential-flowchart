@@ -74,7 +74,7 @@ interface IGrid {
   width: width;
   height: height;
 
-  maxtrix: Walkability[][];
+  matrix: Walkability[][];
 }
 
 export interface IGraph {

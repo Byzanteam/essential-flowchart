@@ -41,7 +41,7 @@ export function createStore (
           width,
           height,
 
-          maxtrix: [[]],
+          matrix: [[]],
         },
       },
     } as IState,

@@ -12,6 +12,7 @@ import { IGraph } from '@/types/graph';
 import store from '@/store/index';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
+// @ts-ignore
 const graph: IGraph = {
   offset: {
     x: 0,
@@ -21,17 +22,19 @@ const graph: IGraph = {
   nodes: {
     node1: {
       id: 'node1',
-      position: {
-        x: 0,
-        y: 0,
-      },
+      x: 0,
+      y: 0,
+      width: 10,
+      height: 10,
+      ports: [],
     },
     node2: {
       id: 'node2',
-      position: {
-        x: 150,
-        y: 150,
-      },
+      x: 150,
+      y: 150,
+      width: 10,
+      height: 10,
+      ports: [],
     },
   },
 };
@@ -46,8 +49,6 @@ export default defineComponent({
   setup () {
     onMounted(() => {
       console.log(store);
-
-      store.commit('increment');
     });
 
     return {

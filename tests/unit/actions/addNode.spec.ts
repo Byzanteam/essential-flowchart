@@ -1,8 +1,8 @@
 import { addNode } from '@/store/actions';
 import { createStore } from '../helper';
 
-describe('actions', () => {
-  it('addNode', () => {
+describe('addNode', () => {
+  it('basic', () => {
     const store = createStore({
       state: {
         history: [],

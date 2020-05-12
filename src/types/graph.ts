@@ -1,4 +1,4 @@
-import { ID, IPosition } from './generics';
+import { ID, Position, Offset } from './generics';
 
 type x = number;
 type y = number;
@@ -69,8 +69,7 @@ enum Walkability {
 }
 
 interface IGrid {
-  origin: IPosition;
-  offset: IPosition;
+  origin: Position;
 
   width: width;
   height: height;
@@ -79,7 +78,7 @@ interface IGrid {
 }
 
 export interface IGraph {
-  offset: IPosition;
+  offset: Offset;
 
   nodes: {
     [id: string]: INode;

@@ -125,5 +125,4 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['**/tests/**/*.ts'],
 };

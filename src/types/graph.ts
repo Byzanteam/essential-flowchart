@@ -84,7 +84,9 @@ export interface IGraph {
   nodes: {
     [id: string]: INode;
   };
-  links: ILink[];
+  links: {
+    [id: string]: ILink;
+  };
 
   grid: IGrid;
   scale?: number;

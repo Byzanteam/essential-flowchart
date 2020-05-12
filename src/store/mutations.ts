@@ -12,9 +12,16 @@ export default {
   },
 
   removeNode (state: IState, nodeId: string) {
-    delete state.graph.nodes[nodeId];
+    // remove link
+    const { links } = state.graph;
+    Object.values(links).forEach(link => {
+      if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
+        delete links[link.id];
+      }
+    });
 
-    // TODO: remove link, reset selected node
+    // remove node
+    delete state.graph.nodes[nodeId];
   },
 
   dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: IPosition }) {

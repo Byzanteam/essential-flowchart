@@ -1,20 +1,27 @@
-import addNode from '@/store/actions/addNode';
+import addNode from '@/store/mutations/addNode';
 import { createStore } from '../helper';
 
-describe('actions', () => {
-  it('addNode', () => {
+describe('addNode', () => {
+  it('add a new node to the graph', () => {
     const store = createStore({
-      actions: {
+      stateAttrs: {
+        gridDimension: [100, 100],
+      },
+      mutations: {
         addNode,
       },
     });
 
     const node = {
       id: '1',
-      rect: [100, 100, 100, 100],
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+      ports: [],
     };
 
-    store.dispatch('addNode', node);
+    addNode(store.state, node);
 
     expect(store.state.graph.nodes['1']).toEqual({
       id: '1',

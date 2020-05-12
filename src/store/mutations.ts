@@ -1,8 +1,5 @@
-
-import { IState, INode } from '@/types';
+import addNode from './mutations/addNode';
 
 export default {
-  addNode (state: IState, node: INode) {
-    state.graph.nodes[node.id] = node;
-  },
+  addNode,
 };

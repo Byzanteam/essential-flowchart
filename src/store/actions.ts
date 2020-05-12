@@ -30,8 +30,21 @@ export function dragNodeStop ({ commit }: ctx, { id, position }: { id: string; p
   commit('dragNodeStop', { nodeId: id, position });
 }
 
+export function deleteSelected ({ commit, state }: ctx) {
+  const { selected } = state;
+  if (selected) {
+    if (selected.type === 'link') {
+      commit('removeLink', selected.id);
+    } else if (selected.type === 'node') {
+      commit('removeNode', selected.id);
+    }
+    commit('setSelected', null);
+  }
+}
+
 export default {
   addNode,
   removeNode,
   dragNodeStop,
+  deleteSelected,
 };

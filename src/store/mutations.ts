@@ -1,5 +1,5 @@
 import {
-  IState, INode, IGraph, IPosition,
+  IState, INode, IGraph, IPosition, ISelectable,
 } from '@/types';
 
 export default {
@@ -22,6 +22,22 @@ export default {
 
     // remove node
     delete state.graph.nodes[nodeId];
+  },
+
+  removeLink (state: IState, linkId: string) {
+    delete state.graph.links[linkId];
+  },
+
+  setSelected (state: IState, item: ISelectable | null) {
+    if (item) {
+      state.selected = {
+        // @ts-ignore
+        type: isNode(item) ? 'node' : 'link',
+        id: item.id,
+      };
+    } else {
+      state.selected = null;
+    }
   },
 
   dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: IPosition }) {

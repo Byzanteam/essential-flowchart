@@ -1,9 +1,9 @@
-import { removeNode } from '@/store/actions';
+import { deleteSelected } from '@/store/actions';
 import { INode, ILink } from '@/types';
 import { createStore } from '../helper';
 
-describe('moveNode', () => {
-  it('basic', () => {
+describe('deleteSelected', () => {
+  it('delete node', () => {
     const node: INode = {
       id: 'node1',
       x: 200,
@@ -14,27 +14,30 @@ describe('moveNode', () => {
     };
 
     const store = createStore({
-      // @ts-ignore
       state: {
-        history: [],
+        // @ts-ignore
         graph: {
           nodes: {
             [node.id]: node,
           },
           links: {},
-        } as any,
+        },
+        selected: {
+          type: 'node',
+          id: node.id,
+        },
       },
       actions: {
-        removeNode,
+        deleteSelected,
       },
     });
 
-    store.dispatch('removeNode', node.id);
+    store.dispatch('deleteSelected');
 
     expect(store.state.graph.nodes[node.id]).toBeUndefined();
   });
 
-  it('remove connected links with the node ', () => {
+  it('delete link', () => {
     const nodes: { [id: string]: INode } = {
       node1: {
         id: 'node1',
@@ -67,23 +70,26 @@ describe('moveNode', () => {
     };
 
     const store = createStore({
-      // @ts-ignore
       state: {
+        // @ts-ignore
         graph: {
           nodes,
           links,
-        } as any,
+        },
+        selected: {
+          type: 'link',
+          id: 'link1',
+        },
       },
       actions: {
-        removeNode,
+        deleteSelected,
       },
     });
 
-    const removeId = 'node1';
+    const removeLinkId = 'link1';
 
-    store.dispatch('removeNode', removeId);
+    store.dispatch('deleteSelected');
 
-    expect(store.state.graph.nodes[removeId]).toBeUndefined();
-    expect(store.state.graph.links).toEqual({});
+    expect(store.state.graph.links[removeLinkId]).toBeUndefined;
   });
 });

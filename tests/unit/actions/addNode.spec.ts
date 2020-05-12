@@ -4,6 +4,7 @@ import { createStore } from '../helper';
 describe('addNode', () => {
   it('basic', () => {
     const store = createStore({
+      // @ts-ignore
       state: {
         history: [],
         graph: {

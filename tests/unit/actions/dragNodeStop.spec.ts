@@ -16,6 +16,7 @@ describe('dragNodeStop', () => {
     const moveTo = { x: 500, y: 300 };
 
     const store = createStore({
+      // @ts-ignore
       state: {
         history: [],
         graph: {

@@ -15,7 +15,9 @@ const state: IState = {
       y: 0,
     },
     nodes: {},
+    links: {},
   },
+  selected: null,
 };
 
 const store: FlowChartStore = new Vuex.Store({

@@ -3,7 +3,9 @@ import allMutations from '@/store/mutations';
 import allActions from '@/store/actions';
 import { IState } from '@/types';
 
-const defaultGridDimension: [number, number] = [100, 100];
+import { buildEmptyGrid } from '@/utils/grid';
+
+const defaultGridDimension: [number, number] = [1440, 900];
 
 interface IStateAttrs {
   gridDimension?: [number, number];
@@ -35,14 +37,8 @@ export function createStore (
 
         nodes: {},
         links: [],
-        grid: {
-          origin: [0, 0],
 
-          width,
-          height,
-
-          matrix: [[]],
-        },
+        grid: buildEmptyGrid(width, height),
       },
     } as IState,
     mutations: mutations || allMutations,

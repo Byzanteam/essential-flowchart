@@ -1,4 +1,6 @@
-import { ID, IPosition } from './generics';
+import Pathfinding from 'pathfinding';
+
+import { ID, Offset } from './generics';
 
 type x = number;
 type y = number;
@@ -63,23 +65,15 @@ export interface ILink {
 }
 
 // grid
-enum Walkability {
-  Walkable = 0,
-  Blocked = 1,
-}
-
-interface IGrid {
-  origin: IPosition;
-  offset: IPosition;
-
+export interface IGrid {
   width: width;
   height: height;
 
-  maxtrix: Walkability[][];
+  pfGrid: Pathfinding.Grid;
 }
 
 export interface IGraph {
-  offset: IPosition;
+  offset: Offset;
 
   nodes: {
     [id: string]: INode;

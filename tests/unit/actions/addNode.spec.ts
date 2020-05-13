@@ -1,15 +1,9 @@
-import { addNode } from '@/store/actions';
+import addNode from '@/store/actions/addNode';
 import { createStore } from '../helper';
 
 describe('actions', () => {
   it('addNode', () => {
     const store = createStore({
-      state: {
-        history: [],
-        graph: {
-          nodes: {},
-        } as any,
-      },
       actions: {
         addNode,
       },

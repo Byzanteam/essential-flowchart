@@ -2,8 +2,6 @@ import * as Pathfinding from 'pathfinding';
 
 import { IState, INode, NodeRect } from '@/types';
 
-type Walkable = true | false;
-
 const defaultOffset = 12;
 
 enum Direction {
@@ -17,7 +15,7 @@ function markLine (
   grid: Pathfinding.Grid,
   [startX, startY]: [number, number],
   [endX, endY]: [number, number],
-  walkable: Walkable,
+  walkable: boolean,
 ) {
   // @ts-ignore
   const points = Pathfinding.Util.interpolate(startX, startY, endX, endY);
@@ -53,7 +51,7 @@ function markSide (
   [startX, startY]: [number, number],
   [endX, endY]: [number, number],
   direction: Direction,
-  walkable: Walkable,
+  walkable: boolean,
 ) {
   let lines: Array<[[number, number], [number, number]]>;
   const midX = Math.ceil((startX + endX) / 2);
@@ -117,7 +115,7 @@ function markWalkable (
     width,
     height,
   ]: NodeRect,
-  walkable: Walkable,
+  walkable: boolean,
 ) {
   const topLeft: [number, number] = [x, y];
   const topRight: [number, number] = [x + width, y];

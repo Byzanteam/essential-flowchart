@@ -46,7 +46,7 @@ function markLine (
 //                 | |
 //                 v v
 
-function markSide (
+function markWall (
   grid: Pathfinding.Grid,
   [startX, startY]: [number, number],
   [endX, endY]: [number, number],
@@ -122,10 +122,10 @@ function markWalkable (
   const bottomRight: [number, number] = [x + width, y + height];
   const bottomLeft: [number, number] = [x, y + height];
 
-  markSide(grid, topLeft, topRight, Direction.Top, walkable);
-  markSide(grid, topRight, bottomRight, Direction.Right, walkable);
-  markSide(grid, bottomRight, bottomLeft, Direction.Bottom, walkable);
-  markSide(grid, bottomLeft, topLeft, Direction.Left, walkable);
+  markWall(grid, topLeft, topRight, Direction.Top, walkable);
+  markWall(grid, topRight, bottomRight, Direction.Right, walkable);
+  markWall(grid, bottomRight, bottomLeft, Direction.Bottom, walkable);
+  markWall(grid, bottomLeft, topLeft, Direction.Left, walkable);
 }
 
 export default function (state: IState, node: INode) {

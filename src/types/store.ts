@@ -6,7 +6,7 @@ export interface IHistoryEntry {
 }
 
 export interface IHistory {
-  currentVersion: number;
+  currentVersion: number; // one-based
   entries: IHistoryEntry[];
 }
 

@@ -1,8 +1,13 @@
-import { Store, MutationPayload } from 'vuex';
+import { Store, Payload } from 'vuex';
 import { IGraph, INode, ILink } from './graph';
 
+export interface IMutation extends Payload {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [propName: string]: any;
+}
+
 export interface IHistoryEntry {
-  mutations: MutationPayload[];
+  mutations: IMutation[];
 }
 
 export interface IHistory {

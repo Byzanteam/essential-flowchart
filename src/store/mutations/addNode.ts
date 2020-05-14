@@ -128,7 +128,7 @@ function markWalkable (
   markWall(grid, bottomLeft, topLeft, Direction.Left, walkable);
 }
 
-export default function (state: IState, node: INode) {
+export default function (state: IState, { node }: { node: INode }) {
   const { pfGrid } = state.graph.grid;
   markWalkable(
     pfGrid,

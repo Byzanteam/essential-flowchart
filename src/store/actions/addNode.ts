@@ -15,5 +15,8 @@ export default function (context: ActionContext<IState, IState>, nodeAttrs: INod
     ports: [],
   };
 
-  context.commit('addNode', node);
+  context.commit({
+    type: 'addNode',
+    node,
+  });
 }

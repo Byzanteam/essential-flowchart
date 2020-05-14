@@ -1,9 +1,13 @@
-import { Store } from 'vuex';
+import { Store, MutationPayload } from 'vuex';
 import { IGraph, INode, ILink } from './graph';
 
-interface IHistoryEntry {
-  action: string;
-  payload: any;
+export interface IHistoryEntry {
+  mutations: MutationPayload[];
+}
+
+export interface IHistory {
+  currentVersion: number;
+  entries: IHistoryEntry[];
 }
 
 export interface ISelectedOrHovered {
@@ -14,7 +18,7 @@ export interface ISelectedOrHovered {
 export type ISelectable = INode | ILink;
 
 export interface IState {
-  history: IHistoryEntry[];
+  history: IHistory;
   graph: IGraph;
   selected: ISelectedOrHovered | null;
 }

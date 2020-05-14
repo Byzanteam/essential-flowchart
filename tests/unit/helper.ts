@@ -107,7 +107,10 @@ export function createStore (
 
   const store: Store<IState> = new Vuex.Store({
     state: {
-      history: [],
+      history: {
+        currentVersion: 0,
+        entries: [],
+      },
       graph: {
         offset: [0, 0],
 

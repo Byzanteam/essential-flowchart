@@ -14,10 +14,7 @@ import FlowChart from './components/FlowChart/FlowChart.vue';
 
 // @ts-ignore
 const graph: IGraph = {
-  offset: {
-    x: 0,
-    y: 0,
-  },
+  offset: [0, 0],
   scale: 1,
   nodes: {
     node1: {

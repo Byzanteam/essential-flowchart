@@ -40,10 +40,7 @@ export default defineComponent({
     const onNodeDragStop = (left: number, top: number) => {
       store.dispatch('dragNodeStop', {
         id: props.node.id,
-        position: {
-          x: left,
-          y: top,
-        },
+        position: [left, top], // [x, y]
       });
     };
 

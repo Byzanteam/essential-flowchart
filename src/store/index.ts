@@ -10,10 +10,7 @@ Vue.use(Vuex);
 const state: IState = {
   history: [],
   graph: { // TODO: init
-    offset: {
-      x: 0,
-      y: 0,
-    },
+    offset: [0, 0],
     nodes: {},
     links: {},
   },

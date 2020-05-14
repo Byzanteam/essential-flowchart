@@ -5,11 +5,11 @@ import {
 } from '@/types';
 
 import addNode from './mutations/addNode';
-import pushEntry from './mutations/history/pushEntry';
+import pushHistoryEntry from './mutations/history/pushEntry';
 
 export default {
   addNode,
-  pushEntry,
+  pushHistoryEntry,
 
   updateGraph (state: IState, graph: IGraph) {
     state.graph = graph;

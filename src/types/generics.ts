@@ -1,12 +1,12 @@
 // TODO: use uuid
 export type ID = string;
 
-export interface IPosition {
-  x: number;
-  y: number;
-}
+type x = number;
+type y = number;
 
-export interface IOffset {
-  offsetLeft: number;
-  offsetTop: number;
-}
+export type Position = [x, y];
+
+type offsetLeft = number;
+type offsetTop = number;
+
+export type Offset = [offsetLeft, offsetTop];

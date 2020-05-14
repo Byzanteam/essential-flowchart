@@ -6,7 +6,7 @@ interface IHistoryEntry {
   payload: any;
 }
 
-interface ISelectedOrHovered {
+export interface ISelectedOrHovered {
   type: 'node' | 'link';
   id: string;
 }

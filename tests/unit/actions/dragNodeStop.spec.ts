@@ -1,29 +1,17 @@
 import { dragNodeStop } from '@/store/actions';
-import { INode } from '@/types';
 import { createStore } from '../helper';
 
 describe('dragNodeStop', () => {
   it('basic', () => {
-    const node: INode = {
+    const node = {
       id: 'node1',
-      x: 200,
-      y: 100,
-      width: 100,
-      height: 100,
-      ports: [],
     };
 
-    const moveTo = { x: 500, y: 300 };
+    const moveTo = [500, 300];
 
     const store = createStore({
-      // @ts-ignore
-      state: {
-        history: [],
-        graph: {
-          nodes: {
-            [node.id]: node,
-          },
-        } as any,
+      stateAttrs: {
+        graphNodeAttrs: [node],
       },
       actions: {
         dragNodeStop,
@@ -34,7 +22,7 @@ describe('dragNodeStop', () => {
 
     const { x, y } = store.state.graph.nodes[node.id];
 
-    expect(x).toEqual(moveTo.x);
-    expect(y).toEqual(moveTo.y);
+    expect(x).toEqual(moveTo[0]);
+    expect(y).toEqual(moveTo[1]);
   });
 });

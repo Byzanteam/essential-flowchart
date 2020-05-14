@@ -1,61 +1,31 @@
 import { removeNode } from '@/store/actions';
-import { INode, ILink } from '@/types';
 import { createStore } from '../helper';
 
-describe('moveNode', () => {
+describe('removeNode', () => {
   it('basic', () => {
-    const node: INode = {
+    const nodeAttr = {
       id: 'node1',
-      x: 200,
-      y: 100,
-      width: 100,
-      height: 100,
-      ports: [],
     };
 
     const store = createStore({
-      // @ts-ignore
-      state: {
-        history: [],
-        graph: {
-          nodes: {
-            [node.id]: node,
-          },
-          links: {},
-        } as any,
+      stateAttrs: {
+        graphNodeAttrs: [nodeAttr],
       },
       actions: {
         removeNode,
       },
     });
 
-    store.dispatch('removeNode', node.id);
+    store.dispatch('removeNode', nodeAttr.id);
 
-    expect(store.state.graph.nodes[node.id]).toBeUndefined();
+    expect(store.state.graph.nodes[nodeAttr.id]).toBeUndefined();
   });
 
-  it('remove connected links with the node ', () => {
-    const nodes: { [id: string]: INode } = {
-      node1: {
-        id: 'node1',
-        x: 200,
-        y: 100,
-        width: 100,
-        height: 100,
-        ports: [],
-      },
-      node2: {
-        id: 'node2',
-        x: 0,
-        y: 0,
-        width: 100,
-        height: 100,
-        ports: [],
-      },
-    };
+  it('remove connected links with the node', () => {
+    const nodeIds = ['node1', 'node2'];
 
-    const links: { [id: string]: ILink } = {
-      link1: {
+    const linkAttrs = [
+      {
         id: 'link1',
         from: {
           nodeId: 'node1',
@@ -64,15 +34,12 @@ describe('moveNode', () => {
           nodeId: 'node2',
         },
       },
-    };
+    ];
 
     const store = createStore({
-      // @ts-ignore
-      state: {
-        graph: {
-          nodes,
-          links,
-        } as any,
+      stateAttrs: {
+        graphNodeIds: nodeIds,
+        graphLinkAttrs: linkAttrs,
       },
       actions: {
         removeNode,

@@ -1,14 +1,16 @@
+import Vue from 'vue';
+
 import {
-  IState, INode, IGraph, IPosition, ISelectable,
+  IState, IGraph, Position, ILinkAttrs, ISelectable,
 } from '@/types';
 
+import addNode from './mutations/addNode';
+
 export default {
+  addNode,
+
   updateGraph (state: IState, graph: IGraph) {
     state.graph = graph;
-  },
-
-  addNode (state: IState, node: INode) {
-    state.graph.nodes[node.id] = node;
   },
 
   removeNode (state: IState, nodeId: string) {
@@ -16,16 +18,20 @@ export default {
     const { links } = state.graph;
     Object.values(links).forEach(link => {
       if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
-        delete links[link.id];
+        Vue.delete(links, link.id);
       }
     });
 
     // remove node
-    delete state.graph.nodes[nodeId];
+    Vue.delete(state.graph.nodes, nodeId);
+  },
+
+  addLink (state: IState, linkAttrs: ILinkAttrs) {
+    state.graph.links[linkAttrs.id] = linkAttrs;
   },
 
   removeLink (state: IState, linkId: string) {
-    delete state.graph.links[linkId];
+    Vue.delete(state.graph.links, linkId);
   },
 
   setSelected (state: IState, item: ISelectable | null) {
@@ -40,12 +46,11 @@ export default {
     }
   },
 
-  dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: IPosition }) {
+  dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: Position }) {
     const node = state.graph.nodes[nodeId];
 
     if (node) {
-      node.x = position.x;
-      node.y = position.y;
+      [node.x, node.y] = position;
     }
   },
 };

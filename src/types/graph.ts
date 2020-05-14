@@ -30,7 +30,7 @@ export interface INode {
 }
 
 // port
-enum PortDirection {
+export enum PortDirection {
   Top = 'top',
   Right = 'right',
   Bottom = 'bottom',
@@ -49,18 +49,21 @@ interface INodePort {
 }
 
 // link
-interface ILinkAttrs {
+export interface ILinkAttrs {
+  id: ID;
   from: IPortAttrs;
   to: IPortAttrs;
 }
 
 export interface ILink {
-  id: string;
+  id: ID;
   from: {
-    nodeId: string;
+    nodeId: ID;
+    direction: PortDirection;
   };
   to: {
-    nodeId: string;
+    nodeId: ID;
+    direction: PortDirection;
   };
 }
 
@@ -78,7 +81,9 @@ export interface IGraph {
   nodes: {
     [id: string]: INode;
   };
-  links: ILink[];
+  links: {
+    [id: string]: ILink;
+  };
 
   grid: IGrid;
   scale?: number;

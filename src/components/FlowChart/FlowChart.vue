@@ -11,8 +11,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, PropType } from '@vue/composition-api';
-import { IGraph } from '@/types/graph';
+import {
+  defineComponent, ref, watch,
+  PropType,
+} from '@vue/composition-api';
+import store from '@/store';
+import { IGraph } from '@/types';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import Node from '../Node/Node.vue';
 // import { getMatrix } from './utils/grid';
@@ -26,6 +30,10 @@ function useGraph (graph: IGraph) {
   return {
     nodes: ref(nodes),
   };
+}
+
+interface IFlowChartProps {
+  graph: IGraph;
 }
 
 export default defineComponent({
@@ -43,8 +51,12 @@ export default defineComponent({
     },
   },
 
-  setup (props) {
+  setup (props: IFlowChartProps) {
     const { nodes } = useGraph(props.graph);
+
+    watch<IGraph>(() => props.graph, (graph: IFlowChartProps['graph']) => {
+      store.commit('updateGraph', graph);
+    }, { lazy: false });
 
     return {
       nodes,

@@ -2,38 +2,30 @@ import Vue from 'vue';
 
 import {
   IState, IGraph, Position, ILinkAttrs, ISelectable,
+  ILink,
 } from '@/types';
 
 import addNode from './mutations/addNode';
-import pushHistoryEntry from './mutations/history/pushEntry';
+import removeNode from './mutations/removeNode';
+import historyMutations from './mutations/history';
 
 export default {
   addNode,
-  pushHistoryEntry,
+  removeNode,
+
+  ...historyMutations,
 
   updateGraph (state: IState, graph: IGraph) {
     state.graph = graph;
   },
 
-  removeNode (state: IState, nodeId: string) {
-    // remove link
-    const { links } = state.graph;
-    Object.values(links).forEach(link => {
-      if (link.from.nodeId === nodeId || link.to.nodeId === nodeId) {
-        Vue.delete(links, link.id);
-      }
-    });
-
-    // remove node
-    Vue.delete(state.graph.nodes, nodeId);
-  },
 
   addLink (state: IState, linkAttrs: ILinkAttrs) {
     state.graph.links[linkAttrs.id] = linkAttrs;
   },
 
-  removeLink (state: IState, linkId: string) {
-    Vue.delete(state.graph.links, linkId);
+  removeLink (state: IState, { link }: { link: ILink }) {
+    Vue.delete(state.graph.links, link.id);
   },
 
   setSelected (state: IState, item: ISelectable | null) {

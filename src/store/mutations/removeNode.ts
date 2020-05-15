@@ -1,8 +1,7 @@
 import Vue from 'vue';
 
 import { IState, INode } from '@/types';
-import { markWalkable } from '@/utils/grid';
-
+import { markWalkable } from '@/Utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
 export default function (state: IState, { node }: { node: INode }) {
@@ -10,13 +9,13 @@ export default function (state: IState, { node }: { node: INode }) {
   markWalkable(
     pfGrid,
     [node.x, node.y, node.width, node.height],
-    false,
+    true,
   );
 
-  Vue.set(state.graph.nodes, node.id, node);
+  Vue.delete(state.graph.nodes, node.id);
 }
 
-registerRevertFunc('addNode', mutation => ({
+registerRevertFunc('removeNode', mutation => ({
   ...mutation,
-  type: 'removeNode',
+  type: 'addNode',
 }));

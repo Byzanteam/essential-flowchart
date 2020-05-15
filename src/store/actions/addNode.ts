@@ -1,7 +1,6 @@
-import { IState, INode, INodeAttrs } from '@/types';
-import { ActionContext } from 'vuex';
+import { FlowChartContext, INode, INodeAttrs } from '@/types';
 
-export default function (context: ActionContext<IState, IState>, nodeAttrs: INodeAttrs) {
+export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
   const [x, y, width, height] = nodeAttrs.rect;
 
   const node: INode = {

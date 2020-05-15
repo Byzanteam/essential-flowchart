@@ -1,4 +1,4 @@
-import { Store, Payload } from 'vuex';
+import { Store, ActionContext, Payload } from 'vuex';
 import { IGraph, INode, ILink } from './graph';
 
 export interface IMutation extends Payload {
@@ -27,5 +27,7 @@ export interface IState {
   graph: IGraph;
   selected: ISelectedOrHovered | null;
 }
+
+export type FlowChartContext = ActionContext<IState, IState>;
 
 export type FlowChartStore = Store<IState>;

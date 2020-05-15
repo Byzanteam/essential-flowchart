@@ -1,20 +1,15 @@
-import { ActionContext } from 'vuex';
-
-import { IState, Position } from '@/types';
+import { FlowChartContext, Position } from '@/types';
 
 import addNode from './actions/addNode';
+import removeNode from './actions/removeNode';
 
-type ctx = ActionContext<IState, IState>;
+import historyActions from './actions/history';
 
-export function removeNode ({ commit }: ctx, id: string) {
-  commit('removeNode', id);
-}
-
-export function dragNodeStop ({ commit }: ctx, { id, position }: { id: string; position: Position }) {
+function dragNodeStop ({ commit }: FlowChartContext, { id, position }: { id: string; position: Position }) {
   commit('dragNodeStop', { nodeId: id, position });
 }
 
-export function deleteSelected ({ commit, state }: ctx) {
+function deleteSelected ({ commit, state }: FlowChartContext) {
   const { selected } = state;
   if (selected) {
     if (selected.type === 'link') {
@@ -26,8 +21,8 @@ export function deleteSelected ({ commit, state }: ctx) {
   }
 }
 
-
 export default {
+  ...historyActions,
   addNode,
   removeNode,
   dragNodeStop,

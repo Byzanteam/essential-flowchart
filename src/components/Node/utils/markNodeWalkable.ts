@@ -1,7 +1,8 @@
 import Pathfinding from 'pathfinding';
 import { NodeRect } from '@/types';
+import { SCALE_FACTOR } from '@/utils/grid';
 
-const defaultOffset = 5;
+const defaultOffset = 5 / SCALE_FACTOR;
 
 const enum Direction {
   TOP = 'top',
@@ -111,6 +112,13 @@ export default function markNodeWalkable (
   [x, y, width, height]: NodeRect,
   walkable: boolean,
 ) {
+  // TODO: optimize
+  /* eslint-disable no-param-reassign */
+  x = Math.ceil(x / SCALE_FACTOR);
+  y = Math.ceil(y / SCALE_FACTOR);
+  width = Math.ceil(width / SCALE_FACTOR);
+  height = Math.ceil(height / SCALE_FACTOR);
+
   const topLeft: [number, number] = [x, y];
   const topRight: [number, number] = [x + width, y];
   const bottomRight: [number, number] = [x + width, y + height];

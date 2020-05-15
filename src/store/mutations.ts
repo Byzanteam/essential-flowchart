@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 import {
-  IState, IGraph, Position, ILinkAttrs, ISelectable,
+  IState, IGraph, Position, ILinkAttrs, ISelectable, PortDirection, IPosition,
 } from '@/types';
 
 import addNode from './mutations/addNode';
@@ -46,11 +46,29 @@ export default {
     }
   },
 
-  dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: Position }) {
+  dragNode (state: IState, { nodeId, position }: { nodeId: string; position: IPosition }) {
     const node = state.graph.nodes[nodeId];
 
     if (node) {
-      [node.x, node.y] = position;
+      node.x = position.x;
+      node.y = position.y;
+    }
+  },
+
+  dragNodeStop (state: IState, { nodeId, position }: { nodeId: string; position: IPosition }) {
+    const node = state.graph.nodes[nodeId];
+
+    if (node) {
+      node.x = position.x;
+      node.y = position.y;
+    }
+  },
+
+  updateNodePortPosition (state: IState, { nodeId, portDir, position }: { nodeId: string; portDir: PortDirection; position: Position }) {
+    const node = state.graph.nodes[nodeId];
+    if (node) {
+      const port = node.ports[portDir];
+      Vue.set(port, 'position', position);
     }
   },
 };

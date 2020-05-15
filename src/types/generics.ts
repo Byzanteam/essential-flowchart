@@ -6,6 +6,11 @@ type y = number;
 
 export type Position = [x, y];
 
+export interface IPosition {
+  x: number;
+  y: number;
+}
+
 type offsetLeft = number;
 type offsetTop = number;
 

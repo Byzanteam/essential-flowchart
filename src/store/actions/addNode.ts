@@ -1,4 +1,6 @@
-import { IState, INode, INodeAttrs } from '@/types';
+import {
+  IState, INode, INodeAttrs, PortDirection,
+} from '@/types';
 import { ActionContext } from 'vuex';
 
 export default function (context: ActionContext<IState, IState>, nodeAttrs: INodeAttrs) {
@@ -12,7 +14,14 @@ export default function (context: ActionContext<IState, IState>, nodeAttrs: INod
     width,
     height,
 
-    ports: [],
+    ports: {
+      top: {
+        direction: PortDirection.Top,
+      },
+      bottom: {
+        direction: PortDirection.Bottom,
+      },
+    },
   };
 
   context.commit('addNode', node);

@@ -1,5 +1,8 @@
 <template>
-  <div class="node__inner">
+  <div
+    :style="{ width: node.width + 'px', height: node.height + 'px'}"
+    class="node__inner"
+  >
     {{ node.id }}
   </div>
 </template>
@@ -24,8 +27,6 @@ export default defineComponent({
 .node {
   &__inner {
     background-color: #fff;
-    height: 200px;
-    width: 200px;
   }
 }
 </style>

@@ -2,6 +2,7 @@
   <vue-draggable-resizable
     :x="node.x"
     :y="node.y"
+    :z="50"
     :resizable="false"
     :grid="[1, 1]"
     axis="both"
@@ -24,9 +25,12 @@
 
 <script lang="ts">
 import VueDraggableResizable from 'vue-draggable-resizable';
-import { defineComponent, PropType } from '@vue/composition-api';
+import {
+  defineComponent, PropType, watch, computed,
+} from '@vue/composition-api';
 import store from '@/store';
 import { INode } from '@/types/graph';
+import markNodeWalkable from '@/components/Node/utils/markNodeWalkable';
 import NodeInner from './NodeInner.vue';
 import Port from '../Port/Port.vue';
 
@@ -48,6 +52,27 @@ export default defineComponent({
 
   setup (props) {
     const { node } = props;
+
+    const position = computed(() => ({
+      x: node.x,
+      y: node.y,
+    }));
+
+    watch(position, (pos, prevPos) => {
+      if (prevPos) {
+        markNodeWalkable(
+          store.state.graph.grid.pfGrid,
+          [prevPos.x, prevPos.y, node.width, node.height],
+          true,
+        );
+      }
+
+      markNodeWalkable(
+        store.state.graph.grid.pfGrid,
+        [pos.x, pos.y, node.width, node.height],
+        false,
+      );
+    });
 
     const onNodeDragging = (left: number, top: number) => {
       store.commit('dragNode', {

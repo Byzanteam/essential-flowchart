@@ -1,7 +1,7 @@
 import Pathfinding from 'pathfinding';
 import { NodeRect } from '@/types';
 
-const defaultOffset = 12;
+const defaultOffset = 5;
 
 const enum Direction {
   TOP = 'top',

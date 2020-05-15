@@ -1,13 +1,21 @@
 <template>
-  <canvas-component>
-    <node
+  <CanvasComponent>
+    <Node
       v-for="node in nodes"
       :key="node.id"
       :node="node"
     >
       {{ node.id }}
-    </node>
-  </canvas-component>
+    </Node>
+
+    <Link
+      v-for="link in links"
+      :key="link.id"
+      :link="link"
+      :from-node="nodes[link.from.nodeId]"
+      :to-node="nodes[link.to.nodeId]"
+    />
+  </CanvasComponent>
 </template>
 
 <script lang="ts">
@@ -19,16 +27,18 @@ import store from '@/store';
 import { IGraph } from '@/types';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import Node from '../Node/Node.vue';
+import Link from '../Link/Link.vue';
 // import { getMatrix } from './utils/grid';
 
 function useGraph (graph: IGraph) {
-  const { nodes } = graph;
+  const { nodes, links } = graph;
 
   // 创建矩阵并将节点占据的空间标记为 1
   // const matrix = getMatrix(graph.offset, Object.values(nodes));
 
   return {
     nodes: ref(nodes),
+    links: ref(links),
   };
 }
 
@@ -42,6 +52,7 @@ export default defineComponent({
   components: {
     CanvasComponent,
     Node,
+    Link,
   },
 
   props: {
@@ -52,7 +63,7 @@ export default defineComponent({
   },
 
   setup (props: IFlowChartProps) {
-    const { nodes } = useGraph(props.graph);
+    const { nodes, links } = useGraph(props.graph);
 
     watch<IGraph>(() => props.graph, (graph: IFlowChartProps['graph']) => {
       store.commit('updateGraph', graph);
@@ -60,6 +71,7 @@ export default defineComponent({
 
     return {
       nodes,
+      links,
     };
   },
 });

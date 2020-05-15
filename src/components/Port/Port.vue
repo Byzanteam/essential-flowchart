@@ -19,28 +19,40 @@ import {
 import store from '@/store';
 import { INode, INodePort } from '@/types';
 
-function useUpdatePortPosition (node: INode, port: INodePort, inner: HTMLElement) {
-  let position;
-  // eslint-disable-next-line default-case
-  switch (port.direction) {
-    case 'top':
-      position = {
-        x: node.x + node.width / 2,
-        y: node.y - inner.offsetHeight / 2,
-      };
-      break;
-    case 'bottom':
-      position = {
-        x: node.x + node.width / 2,
-        y: node.y + node.height + inner.offsetHeight / 2,
-      };
-      break;
-  }
-  store.commit('updateNodePortPosition', {
-    nodeId: node.id,
-    portDir: port.direction,
-    position,
-  });
+function useUpdatePortPosition (node: INode, port: INodePort) {
+  const inner: Ref<HTMLElement | null> = ref(null);
+
+  const updatePortPosition = () => {
+    if (!inner.value) return;
+
+    let position;
+    // eslint-disable-next-line default-case
+    switch (port.direction) {
+      case 'top':
+        position = {
+          x: node.x + node.width / 2,
+          y: node.y - inner.value.offsetHeight / 2,
+        };
+        break;
+      case 'bottom':
+        position = {
+          x: node.x + node.width / 2,
+          y: node.y + node.height + inner.value.offsetHeight / 2,
+        };
+        break;
+    }
+
+    store.commit('updateNodePortPosition', {
+      nodeId: node.id,
+      portDir: port.direction,
+      position,
+    });
+  };
+
+  return {
+    inner,
+    updatePortPosition,
+  };
 }
 
 export default defineComponent({
@@ -59,15 +71,16 @@ export default defineComponent({
   },
 
   setup (props) {
-    const inner: Ref<HTMLElement | null> = ref(null);
     const { node, port } = props;
 
+    const { inner, updatePortPosition } = useUpdatePortPosition(node, port);
+
     onMounted(() => {
-      useUpdatePortPosition(node, port, inner.value as HTMLElement);
+      updatePortPosition();
     });
 
     watch([() => node.x, () => node.y], () => {
-      useUpdatePortPosition(node, port, inner.value as HTMLElement);
+      updatePortPosition();
     }, { lazy: true });
 
     return {

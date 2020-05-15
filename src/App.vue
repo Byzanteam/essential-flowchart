@@ -10,6 +10,7 @@
 import { defineComponent, onMounted } from '@vue/composition-api';
 import { IGraph } from '@/types/graph';
 import store from '@/store/index';
+import { buildEmptyGrid } from '@/utils/grid';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
 // @ts-ignore
@@ -19,21 +20,47 @@ const graph: IGraph = {
   nodes: {
     node1: {
       id: 'node1',
-      x: 0,
-      y: 0,
-      width: 10,
-      height: 10,
-      ports: [],
+      x: 10,
+      y: 10,
+      width: 50,
+      height: 50,
+      ports: {
+        top: {
+          direction: 'top',
+        },
+        bottom: {
+          direction: 'bottom',
+        },
+      },
     },
     node2: {
       id: 'node2',
       x: 150,
       y: 150,
-      width: 10,
-      height: 10,
-      ports: [],
+      width: 50,
+      height: 50,
+      ports: {
+        top: {
+          direction: 'top',
+        },
+        bottom: {
+          direction: 'bottom',
+        },
+      },
     },
   },
+  links: {
+    link1: {
+      id: 'link1',
+      from: {
+        nodeId: 'node1',
+      },
+      to: {
+        nodeId: 'node2',
+      },
+    },
+  },
+  grid: buildEmptyGrid(1000, 1000),
 };
 
 export default defineComponent({

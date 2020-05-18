@@ -19,5 +19,5 @@ export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
     node,
   }];
 
-  context.commit('historyPushEntry', mutations);
+  context.dispatch('historyPushEntry', mutations);
 }

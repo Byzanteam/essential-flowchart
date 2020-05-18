@@ -19,5 +19,5 @@ export default function addLink (context: FlowChartContext, linkAttrs: ILinkAttr
     node,
   }];
 
-  context.commit('historyPushEntry', mutations);
+  context.dispatch('historyPushEntry', mutations);
 }

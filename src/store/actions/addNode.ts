@@ -14,8 +14,10 @@ export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
     ports: [],
   };
 
-  context.commit({
+  const mutations = [{
     type: 'addNode',
     node,
-  });
+  }];
+
+  context.commit('historyPushEntry', mutations);
 }

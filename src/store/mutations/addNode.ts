@@ -5,7 +5,7 @@ import { markWalkable } from '@/utils/grid';
 
 import { registerRevertFunc } from '@/utils/history';
 
-export default function (state: IState, { node }: { node: INode }) {
+export default function addNode (state: IState, { node }: { node: INode }) {
   const { pfGrid } = state.graph.grid;
   markWalkable(
     pfGrid,

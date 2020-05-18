@@ -1,5 +1,14 @@
-import { IState, ILinkAttrs } from '@/types';
+import Vue from 'vue';
 
-export default function (state: IState, linkAttrs: ILinkAttrs) {
-  state.graph.links[linkAttrs.id] = linkAttrs;
+import { IState, ILink } from '@/types';
+
+import { registerRevertFunc } from '@/utils/history';
+
+export default function addLink (state: IState, { link }: { link: ILink }) {
+  Vue.set(state.graph.links, link.id, link);
 }
+
+registerRevertFunc('addLink', mutation => ({
+  ...mutation,
+  type: 'removeLink',
+}));

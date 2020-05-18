@@ -34,12 +34,12 @@ describe('undo', () => {
     expect(store.state.history.currentVersion).toEqual(1);
     expect(Object.keys(store.state.graph.nodes).length).toEqual(2);
 
-    store.dispatch('historyUndo', mutations);
+    store.dispatch('historyUndo');
 
     expect(store.state.history.currentVersion).toEqual(0);
     expect(Object.keys(store.state.graph.nodes).length).toEqual(0);
 
     // reach the oldest
-    store.dispatch('historyUndo', mutations);
+    store.dispatch('historyUndo');
   });
 });

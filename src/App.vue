@@ -35,8 +35,23 @@ const graph: IGraph = {
     },
     node2: {
       id: 'node2',
-      x: 150,
-      y: 150,
+      x: 100,
+      y: 100,
+      width: 50,
+      height: 50,
+      ports: {
+        top: {
+          direction: 'top',
+        },
+        bottom: {
+          direction: 'bottom',
+        },
+      },
+    },
+    node3: {
+      id: 'node3',
+      x: 10,
+      y: 80,
       width: 50,
       height: 50,
       ports: {

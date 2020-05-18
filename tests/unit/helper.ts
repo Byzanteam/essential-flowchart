@@ -48,12 +48,14 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
       const [x, y, width, height] = rect || defaultNodeRect;
 
       store.commit('addNode', {
-        id,
-        x,
-        y,
-        width,
-        height,
-        ports: [],
+        node: {
+          id,
+          x,
+          y,
+          width,
+          height,
+          ports: [],
+        },
       });
     });
 
@@ -62,12 +64,14 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
       const [x, y, width, height] = defaultNodeRect;
 
       store.commit('addNode', {
-        id,
-        x,
-        y,
-        width,
-        height,
-        ports: [],
+        node: {
+          id,
+          x,
+          y,
+          width,
+          height,
+          ports: [],
+        },
       });
     });
 }
@@ -103,7 +107,10 @@ export function createStore (
 
   const store: Store<IState> = new Vuex.Store({
     state: {
-      history: [],
+      history: {
+        currentVersion: 0,
+        entries: [],
+      },
       graph: {
         offset: [0, 0],
 

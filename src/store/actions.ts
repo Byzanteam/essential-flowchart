@@ -1,33 +1,14 @@
-import { ActionContext } from 'vuex';
-
-import { IState, Position } from '@/types';
-
 import addNode from './actions/addNode';
+import removeNode from './actions/removeNode';
 
-type ctx = ActionContext<IState, IState>;
+import dragNodeStop from './actions/dragNodeStop';
+import deleteSelected from './actions/deleteSelected';
 
-export function removeNode ({ commit }: ctx, id: string) {
-  commit('removeNode', id);
-}
-
-export function dragNodeStop ({ commit }: ctx, { id, position }: { id: string; position: Position }) {
-  commit('dragNodeStop', { nodeId: id, position });
-}
-
-export function deleteSelected ({ commit, state }: ctx) {
-  const { selected } = state;
-  if (selected) {
-    if (selected.type === 'link') {
-      commit('removeLink', selected.id);
-    } else if (selected.type === 'node') {
-      commit('removeNode', selected.id);
-    }
-    commit('setSelected', null);
-  }
-}
+import historyActions from './actions/history';
 
 
 export default {
+  ...historyActions,
   addNode,
   removeNode,
   dragNodeStop,

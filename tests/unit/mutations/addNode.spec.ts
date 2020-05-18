@@ -18,7 +18,7 @@ describe('addNode', () => {
       ports: [],
     };
 
-    addNode(store.state, node);
+    addNode(store.state, { node });
 
     expect(store.state.graph.nodes['1']).toEqual({
       id: '1',
@@ -49,7 +49,7 @@ describe('addNode', () => {
       ports: [],
     };
 
-    addNode(store.state, node);
+    addNode(store.state, { node });
 
     const { pfGrid } = store.state.graph.grid;
 

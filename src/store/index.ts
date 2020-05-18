@@ -1,18 +1,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { IState, FlowChartStore } from '@/types';
+import { buildEmptyGrid } from '@/utils/grid';
 import mutations from './mutations';
 import actions from './actions';
 import plugins from './plugins';
 
+const [defaultWidth, defaultHeight]: [number, number] = [1440, 900];
+
 Vue.use(Vuex);
 
 const state: IState = {
-  history: [],
-  graph: { // TODO: init
+  history: {
+    currentVersion: 0,
+    entries: [],
+  },
+  graph: {
     offset: [0, 0],
     nodes: {},
     links: {},
+    grid: buildEmptyGrid(defaultWidth, defaultHeight),
   },
   selected: null,
 };

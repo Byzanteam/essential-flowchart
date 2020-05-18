@@ -1,13 +1,16 @@
 import { FlowChartContext } from '@/types';
 
-export default function ({ commit, state }: FlowChartContext) {
+// TODO
+export default function deleteSelected ({ dispatch, state }: FlowChartContext) {
   const { selected } = state;
+
   if (selected) {
     if (selected.type === 'link') {
-      commit('removeLink', selected.id);
+      dispatch('removeLink', selected.id);
     } else if (selected.type === 'node') {
-      commit('removeNode', selected.id);
+      dispatch('removeNode', selected.id);
     }
-    commit('setSelected', null);
+
+    dispatch('setSelected', null);
   }
 }

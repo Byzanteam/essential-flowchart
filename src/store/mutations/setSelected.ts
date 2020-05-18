@@ -1,5 +1,6 @@
 import { IState, ISelectable } from '@/types';
 
+// TODO
 export default function (state: IState, item: ISelectable | null) {
   if (item) {
     state.selected = {

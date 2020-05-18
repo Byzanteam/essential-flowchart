@@ -1,4 +1,3 @@
-import { deleteSelected } from '@/store/actions';
 import { createStore } from '../helper';
 
 describe('deleteSelected', () => {
@@ -14,9 +13,6 @@ describe('deleteSelected', () => {
           type: 'node',
           id: node.id,
         },
-      },
-      actions: {
-        deleteSelected,
       },
     });
 
@@ -55,9 +51,6 @@ describe('deleteSelected', () => {
           type: 'link',
           id: 'link1',
         },
-      },
-      actions: {
-        deleteSelected,
       },
     });
 

@@ -43,8 +43,7 @@ interface IPortAttrs {
 }
 
 interface INodePort {
-  id: ID;
-  node: INode;
+  nodeId: ID;
   direction: PortDirection;
 }
 

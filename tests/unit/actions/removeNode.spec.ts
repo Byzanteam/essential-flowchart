@@ -1,4 +1,3 @@
-import { removeNode } from '@/store/actions';
 import { createStore } from '../helper';
 
 describe('removeNode', () => {
@@ -10,9 +9,6 @@ describe('removeNode', () => {
     const store = createStore({
       stateAttrs: {
         graphNodeAttrs: [nodeAttr],
-      },
-      actions: {
-        removeNode,
       },
     });
 
@@ -40,9 +36,6 @@ describe('removeNode', () => {
       stateAttrs: {
         graphNodeIds: nodeIds,
         graphLinkAttrs: linkAttrs,
-      },
-      actions: {
-        removeNode,
       },
     });
 

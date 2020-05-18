@@ -1,9 +1,18 @@
-import { Store } from 'vuex';
+import { Store, ActionContext, Payload } from 'vuex';
 import { IGraph, INode, ILink } from './graph';
 
-interface IHistoryEntry {
-  action: string;
-  payload: any;
+export interface IMutation extends Payload {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [propName: string]: any;
+}
+
+export interface IHistoryEntry {
+  mutations: IMutation[];
+}
+
+export interface IHistory {
+  currentVersion: number; // one-based
+  entries: IHistoryEntry[];
 }
 
 export interface ISelectedOrHovered {
@@ -14,9 +23,11 @@ export interface ISelectedOrHovered {
 export type ISelectable = INode | ILink;
 
 export interface IState {
-  history: IHistoryEntry[];
+  history: IHistory;
   graph: IGraph;
   selected: ISelectedOrHovered | null;
 }
+
+export type FlowChartContext = ActionContext<IState, IState>;
 
 export type FlowChartStore = Store<IState>;

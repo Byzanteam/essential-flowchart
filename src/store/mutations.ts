@@ -6,7 +6,6 @@ import addLink from './mutations/addLink';
 import removeLink from './mutations/removeLink';
 
 import setSelected from './mutations/setSelected';
-import updateGraph from './mutations/updateGraph';
 
 import historyMutations from './mutations/history';
 
@@ -19,7 +18,6 @@ export default {
   removeLink,
 
   setSelected,
-  updateGraph,
 
   ...historyMutations,
 };

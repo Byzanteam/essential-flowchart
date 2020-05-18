@@ -1,5 +1,8 @@
 import { Store, ActionContext, Payload } from 'vuex';
-import { IGraph, INode, ILink } from './graph';
+import {
+  IGraph, INode, ILink,
+  INodeAttrs, ILinkAttrs,
+} from './graph';
 
 export interface IMutation extends Payload {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +29,11 @@ export interface IState {
   history: IHistory;
   graph: IGraph;
   selected: ISelectedOrHovered | null;
+}
+
+export interface IStateAttrs {
+  nodes: INodeAttrs[];
+  links: ILinkAttrs[];
 }
 
 export type FlowChartContext = ActionContext<IState, IState>;

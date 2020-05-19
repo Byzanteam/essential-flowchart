@@ -49,6 +49,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-pr-
 
+    - run: yarn install
     - run: yarn build
 
   unit-test:
@@ -73,6 +74,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-pr-
 
+    - run: yarn install
     - run: yarn test:unit
 
   linter:
@@ -97,4 +99,5 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-yarn-pr-
 
+    - run: yarn install
     - run: yarn lint

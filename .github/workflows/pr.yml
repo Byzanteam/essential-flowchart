@@ -26,7 +26,6 @@ jobs:
           ${{ runner.os }}-yarn-pr-
 
     - run: yarn install
-    - run: yarn build
   
   build:
     runs-on: ubuntu-latest

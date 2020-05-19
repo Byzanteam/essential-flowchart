@@ -86,9 +86,11 @@ function buildLinks (store: Store<IState>, stateAttrs?: IStateAttrs) {
     to: { nodeId: toNodeId, direction: toPortDirection },
   }) => {
     store.commit('addLink', {
-      id,
-      from: { nodeId: fromNodeId, direction: fromPortDirection || defaultPortDirection },
-      to: { nodeId: toNodeId, direction: toPortDirection || defaultPortDirection },
+      link: {
+        id,
+        from: { nodeId: fromNodeId, direction: fromPortDirection || defaultPortDirection },
+        to: { nodeId: toNodeId, direction: toPortDirection || defaultPortDirection },
+      },
     });
   });
 }

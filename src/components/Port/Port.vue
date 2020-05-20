@@ -19,6 +19,7 @@ import {
 import store from '@/store';
 import { INode, INodePort, PortDirection } from '@/types';
 
+// TODO: calc when node position changed
 function useUpdatePortPosition (node: INode, port: INodePort) {
   const inner: Ref<HTMLElement | null> = ref(null);
 

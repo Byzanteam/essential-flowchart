@@ -8,6 +8,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api';
+import { IStateAttrs, PortDirection } from '@/types';
 import store from '@/store/index';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
@@ -28,11 +29,11 @@ const graph: IStateAttrs = {
     id: 'link1',
     from: {
       nodeId: 'node1',
-      direction: 'bottom',
+      direction: PortDirection.BOTTOM,
     },
     to: {
       nodeId: 'node2',
-      direction: 'bottom',
+      direction: PortDirection.BOTTOM,
     },
   }],
 };

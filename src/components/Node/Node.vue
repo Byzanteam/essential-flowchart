@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+// @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
 import {
   defineComponent, PropType, watch, computed,

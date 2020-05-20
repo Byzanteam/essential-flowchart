@@ -1,5 +1,5 @@
 import PF from 'pathfinding';
-import { Position } from '@/types';
+import { IPosition } from '@/types';
 import { SCALE_FACTOR } from '@/utils/grid';
 
 const finder = PF.JumpPointFinder({
@@ -7,9 +7,9 @@ const finder = PF.JumpPointFinder({
   diagonalMovement: PF.DiagonalMovement.Never,
 });
 
-function generatePath (grid: PF.Grid, startPos: Position, endPos: Position): string {
-  const startPosScaled = { x: Math.ceil(startPos[0] / SCALE_FACTOR), y: Math.ceil(startPos[1] / SCALE_FACTOR) };
-  const endPosScaled = { x: Math.ceil(endPos[0] / SCALE_FACTOR), y: Math.ceil(endPos[1] / SCALE_FACTOR) };
+function generatePath (grid: PF.Grid, startPos: IPosition, endPos: IPosition): string {
+  const startPosScaled = { x: Math.ceil(startPos.x / SCALE_FACTOR), y: Math.ceil(startPos.y / SCALE_FACTOR) };
+  const endPosScaled = { x: Math.ceil(endPos.x / SCALE_FACTOR), y: Math.ceil(endPos.y / SCALE_FACTOR) };
 
   const path = PF.Util.compressPath(
     finder.findPath(

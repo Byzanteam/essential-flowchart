@@ -17,7 +17,14 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 100,
-      ports: [],
+      ports: {
+        top: {
+          direction: 'top',
+        },
+        bottom: {
+          direction: 'bottom',
+        },
+      },
     });
   });
 });

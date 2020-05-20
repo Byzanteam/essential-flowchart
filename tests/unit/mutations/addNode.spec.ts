@@ -15,7 +15,7 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 100,
-      ports: [],
+      ports: {}, // TODO: port
     };
 
     addNode(store.state, { node });
@@ -26,7 +26,7 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 100,
-      ports: [],
+      ports: {},
     });
   });
 
@@ -46,7 +46,7 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 40,
-      ports: [],
+      ports: {}, // TODO: port
     };
 
     addNode(store.state, { node });
@@ -58,7 +58,8 @@ describe('addNode', () => {
     ];
 
     blockedNodes.forEach(([x, y]) => {
-      expect(pfGrid.isWalkableAt(x, y)).toEqual(false);
+      // TODO: scale_factor
+      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(false);
     });
 
     const walkableNodes = [
@@ -77,7 +78,8 @@ describe('addNode', () => {
     ];
 
     walkableNodes.forEach(([x, y]) => {
-      expect(pfGrid.isWalkableAt(x, y)).toEqual(true);
+      // TODO: scale_factor
+      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(true);
     });
   });
 });

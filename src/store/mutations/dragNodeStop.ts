@@ -12,6 +12,6 @@ export default function dragNodeStop (state: IState, { nodeId, to }: { nodeId: I
 
 registerRevertFunc('dragNodeStop', mutation => ({
   ...mutation,
-  to: [...mutation.from],
-  from: [...mutation.to],
+  to: { ...mutation.from },
+  from: { ...mutation.to },
 }));

@@ -1,6 +1,6 @@
-import { FlowChartContext, ID, Position } from '@/types';
+import { FlowChartContext, ID, IPosition } from '@/types';
 
-export default function dragNodeStop ({ dispatch, state }: FlowChartContext, { id, position }: { id: ID; position: Position }) {
+export default function dragNodeStop ({ dispatch, state }: FlowChartContext, { id, position }: { id: ID; position: IPosition }) {
   const node = state.graph.nodes[id];
 
   if (!node) return;

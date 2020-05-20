@@ -9,7 +9,6 @@ import removeLink from './mutations/removeLink';
 import updateNodePortPosition from './mutations/updateNodePortPosition';
 
 import setSelected from './mutations/setSelected';
-import updateGraph from './mutations/updateGraph';
 
 import historyMutations from './mutations/history';
 
@@ -25,7 +24,6 @@ export default {
   updateNodePortPosition,
 
   setSelected,
-  updateGraph,
 
   ...historyMutations,
 };

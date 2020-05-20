@@ -32,10 +32,10 @@ export interface INode {
 
 // port
 export enum PortDirection {
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-  Left = 'left',
+  TOP = 'top',
+  RIGHT = 'right',
+  BOTTOM = 'bottom',
+  LEFT = 'left',
 }
 
 interface IPortAttrs {

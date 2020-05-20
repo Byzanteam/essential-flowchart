@@ -8,74 +8,33 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api';
-import { IGraph } from '@/types/graph';
 import store from '@/store/index';
-import { buildEmptyGrid } from '@/utils/grid';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
-// @ts-ignore
-const graph: IGraph = {
-  offset: [0, 0],
-  scale: 1,
-  nodes: {
-    node1: {
-      id: 'node1',
-      x: 10,
-      y: 10,
-      width: 50,
-      height: 50,
-      ports: {
-        top: {
-          direction: 'top',
-        },
-        bottom: {
-          direction: 'bottom',
-        },
-      },
+const graph: IStateAttrs = {
+  // offset: [0, 0],
+  // scale: 1,
+  nodes: [{
+    id: 'node1',
+    rect: [10, 10, 50, 50],
+  }, {
+    id: 'node2',
+    rect: [100, 100, 50, 50],
+  }, {
+    id: 'node3',
+    rect: [10, 80, 50, 50],
+  }],
+  links: [{
+    id: 'link1',
+    from: {
+      nodeId: 'node1',
+      direction: 'bottom',
     },
-    node2: {
-      id: 'node2',
-      x: 100,
-      y: 100,
-      width: 50,
-      height: 50,
-      ports: {
-        top: {
-          direction: 'top',
-        },
-        bottom: {
-          direction: 'bottom',
-        },
-      },
+    to: {
+      nodeId: 'node2',
+      direction: 'bottom',
     },
-    node3: {
-      id: 'node3',
-      x: 10,
-      y: 80,
-      width: 50,
-      height: 50,
-      ports: {
-        top: {
-          direction: 'top',
-        },
-        bottom: {
-          direction: 'bottom',
-        },
-      },
-    },
-  },
-  links: {
-    link1: {
-      id: 'link1',
-      from: {
-        nodeId: 'node1',
-      },
-      to: {
-        nodeId: 'node2',
-      },
-    },
-  },
-  grid: buildEmptyGrid(1000, 1000),
+  }],
 };
 
 export default defineComponent({

@@ -20,18 +20,20 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, watch,
+  defineComponent, ref,
   PropType,
 } from '@vue/composition-api';
 import store from '@/store';
-import { IGraph } from '@/types';
+import { IStateAttrs } from '@/types';
+import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import Node from '../Node/Node.vue';
 import Link from '../Link/Link.vue';
 // import { getMatrix } from './utils/grid';
 
-function useGraph (graph: IGraph) {
-  const { nodes, links } = graph;
+function useGraph (graph: IStateAttrs) {
+  buildState(graph, store);
+  const { nodes, links } = store.state.graph;
 
   // 创建矩阵并将节点占据的空间标记为 1
   // const matrix = getMatrix(graph.offset, Object.values(nodes));
@@ -43,7 +45,7 @@ function useGraph (graph: IGraph) {
 }
 
 interface IFlowChartProps {
-  graph: IGraph;
+  graph: IStateAttrs;
 }
 
 export default defineComponent({
@@ -57,17 +59,13 @@ export default defineComponent({
 
   props: {
     graph: {
-      type: Object as PropType<IGraph>,
+      type: Object as PropType<IStateAttrs>,
       required: true,
     },
   },
 
   setup (props: IFlowChartProps) {
     const { nodes, links } = useGraph(props.graph);
-
-    watch<IGraph>(() => props.graph, (graph: IFlowChartProps['graph']) => {
-      store.commit('updateGraph', graph);
-    }, { lazy: false });
 
     return {
       nodes,

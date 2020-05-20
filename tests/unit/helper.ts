@@ -13,7 +13,7 @@ import { buildEmptyGrid } from '@/utils/grid';
 
 const defaultGridDimension: [number, number] = [1440, 900];
 const defaultNodeRect: NodeRect = [200, 100, 100, 40];
-const defaultPortDirection = PortDirection.Bottom;
+const defaultPortDirection = PortDirection.BOTTOM;
 
 interface IStateAttrs {
   gridDimension?: [number, number];
@@ -86,9 +86,11 @@ function buildLinks (store: Store<IState>, stateAttrs?: IStateAttrs) {
     to: { nodeId: toNodeId, direction: toPortDirection },
   }) => {
     store.commit('addLink', {
-      id,
-      from: { nodeId: fromNodeId, direction: fromPortDirection || defaultPortDirection },
-      to: { nodeId: toNodeId, direction: toPortDirection || defaultPortDirection },
+      link: {
+        id,
+        from: { nodeId: fromNodeId, direction: fromPortDirection || defaultPortDirection },
+        to: { nodeId: toNodeId, direction: toPortDirection || defaultPortDirection },
+      },
     });
   });
 }

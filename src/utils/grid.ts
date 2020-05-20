@@ -3,13 +3,13 @@ import { IGrid, NodeRect } from '@/types';
 
 export const SCALE_FACTOR = 5;
 
-const defaultOffset = 12;
+const defaultOffset = 5 / SCALE_FACTOR;
 
-enum Direction {
-  Top,
-  Right,
-  Bottom,
-  Left,
+const enum Direction {
+  TOP = 'top',
+  RIGHT = 'right',
+  BOTTOM = 'bottom',
+  LEFT = 'left',
 }
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
@@ -76,7 +76,7 @@ function markWall (
 
   // eslint-disable-next-line default-case
   switch (direction) {
-    case Direction.Top:
+    case Direction.TOP:
       lines = [
         [[startX, y], [midX - 1, y]],
         [[midX - 1, y + 1], [midX - 1, y - defaultOffset]],
@@ -86,7 +86,7 @@ function markWall (
       ];
       break;
 
-    case Direction.Bottom:
+    case Direction.BOTTOM:
       lines = [
         [[startX, y], [midX + 1, y]],
         [[midX + 1, y - 1], [midX + 1, y + defaultOffset]],
@@ -96,7 +96,7 @@ function markWall (
       ];
       break;
 
-    case Direction.Right:
+    case Direction.RIGHT:
       lines = [
         [[x, startY], [x, midY - 1]],
         [[x - 1, midY - 1], [x + defaultOffset, midY - 1]],
@@ -106,7 +106,7 @@ function markWall (
       ];
       break;
 
-    case Direction.Left:
+    case Direction.LEFT:
       lines = [
         [[x, startY], [x, midY + 1]],
         [[x + 1, midY + 1], [x - defaultOffset, midY + 1]],
@@ -122,7 +122,7 @@ function markWall (
   });
 }
 
-export function markWalkable (
+export function markNodeWalkable (
   grid: Pathfinding.Grid,
   [
     x,
@@ -132,13 +132,20 @@ export function markWalkable (
   ]: NodeRect,
   walkable: boolean,
 ) {
+  // TODO: optimize
+  /* eslint-disable no-param-reassign */
+  x = Math.ceil(x / SCALE_FACTOR);
+  y = Math.ceil(y / SCALE_FACTOR);
+  width = Math.ceil(width / SCALE_FACTOR);
+  height = Math.ceil(height / SCALE_FACTOR);
+
   const topLeft: [number, number] = [x, y];
   const topRight: [number, number] = [x + width, y];
   const bottomRight: [number, number] = [x + width, y + height];
   const bottomLeft: [number, number] = [x, y + height];
 
-  markWall(grid, topLeft, topRight, Direction.Top, walkable);
-  markWall(grid, topRight, bottomRight, Direction.Right, walkable);
-  markWall(grid, bottomRight, bottomLeft, Direction.Bottom, walkable);
-  markWall(grid, bottomLeft, topLeft, Direction.Left, walkable);
+  markWall(grid, topLeft, topRight, Direction.TOP, walkable);
+  markWall(grid, topRight, bottomRight, Direction.RIGHT, walkable);
+  markWall(grid, bottomRight, bottomLeft, Direction.BOTTOM, walkable);
+  markWall(grid, bottomLeft, topLeft, Direction.LEFT, walkable);
 }

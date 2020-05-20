@@ -1,6 +1,19 @@
-import { FlowChartContext, Position } from '@/types';
+import { FlowChartContext, ID, Position } from '@/types';
 
-// TODO
-export default function ({ commit }: FlowChartContext, { id, position }: { id: string; position: Position }) {
-  commit('dragNodeStop', { nodeId: id, position });
+export default function dragNodeStop ({ dispatch, state }: FlowChartContext, { id, position }: { id: ID; position: Position }) {
+  const node = state.graph.nodes[id];
+
+  if (!node) return;
+
+  const mutations = [{
+    type: 'dragNodeStop',
+    nodeId: node.id,
+    from: {
+      x: node.x,
+      y: node.y,
+    },
+    to: { ...position },
+  }];
+
+  dispatch('historyPushEntry', mutations);
 }

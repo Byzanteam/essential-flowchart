@@ -2,10 +2,10 @@ import {
   FlowChartContext, INode, INodeAttrs, PortDirection,
 } from '@/types';
 
-export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
+export function buildNodeFromAttrs (nodeAttrs: INodeAttrs) {
   const [x, y, width, height] = nodeAttrs.rect;
 
-  const node: INode = {
+  return {
     id: nodeAttrs.id,
 
     x,
@@ -15,18 +15,22 @@ export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
 
     ports: {
       top: {
-        direction: PortDirection.Top,
+        direction: PortDirection.TOP,
       },
       bottom: {
-        direction: PortDirection.Bottom,
+        direction: PortDirection.BOTTOM,
       },
     },
   };
+}
+
+export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
+  const node: INode = buildNodeFromAttrs(nodeAttrs);
 
   const mutations = [{
     type: 'addNode',
     node,
   }];
 
-  context.commit('historyPushEntry', mutations);
+  context.dispatch('historyPushEntry', mutations);
 }

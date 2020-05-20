@@ -30,7 +30,7 @@ import {
 } from '@vue/composition-api';
 import store from '@/store';
 import { INode } from '@/types/graph';
-import markNodeWalkable from '@/components/Node/utils/markNodeWalkable';
+import { markNodeWalkable } from '@/utils/grid';
 import NodeInner from './NodeInner.vue';
 import Port from '../Port/Port.vue';
 

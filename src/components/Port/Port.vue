@@ -17,7 +17,7 @@ import {
   PropType, Ref,
 } from '@vue/composition-api';
 import store from '@/store';
-import { INode, INodePort } from '@/types';
+import { INode, INodePort, PortDirection } from '@/types';
 
 function useUpdatePortPosition (node: INode, port: INodePort) {
   const inner: Ref<HTMLElement | null> = ref(null);
@@ -28,13 +28,13 @@ function useUpdatePortPosition (node: INode, port: INodePort) {
     let position;
     // eslint-disable-next-line default-case
     switch (port.direction) {
-      case 'top':
+      case PortDirection.TOP:
         position = {
           x: node.x + node.width / 2,
           y: node.y - inner.value.offsetHeight / 2,
         };
         break;
-      case 'bottom':
+      case PortDirection.BOTTOM:
         position = {
           x: node.x + node.width / 2,
           y: node.y + node.height + inner.value.offsetHeight / 2,

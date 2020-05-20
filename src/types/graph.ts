@@ -44,7 +44,7 @@ interface IPortAttrs {
 }
 
 export interface INodePort {
-  // nodeId: ID;
+  // nodeId: ID; TODO: 需要时添加回来
   direction: PortDirection;
   position?: IPosition;
 }

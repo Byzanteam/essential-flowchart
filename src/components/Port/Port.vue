@@ -73,12 +73,14 @@ export default defineComponent({
   setup (props) {
     const { node, port } = props;
 
+    // 初始化时和节点拖动时，更新 port 坐标
     const { inner, updatePortPosition } = useUpdatePortPosition(node, port);
 
     onMounted(() => {
       updatePortPosition();
     });
 
+    // TODO: watch(() => node.position)
     watch([() => node.x, () => node.y], () => {
       updatePortPosition();
     }, { lazy: true });

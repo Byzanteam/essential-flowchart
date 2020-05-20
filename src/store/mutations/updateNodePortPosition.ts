@@ -8,6 +8,7 @@ export default function updateNodePortPosition (state: IState, { nodeId, portDir
 
   if (node) {
     const port = node.ports[portDir];
+    // 响应式，link 会监视 port 的坐标进行寻路
     Vue.set(port, 'position', position);
   }
 }

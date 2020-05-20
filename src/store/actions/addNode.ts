@@ -13,6 +13,7 @@ export function buildNodeFromAttrs (nodeAttrs: INodeAttrs) {
     width,
     height,
 
+    // TODO: left and right port
     ports: {
       top: {
         direction: PortDirection.TOP,

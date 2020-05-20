@@ -132,7 +132,7 @@ export function markNodeWalkable (
   ]: NodeRect,
   walkable: boolean,
 ) {
-  // TODO: optimize
+  // TODO: optimize，不能为浮点数
   /* eslint-disable no-param-reassign */
   x = Math.ceil(x / SCALE_FACTOR);
   y = Math.ceil(y / SCALE_FACTOR);

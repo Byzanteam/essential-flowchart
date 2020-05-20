@@ -21,6 +21,7 @@ function generatePath (grid: PF.Grid, startPos: Position, endPos: Position): str
     ),
   );
 
+  // TODO: another path
   if (!path.length) return '';
 
   const [first, ...rest] = path;

@@ -51,6 +51,7 @@ export default defineComponent({
   },
 
   setup (props) {
+    // TODO: use func
     const { node } = props;
 
     const position = computed(() => ({
@@ -58,6 +59,7 @@ export default defineComponent({
       y: node.y,
     }));
 
+    // 观测 node 的坐标，将 oldPos 变为 walkable，pos 变为 unwalkable
     watch(position, (pos, prevPos) => {
       if (prevPos) {
         markNodeWalkable(
@@ -74,6 +76,7 @@ export default defineComponent({
       );
     });
 
+    // 拖动时更新坐标，使用 mutation
     const onNodeDragging = (left: number, top: number) => {
       store.commit('dragNode', {
         nodeId: node.id,
@@ -84,6 +87,7 @@ export default defineComponent({
       });
     };
 
+    // 拖动结束后触发 action 记录历史
     const onNodeDragStop = (left: number, top: number) => {
       store.dispatch('dragNodeStop', {
         id: node.id,

@@ -1,4 +1,4 @@
-import { Position } from '@/types/generics';
+import { IPosition } from '@/types/generics';
 import { INode } from '@/types/graph';
 
 // 缩放因子
@@ -11,12 +11,12 @@ const DEFAULT_NODE_SIZE = {
 };
 
 // 根据节点计算矩阵大小
-function getMatrixDimensions (offset: Position, nodes: INode[]) {
+function getMatrixDimensions (offset: IPosition, nodes: INode[]) {
   const dimensions = { width: 0, height: 0 };
 
   // 坐标轴原点从 0 开始
-  const offsetX = Math.max(offset[0], 0);
-  const offsetY = Math.max(offset[1], 0);
+  const offsetX = Math.max(offset.x, 0);
+  const offsetY = Math.max(offset.y, 0);
 
   nodes.forEach(node => {
     const size = DEFAULT_NODE_SIZE; // TODO: 可以扩展 node 的 size 属性
@@ -49,7 +49,7 @@ function getEmptyMatrix (width: number, height: number): Array<number[]> {
   return matrix;
 }
 
-function getMatrix (offset: Position, nodes: INode[]): Array<number[]> {
+function getMatrix (offset: IPosition, nodes: INode[]): Array<number[]> {
   // 矩阵的宽高
   const { width, height } = getMatrixDimensions(offset, nodes);
   const matrix = getEmptyMatrix(width, height); // 空矩阵，每个点都 walkable

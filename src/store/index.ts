@@ -16,10 +16,17 @@ const state: IState = {
     entries: [],
   },
   graph: {
-    offset: [0, 0],
+    offset: {
+      x: 0,
+      y: 0,
+    },
     nodes: {},
     links: {},
     grid: buildEmptyGrid(defaultWidth, defaultHeight),
+    gridOffset: {
+      x: 0,
+      y: 0,
+    },
   },
   selected: null,
 };

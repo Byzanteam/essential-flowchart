@@ -1,6 +1,6 @@
 import Pathfinding from 'pathfinding';
 
-import { Id, Offset, IPosition } from './generics';
+import { Id, IPosition } from './generics';
 
 type x = number;
 type y = number;
@@ -77,7 +77,7 @@ export interface IGrid {
 }
 
 export interface IGraph {
-  offset: Offset;
+  offset: IPosition;
 
   nodes: {
     [id: string]: INode;
@@ -87,5 +87,6 @@ export interface IGraph {
   };
 
   grid: IGrid;
+  gridOffset: IPosition;
   scale?: number;
 }

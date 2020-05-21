@@ -1,4 +1,6 @@
-import { FlowChartContext, INode, INodeAttrs } from '@/types';
+import {
+  FlowChartContext, INode, INodeAttrs, PortDirection,
+} from '@/types';
 
 export function buildNodeFromAttrs (nodeAttrs: INodeAttrs) {
   const [x, y, width, height] = nodeAttrs.rect;
@@ -11,7 +13,15 @@ export function buildNodeFromAttrs (nodeAttrs: INodeAttrs) {
     width,
     height,
 
-    ports: [],
+    // TODO: left and right port
+    ports: {
+      top: {
+        direction: PortDirection.TOP,
+      },
+      bottom: {
+        direction: PortDirection.BOTTOM,
+      },
+    },
   };
 }
 

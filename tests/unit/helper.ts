@@ -13,7 +13,7 @@ import { buildEmptyGrid } from '@/utils/grid';
 
 const defaultGridDimension: [number, number] = [1440, 900];
 const defaultNodeRect: NodeRect = [200, 100, 100, 40];
-const defaultPortDirection = PortDirection.Bottom;
+const defaultPortDirection = PortDirection.BOTTOM;
 
 interface IStateAttrs {
   gridDimension?: [number, number];

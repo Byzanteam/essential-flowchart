@@ -1,6 +1,6 @@
 import Pathfinding from 'pathfinding';
 
-import { ID, Offset } from './generics';
+import { ID, Offset, IPosition } from './generics';
 
 type x = number;
 type y = number;
@@ -25,16 +25,17 @@ export interface INode {
   y: y;
   width: width;
   height: height;
-
-  ports: INodePort[];
+  ports: {
+    [direction: string]: INodePort;
+  };
 }
 
 // port
 export enum PortDirection {
-  Top = 'top',
-  Right = 'right',
-  Bottom = 'bottom',
-  Left = 'left',
+  TOP = 'top',
+  RIGHT = 'right',
+  BOTTOM = 'bottom',
+  LEFT = 'left',
 }
 
 interface IPortAttrs {
@@ -42,9 +43,10 @@ interface IPortAttrs {
   direction: PortDirection;
 }
 
-interface INodePort {
-  nodeId: ID;
+export interface INodePort {
+  // nodeId: ID; TODO: 需要时添加回来
   direction: PortDirection;
+  position?: IPosition;
 }
 
 // link

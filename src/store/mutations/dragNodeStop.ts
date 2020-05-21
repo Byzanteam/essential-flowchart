@@ -1,17 +1,17 @@
-import { IState, ID, Position } from '@/types';
-
+import { IState, ID, IPosition } from '@/types';
 import { registerRevertFunc } from '@/utils/history';
 
-export default function dragNodeStop (state: IState, { nodeId, to }: { nodeId: ID; to: Position }) {
+export default function dragNodeStop (state: IState, { nodeId, to }: { nodeId: ID; to: IPosition }) {
   const node = state.graph.nodes[nodeId];
 
   if (node) {
-    [node.x, node.y] = to;
+    node.x = to.x;
+    node.y = to.y;
   }
 }
 
 registerRevertFunc('dragNodeStop', mutation => ({
   ...mutation,
-  to: [...mutation.from],
-  from: [...mutation.to],
+  to: { ...mutation.from },
+  from: { ...mutation.to },
 }));

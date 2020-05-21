@@ -6,7 +6,7 @@ describe('dragNodeStop', () => {
       id: 'node1',
     };
 
-    const moveTo = [500, 300];
+    const moveTo = { x: 500, y: 300 };
 
     const store = createStore({
       stateAttrs: {
@@ -18,8 +18,8 @@ describe('dragNodeStop', () => {
 
     const { x, y } = store.state.graph.nodes[node.id];
 
-    expect(x).toEqual(moveTo[0]);
-    expect(y).toEqual(moveTo[1]);
+    expect(x).toEqual(moveTo.x);
+    expect(y).toEqual(moveTo.y);
   });
 
   it('reversible', () => {
@@ -27,7 +27,7 @@ describe('dragNodeStop', () => {
       id: 'node1',
     };
 
-    const moveTo = [500, 300];
+    const moveTo = { x: 500, y: 300 };
 
     const store = createStore({
       stateAttrs: {
@@ -40,8 +40,8 @@ describe('dragNodeStop', () => {
     store.dispatch('dragNodeStop', { id: node.id, position: moveTo });
     const { x: currentX, y: currentY } = store.state.graph.nodes[node.id];
 
-    expect(currentX).toEqual(moveTo[0]);
-    expect(currentY).toEqual(moveTo[1]);
+    expect(currentX).toEqual(moveTo.x);
+    expect(currentY).toEqual(moveTo.y);
 
     // undo
     store.dispatch('historyUndo');

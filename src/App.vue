@@ -8,35 +8,34 @@
 
 <script lang="ts">
 import { defineComponent, onMounted } from '@vue/composition-api';
-import { IGraph } from '@/types/graph';
+import { IStateAttrs, PortDirection } from '@/types';
 import store from '@/store/index';
 import FlowChart from './components/FlowChart/FlowChart.vue';
 
-// @ts-ignore
-const graph: IGraph = {
-  offset: {
-    x: 0,
-    y: 0,
-  },
-  scale: 1,
-  nodes: {
-    node1: {
-      id: 'node1',
-      x: 0,
-      y: 0,
-      width: 10,
-      height: 10,
-      ports: [],
+const graph: IStateAttrs = {
+  // offset: [0, 0],
+  // scale: 1,
+  nodes: [{
+    id: 'node1',
+    rect: [10, 10, 50, 50],
+  }, {
+    id: 'node2',
+    rect: [100, 100, 50, 50],
+  }, {
+    id: 'node3',
+    rect: [10, 80, 50, 50],
+  }],
+  links: [{
+    id: 'link1',
+    from: {
+      nodeId: 'node1',
+      direction: PortDirection.BOTTOM,
     },
-    node2: {
-      id: 'node2',
-      x: 150,
-      y: 150,
-      width: 10,
-      height: 10,
-      ports: [],
+    to: {
+      nodeId: 'node2',
+      direction: PortDirection.BOTTOM,
     },
-  },
+  }],
 };
 
 export default defineComponent({

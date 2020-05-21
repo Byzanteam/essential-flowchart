@@ -1,12 +1,12 @@
 import Vue from 'vue';
 
 import { IState, INode } from '@/types';
-import { markWalkable } from '@/Utils/grid';
+import { markNodeWalkable } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
 export default function removeNode (state: IState, { node }: { node: INode }) {
   const { pfGrid } = state.graph.grid;
-  markWalkable(
+  markNodeWalkable(
     pfGrid,
     [node.x, node.y, node.width, node.height],
     true,

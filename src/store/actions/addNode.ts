@@ -1,36 +1,11 @@
 import {
-  FlowChartContext, INode, INodeAttrs, PortDirection,
+  FlowChartContext, INode,
 } from '@/types';
 
-export function buildNodeFromAttrs (nodeAttrs: INodeAttrs) {
-  const [x, y, width, height] = nodeAttrs.rect;
-
-  return {
-    id: nodeAttrs.id,
-
-    x,
-    y,
-    width,
-    height,
-
-    // TODO: left and right port
-    ports: {
-      top: {
-        direction: PortDirection.TOP,
-      },
-      bottom: {
-        direction: PortDirection.BOTTOM,
-      },
-    },
-  };
-}
-
-export default function (context: FlowChartContext, nodeAttrs: INodeAttrs) {
-  const node: INode = buildNodeFromAttrs(nodeAttrs);
-
+export default function (context: FlowChartContext, node: INode) {
   const mutations = [{
     type: 'addNode',
-    node,
+    node: { ...node },
   }];
 
   context.dispatch('historyPushEntry', mutations);

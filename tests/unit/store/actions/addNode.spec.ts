@@ -6,7 +6,16 @@ describe('addNode', () => {
 
     const node = {
       id: '1',
-      rect: [100, 100, 100, 100],
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 100,
+      ports: {
+        1: {
+          id: '1',
+          direction: 'top',
+        },
+      },
     };
 
     store.dispatch('addNode', node);
@@ -18,11 +27,9 @@ describe('addNode', () => {
       width: 100,
       height: 100,
       ports: {
-        top: {
+        1: {
+          id: '1',
           direction: 'top',
-        },
-        bottom: {
-          direction: 'bottom',
         },
       },
     });

@@ -3,32 +3,46 @@ import allMutations from '@/store/mutations';
 import allActions from '@/store/actions';
 import {
   Id,
-  IState,
-  NodeRect,
+  INodePort,
+  ILinkPort,
   PortDirection,
+  IState,
   ISelectedOrHovered,
 } from '@/types';
 
 import { buildEmptyGrid } from '@/utils/grid';
 
+type NodeRect = [number, number, number, number];
+
 const defaultGridDimension: [number, number] = [1440, 900];
 const defaultNodeRect: NodeRect = [200, 100, 100, 40];
-const defaultPortDirection = PortDirection.BOTTOM;
+const defaultPorts = [
+  {
+    id: '1',
+    direction: PortDirection.TOP,
+  },
+  {
+    id: '2',
+    direction: PortDirection.RIGHT,
+  },
+  {
+    id: '3',
+    direction: PortDirection.BOTTOM,
+  },
+  {
+    id: '4',
+    direction: PortDirection.LEFT,
+  },
+];
 
 interface IStateAttrs {
   gridDimension?: [number, number];
-  graphNodeAttrs?: {id: Id; rect?: NodeRect}[];
+  graphNodeAttrs?: {id: Id; rect?: NodeRect; ports?: INodePort[]}[];
   graphNodeIds?: Id[];
   graphLinkAttrs?: {
     id: Id;
-    from: {
-      nodeId: Id;
-      direction?: PortDirection;
-    };
-    to: {
-      nodeId: Id;
-      direction?: PortDirection;
-    };
+    from: ILinkPort;
+    to: ILinkPort;
   }[];
 
   selected?: ISelectedOrHovered | null;
@@ -44,7 +58,7 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
   if (!stateAttrs) return;
 
   stateAttrs.graphNodeAttrs
-    && stateAttrs.graphNodeAttrs.forEach(({ id, rect }) => {
+    && stateAttrs.graphNodeAttrs.forEach(({ id, rect, ports }) => {
       const [x, y, width, height] = rect || defaultNodeRect;
 
       store.commit('addNode', {
@@ -54,7 +68,7 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
           y,
           width,
           height,
-          ports: [],
+          ports: ports || defaultPorts,
         },
       });
     });
@@ -70,7 +84,7 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
           y,
           width,
           height,
-          ports: [],
+          ports: defaultPorts,
         },
       });
     });
@@ -82,14 +96,14 @@ function buildLinks (store: Store<IState>, stateAttrs?: IStateAttrs) {
 
   stateAttrs.graphLinkAttrs.forEach(({
     id,
-    from: { nodeId: fromNodeId, direction: fromPortDirection },
-    to: { nodeId: toNodeId, direction: toPortDirection },
+    from: { nodeId: fromNodeId, portId: fromPortId },
+    to: { nodeId: toNodeId, portId: toPortId },
   }) => {
     store.commit('addLink', {
       link: {
         id,
-        from: { nodeId: fromNodeId, direction: fromPortDirection || defaultPortDirection },
-        to: { nodeId: toNodeId, direction: toPortDirection || defaultPortDirection },
+        from: { nodeId: fromNodeId, portId: fromPortId },
+        to: { nodeId: toNodeId, portId: toPortId },
       },
     });
   });

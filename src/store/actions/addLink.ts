@@ -1,26 +1,9 @@
-import { FlowChartContext, ILink, ILinkAttrs } from '@/types';
+import { FlowChartContext, ILink } from '@/types';
 
-export function buildLinkFromAttrs (linkAttrs: ILinkAttrs) {
-  const { id, from, to } = linkAttrs;
-
-  return {
-    id,
-
-    from: {
-      ...from,
-    },
-    to: {
-      ...to,
-    },
-  };
-}
-
-export default function addLink (context: FlowChartContext, linkAttrs: ILinkAttrs) {
-  const node: ILink = buildLinkFromAttrs(linkAttrs);
-
+export default function addLink (context: FlowChartContext, link: ILink) {
   const mutations = [{
     type: 'addLink',
-    node,
+    link: { ...link },
   }];
 
   context.dispatch('historyPushEntry', mutations);

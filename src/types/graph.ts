@@ -2,35 +2,6 @@ import Pathfinding from 'pathfinding';
 
 import { Id, Offset, IPosition } from './generics';
 
-type x = number;
-type y = number;
-type width = number;
-type height = number;
-
-// node
-export type NodeRect = [x, y, width, height];
-
-/**
- * Represents the attributes of a node.
-*/
-export interface INodeAttrs {
-  id: Id;
-  rect: NodeRect;
-}
-
-export interface INode {
-  id: Id;
-
-  x: x;
-  y: y;
-  width: width;
-  height: height;
-  ports: {
-    [direction: string]: INodePort;
-  };
-}
-
-// port
 export enum PortDirection {
   TOP = 'top',
   RIGHT = 'right',
@@ -38,40 +9,41 @@ export enum PortDirection {
   LEFT = 'left',
 }
 
-interface IPortAttrs {
-  nodeId: Id;
-  direction: PortDirection;
-}
-
 export interface INodePort {
-  // nodeId: Id; TODO: 需要时添加回来
+  id: Id;
   direction: PortDirection;
   position?: IPosition;
 }
 
-// link
-export interface ILinkAttrs {
+// A node of a graph
+export interface INode {
   id: Id;
-  from: IPortAttrs;
-  to: IPortAttrs;
+
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  ports: {
+    [portId: string]: INodePort;
+  };
 }
 
+export interface ILinkPort {
+  nodeId: Id;
+  portId: Id;
+}
+
+// A link of a graph
 export interface ILink {
   id: Id;
-  from: {
-    nodeId: Id;
-    direction: PortDirection;
-  };
-  to: {
-    nodeId: Id;
-    direction: PortDirection;
-  };
+  from: ILinkPort;
+  to: ILinkPort;
 }
 
 // grid
 export interface IGrid {
-  width: width;
-  height: height;
+  width: number;
+  height: number;
 
   pfGrid: Pathfinding.Grid;
 }

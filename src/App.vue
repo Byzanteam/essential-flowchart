@@ -15,27 +15,74 @@ import FlowChart from './components/FlowChart/FlowChart.vue';
 const graph: IStateAttrs = {
   // offset: [0, 0],
   // scale: 1,
-  nodes: [{
-    id: 'node1',
-    rect: [10, 10, 50, 50],
-  }, {
-    id: 'node2',
-    rect: [100, 100, 50, 50],
-  }, {
-    id: 'node3',
-    rect: [10, 80, 50, 50],
-  }],
-  links: [{
-    id: 'link1',
-    from: {
-      nodeId: 'node1',
-      direction: PortDirection.BOTTOM,
+  nodes: [
+    {
+      id: 'node1',
+      rect: [20, 20, 50, 50],
+      ports: [
+        {
+          id: 'port1',
+          direction: PortDirection.BOTTOM,
+        },
+      ],
     },
-    to: {
-      nodeId: 'node2',
-      direction: PortDirection.BOTTOM,
+    {
+      id: 'node2',
+      rect: [100, 100, 50, 50],
+      ports: [
+        {
+          id: 'port1',
+          direction: PortDirection.TOP,
+        },
+        {
+          id: 'port2',
+          direction: PortDirection.RIGHT,
+        },
+        {
+          id: 'port3',
+          direction: PortDirection.BOTTOM,
+        },
+        {
+          id: 'port4',
+          direction: PortDirection.LEFT,
+        },
+      ],
     },
-  }],
+    {
+      id: 'node3',
+      rect: [200, 180, 50, 50],
+      ports: [
+        {
+          id: 'port1',
+          direction: PortDirection.TOP,
+        },
+      ],
+    },
+  ],
+  links: [
+    {
+      id: 'link1',
+      from: {
+        nodeId: 'node1',
+        portId: 'port1',
+      },
+      to: {
+        nodeId: 'node2',
+        portId: 'port1',
+      },
+    },
+    {
+      id: 'link2',
+      from: {
+        nodeId: 'node2',
+        portId: 'port1',
+      },
+      to: {
+        nodeId: 'node3',
+        portId: 'port1',
+      },
+    },
+  ],
 };
 
 export default defineComponent({

@@ -1,5 +1,5 @@
 import * as Pathfinding from 'pathfinding';
-import { IGrid, NodeRect } from '@/types';
+import { NodeRect, IPosition } from '@/types';
 
 export const SCALE_FACTOR = 5;
 
@@ -12,7 +12,7 @@ const enum Direction {
   LEFT = 'left',
 }
 
-export function buildEmptyGrid (width: number, height: number): IGrid {
+export function buildEmptyGrid (width: number, height: number) {
   // prevent vuex to observing pfGrid
   const pfGrid: Pathfinding.Grid = Object.freeze(
     new Pathfinding.Grid(width / SCALE_FACTOR, height / SCALE_FACTOR),
@@ -120,6 +120,10 @@ function markWall (
   lines.forEach(([from, to]) => {
     markLine(grid, from, to, walkable);
   });
+}
+
+export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IPosition, x: number, y: number) {
+  return grid.isInside((x - gridOffset.x) / SCALE_FACTOR, (y - gridOffset.y) / SCALE_FACTOR);
 }
 
 export function markNodeWalkable (

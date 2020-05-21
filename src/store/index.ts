@@ -22,10 +22,12 @@ const state: IState = {
     },
     nodes: {},
     links: {},
-    grid: buildEmptyGrid(defaultWidth, defaultHeight),
-    gridOffset: {
-      x: 0,
-      y: 0,
+    grid: {
+      offset: {
+        x: 0,
+        y: 0,
+      },
+      ...buildEmptyGrid(defaultWidth, defaultHeight),
     },
   },
   selected: null,

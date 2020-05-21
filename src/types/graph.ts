@@ -72,7 +72,7 @@ export interface ILink {
 export interface IGrid {
   width: width;
   height: height;
-
+  offset: IPosition;
   pfGrid: Pathfinding.Grid;
 }
 
@@ -87,6 +87,5 @@ export interface IGraph {
   };
 
   grid: IGrid;
-  gridOffset: IPosition;
   scale?: number;
 }

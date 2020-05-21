@@ -1,15 +1,35 @@
 import Vue from 'vue';
 
-import { IState, INode } from '@/types';
-import { markNodeWalkable } from '@/utils/grid';
+import { IState, INode, FlowChartStore } from '@/types';
+import { markNodeWalkable, isInsideGrid } from '@/utils/grid';
 
 import { registerRevertFunc } from '@/utils/history';
 
-export default function addNode (state: IState, { node }: { node: INode }) {
-  const { pfGrid } = state.graph.grid;
+export default function addNode (this: FlowChartStore, state: IState, { node }: { node: INode }) {
+  let {
+    // eslint-disable-next-line prefer-const
+    pfGrid, offset: gridOffset, width, height,
+  } = state.graph.grid;
+  // node not inside grid, expand grid
+  if (!isInsideGrid(pfGrid, gridOffset, node.x, node.y)) {
+    if (
+      (node.x < 0 && (Math.abs(node.x) > gridOffset.x))
+      || (node.y < 0 && (Math.abs(node.y) > gridOffset.y))
+    ) {
+      this.commit('expandGrid', -500);
+    } else if (
+      (node.x > 0 && node.x > (width - gridOffset.x))
+      || (node.y > 0 && node.y > (height - gridOffset.y))
+    ) {
+      this.commit('expandGrid', 500);
+    }
+  }
+
+  gridOffset = state.graph.grid.offset;
+
   markNodeWalkable(
     pfGrid,
-    [node.x, node.y, node.width, node.height],
+    [node.x + gridOffset.x, node.y + gridOffset.y, node.width, node.height],
     false,
   );
 

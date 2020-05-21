@@ -1,6 +1,5 @@
 import pushEntry from '@/store/mutations/history/pushEntry';
-
-import { createStore } from '../../helper';
+import { createStore } from '../../../../helper';
 
 describe('pushEntry', () => {
   it('increment currentVersion and push entry to entries', () => {

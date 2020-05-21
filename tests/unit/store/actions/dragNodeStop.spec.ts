@@ -1,4 +1,4 @@
-import { createStore } from '../helper';
+import { createStore } from '../../../helper';
 
 describe('dragNodeStop', () => {
   it('basic', () => {

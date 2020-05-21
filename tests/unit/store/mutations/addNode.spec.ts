@@ -1,5 +1,5 @@
 import addNode from '@/store/mutations/addNode';
-import { createStore } from '../helper';
+import { createStore } from '../../../helper';
 
 describe('addNode', () => {
   it('add a new node to the graph', () => {

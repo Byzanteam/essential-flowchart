@@ -1,4 +1,4 @@
-import { createStore } from '../../helper';
+import { createStore } from '../../../../helper';
 
 describe('undo', () => {
   it('undo mutation and update currentVersion', () => {

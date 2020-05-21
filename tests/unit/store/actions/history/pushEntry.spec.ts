@@ -1,4 +1,4 @@
-import { createStore } from '../../helper';
+import { createStore } from '../../../../helper';
 
 describe('push', () => {
   it('commit mutations and record it', () => {

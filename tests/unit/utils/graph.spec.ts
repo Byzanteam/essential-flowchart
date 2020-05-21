@@ -1,7 +1,7 @@
 import { PortDirection } from '@/types';
 import { buildState } from '@/utils/graph';
 
-import { createStore } from '../helper';
+import { createStore } from '../../helper';
 
 describe('buildState', () => {
   it('works', () => {

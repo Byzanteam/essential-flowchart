@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import {
-  IState, ID, PortDirection, IPosition,
+  IState, Id, PortDirection, IPosition,
 } from '@/types';
 
-export default function updateNodePortPosition (state: IState, { nodeId, portDir, position }: { nodeId: ID; portDir: PortDirection; position: IPosition }) {
+export default function updateNodePortPosition (state: IState, { nodeId, portDir, position }: { nodeId: Id; portDir: PortDirection; position: IPosition }) {
   const node = state.graph.nodes[nodeId];
 
   if (node) {

@@ -2,7 +2,7 @@ import Vuex, { Store, MutationTree, ActionTree } from 'vuex';
 import allMutations from '@/store/mutations';
 import allActions from '@/store/actions';
 import {
-  ID,
+  Id,
   IState,
   NodeRect,
   PortDirection,
@@ -17,16 +17,16 @@ const defaultPortDirection = PortDirection.BOTTOM;
 
 interface IStateAttrs {
   gridDimension?: [number, number];
-  graphNodeAttrs?: {id: ID; rect?: NodeRect}[];
-  graphNodeIds?: ID[];
+  graphNodeAttrs?: {id: Id; rect?: NodeRect}[];
+  graphNodeIds?: Id[];
   graphLinkAttrs?: {
-    id: ID;
+    id: Id;
     from: {
-      nodeId: ID;
+      nodeId: Id;
       direction?: PortDirection;
     };
     to: {
-      nodeId: ID;
+      nodeId: Id;
       direction?: PortDirection;
     };
   }[];

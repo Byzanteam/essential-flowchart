@@ -1,6 +1,6 @@
 import Pathfinding from 'pathfinding';
 
-import { ID, Offset, IPosition } from './generics';
+import { Id, Offset, IPosition } from './generics';
 
 type x = number;
 type y = number;
@@ -14,12 +14,12 @@ export type NodeRect = [x, y, width, height];
  * Represents the attributes of a node.
 */
 export interface INodeAttrs {
-  id: ID;
+  id: Id;
   rect: NodeRect;
 }
 
 export interface INode {
-  id: ID;
+  id: Id;
 
   x: x;
   y: y;
@@ -39,31 +39,31 @@ export enum PortDirection {
 }
 
 interface IPortAttrs {
-  nodeId: ID;
+  nodeId: Id;
   direction: PortDirection;
 }
 
 export interface INodePort {
-  // nodeId: ID; TODO: 需要时添加回来
+  // nodeId: Id; TODO: 需要时添加回来
   direction: PortDirection;
   position?: IPosition;
 }
 
 // link
 export interface ILinkAttrs {
-  id: ID;
+  id: Id;
   from: IPortAttrs;
   to: IPortAttrs;
 }
 
 export interface ILink {
-  id: ID;
+  id: Id;
   from: {
-    nodeId: ID;
+    nodeId: Id;
     direction: PortDirection;
   };
   to: {
-    nodeId: ID;
+    nodeId: Id;
     direction: PortDirection;
   };
 }

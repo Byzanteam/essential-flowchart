@@ -1,5 +1,4 @@
-// TODO: use uuid
-export type ID = string;
+export type Id = string;
 
 type x = number;
 type y = number;

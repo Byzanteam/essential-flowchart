@@ -1,4 +1,4 @@
-import { IPosition } from '@/types';
+import { IOffset } from '@/types';
 import { createStore } from '../../../helper';
 
 describe('expandGrid', () => {
@@ -7,7 +7,7 @@ describe('expandGrid', () => {
     [{ x: -500, y: -500 }, { x: 500, y: 500 }, 500],
     [{ x: -500, y: 500 }, { x: 500, y: 0 }, 500],
     [{ x: 500, y: -500 }, { x: 0, y: 500 }, 500],
-  ])('init grid offset { x: 0, y: 0 }, expand (%o)', (expansion: IPosition, expectedOffset, increase: number) => {
+  ])('init grid offset { x: 0, y: 0 }, expand (%o)', (expansion: IOffset, expectedOffset, increase: number) => {
     const store = createStore({
       stateAttrs: {
         graphNodeAttrs: [{
@@ -54,7 +54,7 @@ describe('expandGrid', () => {
     [{ x: -500, y: -500 }, { x: 1000, y: 1000 }, 1000],
     [{ x: -500, y: 500 }, { x: 1000, y: 0 }, 1000],
     [{ x: 500, y: -500 }, { x: 0, y: 1000 }, 1000],
-  ])('init grid offset { x: 0, y: 0 }, expand (%o) twice', (expansion: IPosition, expectedOffset, increase: number) => {
+  ])('init grid offset { x: 0, y: 0 }, expand (%o) twice', (expansion: IOffset, expectedOffset, increase: number) => {
     const store = createStore({});
 
     const { width: prevWidth, height: prevHeight } = store.state.graph.grid;

@@ -1,5 +1,5 @@
 import * as Pathfinding from 'pathfinding';
-import { NodeRect, IPosition } from '@/types';
+import { NodeRect, IOffset } from '@/types';
 
 export const SCALE_FACTOR = 5;
 
@@ -122,7 +122,7 @@ function markWall (
   });
 }
 
-export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IPosition, x: number, y: number) {
+export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IOffset, x: number, y: number) {
   return grid.isInside((x - gridOffset.x) / SCALE_FACTOR, (y - gridOffset.y) / SCALE_FACTOR);
 }
 

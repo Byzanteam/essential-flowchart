@@ -1,8 +1,8 @@
-import { IState, IPosition } from '@/types';
+import { IState, IOffset } from '@/types';
 import { buildEmptyGrid, markNodeWalkable } from '@/utils/grid';
 
-export default function expandGrid (state: IState, expansion: IPosition) {
-  const prevOffset: IPosition = state.graph.grid.offset;
+export default function expandGrid (state: IState, expansion: IOffset) {
+  const prevOffset: IOffset = state.graph.grid.offset;
   let { width, height } = state.graph.grid;
 
   const negativeX = expansion.x < 0;

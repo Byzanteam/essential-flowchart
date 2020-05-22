@@ -242,3 +242,8 @@ export function markNodeWalkable (
 
   return updatedNode;
 }
+
+export const pathFinder = new Pathfinding.BiAStarFinder({
+  heuristic: Pathfinding.Heuristic.manhattan,
+  diagonalMovement: Pathfinding.DiagonalMovement.Never,
+});

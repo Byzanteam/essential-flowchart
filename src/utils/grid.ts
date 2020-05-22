@@ -1,16 +1,17 @@
 import * as Pathfinding from 'pathfinding';
-import { IGrid, NodeRect } from '@/types';
+import {
+  IGrid,
+  INode,
+  INodePort,
+  PortDirection,
+} from '@/types';
+
+type Point = [number, number];
+type Line = [Point, Point];
 
 export const SCALE_FACTOR = 5;
-
-const defaultOffset = 5 / SCALE_FACTOR;
-
-const enum Direction {
-  TOP = 'top',
-  RIGHT = 'right',
-  BOTTOM = 'bottom',
-  LEFT = 'left',
-}
+const defaultOffset = SCALE_FACTOR;
+const defaultGap = SCALE_FACTOR * 2;
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
   // prevent vuex to observing pfGrid
@@ -28,8 +29,7 @@ export function buildEmptyGrid (width: number, height: number): IGrid {
 
 function markLine (
   grid: Pathfinding.Grid,
-  [startX, startY]: [number, number],
-  [endX, endY]: [number, number],
+  [[startX, startY], [endX, endY]]: Line,
   walkable: boolean,
 ) {
   // @ts-ignore
@@ -40,100 +40,181 @@ function markLine (
   });
 }
 
-//                 ^ ^
-//                 | |
-//                 | |
-//     (x, y)      | |      (x + width, y)
-//       ^-------->+ +-------->+
-//       |         +->         |
-//       |                     |
-//       |                     v  (12px)
-// <-----+^                   +------->
-//        |                   |
-// <-----++                   <------->
-//       ^                     |
-//       |                     |
-//       |                     |
-//       |         <-+         |
-//       <---------+ +<--------v
-// (x, y + height) | |       (x + width, y + height)
-//                 | |
-//                 | |
-//                 v v
-
-function markWall (
+function markPort (
   grid: Pathfinding.Grid,
-  [startX, startY]: [number, number],
-  [endX, endY]: [number, number],
-  direction: Direction,
+  port: INodePort,
   walkable: boolean,
 ) {
-  let lines: Array<[[number, number], [number, number]]>;
-  const midX = Math.ceil((startX + endX) / 2);
-  const midY = Math.ceil((startY + endY) / 2);
-  const x = startX;
-  const y = startY;
+  const { direction, position } = port;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  let { x, y } = position!;
+
+  x = Math.ceil(x / SCALE_FACTOR);
+  y = Math.ceil(y / SCALE_FACTOR);
+
+  grid.setWalkableAt(x, y, !walkable);
 
   // eslint-disable-next-line default-case
   switch (direction) {
-    case Direction.TOP:
-      lines = [
-        [[startX, y], [midX - 1, y]],
-        [[midX - 1, y + 1], [midX - 1, y - defaultOffset]],
-        [[midX - 1, y + 1], [midX + 1, y + 1]],
-        [[midX + 1, y + 1], [midX + 1, y - defaultOffset]],
-        [[midX + 1, y], [endX, y]],
-      ];
+    case PortDirection.TOP:
+      grid.setWalkableAt(x, y + 1, walkable);
+      markLine(grid, [[x - 1, y - 1], [x - 1, y - defaultOffset / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + 1, y - defaultOffset / SCALE_FACTOR]], walkable);
       break;
 
-    case Direction.BOTTOM:
-      lines = [
-        [[startX, y], [midX + 1, y]],
-        [[midX + 1, y - 1], [midX + 1, y + defaultOffset]],
-        [[midX + 1, y - 1], [midX - 1, y - 1]],
-        [[midX - 1, y - 1], [midX - 1, y + defaultOffset]],
-        [[midX - 1, y], [endX, y]],
-      ];
+    case PortDirection.RIGHT:
+      grid.setWalkableAt(x - 1, y, walkable);
+      markLine(grid, [[x + 1, y + 1], [x + defaultOffset / SCALE_FACTOR, y + 1]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + defaultOffset / SCALE_FACTOR, y - 1]], walkable);
       break;
 
-    case Direction.RIGHT:
-      lines = [
-        [[x, startY], [x, midY - 1]],
-        [[x - 1, midY - 1], [x + defaultOffset, midY - 1]],
-        [[x - 1, midY - 1], [x - 1, midY + 1]],
-        [[x - 1, midY + 1], [x + defaultOffset, midY + 1]],
-        [[x, midY + 1], [x, endY]],
-      ];
+    case PortDirection.BOTTOM:
+      grid.setWalkableAt(x, y - 1, walkable);
+      markLine(grid, [[x - 1, y + 1], [x - 1, y + defaultOffset / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y + 1], [x + 1, y + defaultOffset / SCALE_FACTOR]], walkable);
       break;
 
-    case Direction.LEFT:
-      lines = [
-        [[x, startY], [x, midY + 1]],
-        [[x + 1, midY + 1], [x - defaultOffset, midY + 1]],
-        [[x + 1, midY + 1], [x + 1, midY - 1]],
-        [[x + 1, midY - 1], [x - defaultOffset, midY - 1]],
-        [[x, midY - 1], [x, endY]],
-      ];
+    case PortDirection.LEFT:
+      grid.setWalkableAt(x + 1, y, walkable);
+      markLine(grid, [[x - 1, y - 1], [x - defaultOffset / SCALE_FACTOR, y - 1]], walkable);
+      markLine(grid, [[x - 1, y + 1], [x - defaultOffset / SCALE_FACTOR, y + 1]], walkable);
       break;
   }
-
-  lines.forEach(([from, to]) => {
-    markLine(grid, from, to, walkable);
-  });
 }
+
+function groupBy<Item> (collection: Array<Item>, criteria: (item: Item) => string): Record<string, Item[]> {
+  return collection.reduce((obj, item) => {
+    const key = criteria(item);
+
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+      obj[key] = [item];
+    } else {
+      obj[key].push(item);
+    }
+
+    return obj;
+  }, {} as Record<string, Item[]>);
+}
+
+function nextDots (start: number, length: number): number[] {
+  let current = Math.ceil(start);
+  const dots = [];
+
+  for (let i = 0; i < length; i += 1) {
+    dots.push(current + 1);
+    current += 2 + defaultGap;
+  }
+
+  return dots;
+}
+
+function updatePorts (node: INode): INode {
+  const {
+    x, y, width, height,
+  } = node;
+
+  const groupedPorts = groupBy(
+    Object.values(node.ports),
+    port => port.direction,
+  );
+
+  const updatedPorts = Object.entries(groupedPorts).reduce((acc, [direction, ports]) => {
+    const { length } = ports;
+    const portsLength = 3 * length + defaultGap * (length - 1);
+    let dots: number[];
+
+    // eslint-disable-next-line default-case
+    switch (direction) {
+      case PortDirection.TOP:
+        dots = nextDots(x + (width - portsLength) / 2, length);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: dots[index], y } };
+        });
+        break;
+
+      case PortDirection.RIGHT:
+        dots = nextDots(y + (height - portsLength) / 2, length);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: x + width, y: dots[index] } };
+        });
+        break;
+
+      case PortDirection.BOTTOM:
+        dots = nextDots(x + (width - portsLength) / 2, length);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: dots[index], y: y + height } };
+        });
+        break;
+
+      case PortDirection.LEFT:
+        dots = nextDots(y + (height - portsLength) / 2, length);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x, y: dots[index] } };
+        });
+        break;
+    }
+
+    return acc;
+  }, {} as Record<string, INodePort>);
+
+  return {
+    ...node,
+    ports: updatedPorts,
+  };
+}
+
+//
+//
+// Step one: draw rectangle
+//     (x, y)                       (x + width, y)
+//       ^---------------------------->+
+//       |          (width)            |
+//       |                             |
+//       |(height)                     |
+//       |                             |
+//       |                             |
+//       <-----------------------------v
+// (x, y + height)                   (x + width, y + height)
+//
+
+// step two: draw ports
+//
+//                 ^ ^     ^ ^
+//                 | |     | |
+//                 | |     | |
+//     (x, y)      | |     | |      (x + width, y)
+//       ^-------->+ +-----+ +-------->+
+//       |          +       +          |
+//       |                             |
+//       |                             v  (12px)
+// <-----+                             ------->
+//        +                           +
+// <-----+                             ------->
+//       ^                             |
+//       |                             |
+//       |                             |
+//       |          +      +           |
+//       <---------+ +<---+ +----------v
+// (x, y + height) | |    | |        (x + width, y + height)
+//                 | |    | |
+//                 | |    | |
+//                 v v    v v
+//
 
 export function markNodeWalkable (
   grid: Pathfinding.Grid,
-  [
+  node: INode,
+  walkable: boolean,
+): INode {
+  const updatedNode = updatePorts(node);
+
+  let {
     x,
     y,
     width,
     height,
-  ]: NodeRect,
-  walkable: boolean,
-) {
-  // TODO: optimize，不能为浮点数
-  /* eslint-disable no-param-reassign */
+  } = node;
+
   x = Math.ceil(x / SCALE_FACTOR);
   y = Math.ceil(y / SCALE_FACTOR);
   width = Math.ceil(width / SCALE_FACTOR);
@@ -144,8 +225,20 @@ export function markNodeWalkable (
   const bottomRight: [number, number] = [x + width, y + height];
   const bottomLeft: [number, number] = [x, y + height];
 
-  markWall(grid, topLeft, topRight, Direction.TOP, walkable);
-  markWall(grid, topRight, bottomRight, Direction.RIGHT, walkable);
-  markWall(grid, bottomRight, bottomLeft, Direction.BOTTOM, walkable);
-  markWall(grid, bottomLeft, topLeft, Direction.LEFT, walkable);
+  const lines: Record<PortDirection, Line> = {
+    [PortDirection.TOP]: [topLeft, topRight],
+    [PortDirection.RIGHT]: [topRight, bottomRight],
+    [PortDirection.BOTTOM]: [bottomRight, bottomLeft],
+    [PortDirection.LEFT]: [bottomLeft, topLeft],
+  };
+
+  // mark rectangle
+  Object.values(lines).forEach(line => markLine(grid, line, walkable));
+
+  // mark ports
+  Object.values(updatedNode.ports).forEach(
+    port => markPort(grid, port, walkable),
+  );
+
+  return updatedNode;
 }

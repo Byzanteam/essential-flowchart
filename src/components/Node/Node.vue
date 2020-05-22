@@ -75,7 +75,7 @@ export default defineComponent({
         [pos.x, pos.y, node.width, node.height],
         false,
       );
-    });
+    }, { lazy: true });
 
     // 拖动时更新坐标，使用 mutation
     const onNodeDragging = (left: number, top: number) => {

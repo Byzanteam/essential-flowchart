@@ -17,7 +17,7 @@ const graph: IStateAttrs = {
   // scale: 1,
   nodes: [{
     id: 'node1',
-    rect: [10, 10, 50, 50],
+    rect: [-10, -10, 50, 50],
   }, {
     id: 'node2',
     rect: [100, 100, 50, 50],

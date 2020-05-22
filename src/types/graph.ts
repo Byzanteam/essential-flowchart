@@ -1,6 +1,6 @@
 import Pathfinding from 'pathfinding';
 
-import { Id, Offset, IPosition } from './generics';
+import { Id, IPosition, IOffset } from './generics';
 
 type x = number;
 type y = number;
@@ -72,12 +72,12 @@ export interface ILink {
 export interface IGrid {
   width: width;
   height: height;
-
+  offset: IOffset;
   pfGrid: Pathfinding.Grid;
 }
 
 export interface IGraph {
-  offset: Offset;
+  offset: IOffset;
 
   nodes: {
     [id: string]: INode;

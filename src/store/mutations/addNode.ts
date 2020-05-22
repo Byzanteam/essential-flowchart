@@ -16,12 +16,18 @@ export default function addNode (this: FlowChartStore, state: IState, { node }: 
       (node.x < 0 && (Math.abs(node.x) > gridOffset.x))
       || (node.y < 0 && (Math.abs(node.y) > gridOffset.y))
     ) {
-      this.commit('expandGrid', -500);
+      this.commit('expandGrid', {
+        x: -500,
+        y: -500,
+      });
     } else if (
       (node.x > 0 && node.x > (width - gridOffset.x))
       || (node.y > 0 && node.y > (height - gridOffset.y))
     ) {
-      this.commit('expandGrid', 500);
+      this.commit('expandGrid', {
+        x: 500,
+        y: 500,
+      });
     }
   }
 

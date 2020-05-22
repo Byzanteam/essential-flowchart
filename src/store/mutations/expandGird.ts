@@ -1,21 +1,20 @@
-import { IState } from '@/types';
+import { IState, IPosition } from '@/types';
 import { buildEmptyGrid, markNodeWalkable } from '@/utils/grid';
 
-export default function expandGrid (state: IState, expansion: number) {
+export default function expandGrid (state: IState, expansion: IPosition) {
   // eslint-disable-next-line prefer-const
   let { offset: prevOffset, width, height } = state.graph.grid;
 
-  const negative = expansion < 0;
-  // eslint-disable-next-line no-param-reassign
-  expansion = Math.abs(expansion);
+  const negativeX = expansion.x < 0;
+  const negativeY = expansion.y < 0;
 
-  width += expansion;
-  height += expansion;
+  width += Math.abs(expansion.x);
+  height += Math.abs(expansion.y);
 
   const { pfGrid } = buildEmptyGrid(width, height);
   const offset = {
-    x: negative ? prevOffset.x + expansion : prevOffset.x,
-    y: negative ? prevOffset.y + expansion : prevOffset.y,
+    x: negativeX ? prevOffset.x + Math.abs(expansion.x) : prevOffset.x,
+    y: negativeY ? prevOffset.y + Math.abs(expansion.y) : prevOffset.y,
   };
 
   state.graph.grid = {

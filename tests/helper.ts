@@ -114,12 +114,21 @@ export function createStore (
         entries: [],
       },
       graph: {
-        offset: [0, 0],
+        offset: {
+          x: 0,
+          y: 0,
+        },
 
         nodes: {},
         links: {},
 
-        grid: buildEmptyGrid(width, height),
+        grid: {
+          offset: {
+            x: 0,
+            y: 0,
+          },
+          ...buildEmptyGrid(width, height),
+        },
       },
       selected: (stateAttrs && stateAttrs.selected) || null,
     },

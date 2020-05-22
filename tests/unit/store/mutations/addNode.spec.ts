@@ -1,13 +1,8 @@
-import addNode from '@/store/mutations/addNode';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {
   it('add a new node to the graph', () => {
-    const store = createStore({
-      mutations: {
-        addNode,
-      },
-    });
+    const store = createStore({});
 
     const node = {
       id: '1',
@@ -18,7 +13,7 @@ describe('addNode', () => {
       ports: {}, // TODO: port
     };
 
-    addNode(store.state, { node });
+    store.commit('addNode', { node });
 
     expect(store.state.graph.nodes['1']).toEqual({
       id: '1',
@@ -35,9 +30,6 @@ describe('addNode', () => {
       stateAttrs: {
         gridDimension: [500, 500],
       },
-      mutations: {
-        addNode,
-      },
     });
 
     const node = {
@@ -49,7 +41,7 @@ describe('addNode', () => {
       ports: {}, // TODO: port
     };
 
-    addNode(store.state, { node });
+    store.commit('addNode', { node });
 
     const { pfGrid } = store.state.graph.grid;
 

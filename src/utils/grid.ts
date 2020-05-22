@@ -1,6 +1,7 @@
 import * as Pathfinding from 'pathfinding';
 import {
   IGrid,
+  IOffset,
   INode,
   INodePort,
   PortDirection,
@@ -23,6 +24,10 @@ export function buildEmptyGrid (width: number, height: number): IGrid {
     width,
     height,
 
+    offset: {
+      x: 0,
+      y: 0,
+    },
     pfGrid,
   };
 }
@@ -108,10 +113,14 @@ function nextDots (start: number, length: number): number[] {
   return dots;
 }
 
-function updatePorts (node: INode): INode {
-  const {
-    x, y, width, height,
-  } = node;
+function updatePorts (node: INode, gridOffset: IOffset): INode {
+  const { x: offsetX, y: offsetY } = gridOffset;
+  let { x, y } = node;
+
+  x += offsetX;
+  y += offsetY;
+
+  const { width, height } = node;
 
   const groupedPorts = groupBy(
     Object.values(node.ports),
@@ -203,10 +212,13 @@ function updatePorts (node: INode): INode {
 
 export function markNodeWalkable (
   grid: Pathfinding.Grid,
+  gridOffset: IOffset,
   node: INode,
   walkable: boolean,
 ): INode {
-  const updatedNode = updatePorts(node);
+  const updatedNode = updatePorts(node, gridOffset);
+
+  const { x: offsetX, y: offsetY } = gridOffset;
 
   let {
     x,
@@ -215,8 +227,8 @@ export function markNodeWalkable (
     height,
   } = node;
 
-  x = Math.ceil(x / SCALE_FACTOR);
-  y = Math.ceil(y / SCALE_FACTOR);
+  x = Math.ceil((x + offsetX) / SCALE_FACTOR);
+  y = Math.ceil((y + offsetY) / SCALE_FACTOR);
   width = Math.ceil(width / SCALE_FACTOR);
   height = Math.ceil(height / SCALE_FACTOR);
 
@@ -241,6 +253,10 @@ export function markNodeWalkable (
   );
 
   return updatedNode;
+}
+
+export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IOffset, x: number, y: number) {
+  return grid.isInside((x - gridOffset.x) / SCALE_FACTOR, (y - gridOffset.y) / SCALE_FACTOR);
 }
 
 export const pathFinder = new Pathfinding.BiAStarFinder({

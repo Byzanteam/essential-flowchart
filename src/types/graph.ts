@@ -1,6 +1,6 @@
 import Pathfinding from 'pathfinding';
 
-import { Id, Offset, IPosition } from './generics';
+import { Id, IPosition, IOffset } from './generics';
 
 export enum PortDirection {
   TOP = 'top',
@@ -45,11 +45,12 @@ export interface IGrid {
   width: number;
   height: number;
 
+  offset: IOffset;
   pfGrid: Pathfinding.Grid;
 }
 
 export interface IGraph {
-  offset: Offset;
+  offset: IOffset;
 
   nodes: {
     [id: string]: INode;

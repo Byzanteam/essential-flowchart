@@ -10,6 +10,8 @@ import updateNodePortPosition from './mutations/updateNodePortPosition';
 
 import setSelected from './mutations/setSelected';
 
+import expandGrid from './mutations/expandGird';
+
 import historyMutations from './mutations/history';
 
 export default {
@@ -24,6 +26,8 @@ export default {
   updateNodePortPosition,
 
   setSelected,
+
+  expandGrid,
 
   ...historyMutations,
 };

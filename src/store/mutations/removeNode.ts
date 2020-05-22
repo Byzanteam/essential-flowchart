@@ -5,8 +5,8 @@ import { markNodeWalkable } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
 export default function removeNode (state: IState, { node }: { node: INode }) {
-  const { pfGrid } = state.graph.grid;
-  markNodeWalkable(pfGrid, node, true);
+  const { pfGrid, offset } = state.graph.grid;
+  markNodeWalkable(pfGrid, offset, node, true);
 
   Vue.delete(state.graph.nodes, node.id);
 }

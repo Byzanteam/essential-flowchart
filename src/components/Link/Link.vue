@@ -4,8 +4,8 @@
     class="link"
   >
     <circle
-      :cx="startPos[0]"
-      :cy="startPos[1]"
+      :cx="startPos.x"
+      :cy="startPos.y"
       r="4"
     />
 
@@ -17,8 +17,8 @@
     />
 
     <circle
-      :cx="endPos[0]"
-      :cy="endPos[1]"
+      :cx="endPos.x"
+      :cy="endPos.y"
       r="4"
     />
   </svg>

@@ -15,8 +15,8 @@
     <node-inner :node="node" />
 
     <Port
-      v-for="port in node.ports"
-      :key="port.direction"
+      v-for="(port, id) in node.ports"
+      :key="id"
       :node="node"
       :port="port"
     />

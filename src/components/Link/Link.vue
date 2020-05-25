@@ -29,7 +29,7 @@ import {
   defineComponent, computed, PropType,
 } from '@vue/composition-api';
 import store from '@/store';
-import { INode, ILink, PortDirection } from '@/types/graph';
+import { INode, ILink } from '@/types/graph';
 import getLinkPosition from './utils/getLinkPosition';
 import generatePath from './utils/generatePath';
 
@@ -54,8 +54,8 @@ export default defineComponent({
   },
 
   setup (props) {
-    const startPos = computed(() => getLinkPosition(props.fromNode, 'bottom' as PortDirection));
-    const endPos = computed(() => getLinkPosition(props.toNode, 'bottom' as PortDirection));
+    const startPos = computed(() => getLinkPosition(props.fromNode, props.link.from.portId));
+    const endPos = computed(() => getLinkPosition(props.toNode, props.link.from.portId));
 
     const points = computed(() => generatePath(store.state.graph.grid.pfGrid, startPos.value, endPos.value));
 

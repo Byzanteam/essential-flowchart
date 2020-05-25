@@ -1,7 +1,7 @@
-import { INode, IPosition, PortDirection } from '@/types';
+import { INode, Id, IPosition } from '@/types';
 
-export default function getLinkPosition (node: INode, portDir: PortDirection): IPosition {
-  const port = node.ports[portDir];
+export default function getLinkPosition (node: INode, portId: Id): IPosition {
+  const port = node.ports[portId];
 
   return {
     x: port.position ? port.position.x : node.x,

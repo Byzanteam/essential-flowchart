@@ -13,48 +13,9 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, watch, onMounted,
-  PropType, Ref,
+  defineComponent, PropType,
 } from '@vue/composition-api';
-import store from '@/store';
-import { INode, INodePort, PortDirection } from '@/types';
-
-// TODO: calc when node position changed
-function useUpdatePortPosition (node: INode, port: INodePort) {
-  const inner: Ref<HTMLElement | null> = ref(null);
-
-  const updatePortPosition = () => {
-    if (!inner.value) return;
-
-    let position;
-    // eslint-disable-next-line default-case
-    switch (port.direction) {
-      case PortDirection.TOP:
-        position = {
-          x: node.x + node.width / 2,
-          y: node.y - inner.value.offsetHeight / 2,
-        };
-        break;
-      case PortDirection.BOTTOM:
-        position = {
-          x: node.x + node.width / 2,
-          y: node.y + node.height + inner.value.offsetHeight / 2,
-        };
-        break;
-    }
-
-    store.commit('updateNodePortPosition', {
-      nodeId: node.id,
-      portDir: port.direction,
-      position,
-    });
-  };
-
-  return {
-    inner,
-    updatePortPosition,
-  };
-}
+import { INode, INodePort } from '@/types';
 
 export default defineComponent({
   name: 'Port',
@@ -69,26 +30,6 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
-  },
-
-  setup (props) {
-    const { node, port } = props;
-
-    // 初始化时和节点拖动时，更新 port 坐标
-    const { inner, updatePortPosition } = useUpdatePortPosition(node, port);
-
-    onMounted(() => {
-      updatePortPosition();
-    });
-
-    // TODO: watch(() => node.position)
-    watch([() => node.x, () => node.y], () => {
-      updatePortPosition();
-    }, { lazy: true });
-
-    return {
-      inner,
-    };
   },
 });
 </script>

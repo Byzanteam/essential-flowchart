@@ -27,11 +27,10 @@
 // @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
 import {
-  defineComponent, PropType, watch, computed,
+  defineComponent, PropType,
 } from '@vue/composition-api';
 import store from '@/store';
 import { INode } from '@/types/graph';
-import { markNodeWalkable } from '@/utils/grid';
 import NodeInner from './NodeInner.vue';
 import Port from '../Port/Port.vue';
 
@@ -55,46 +54,17 @@ export default defineComponent({
     // TODO: use func
     const { node } = props;
 
-    const position = computed(() => ({
-      x: node.x,
-      y: node.y,
-    }));
-
-    // 观测 node 的坐标，将 oldPos 变为 walkable，pos 变为 unwalkable
-    watch(position, (pos, prevPos) => {
-      if (prevPos) {
-        // TODO: consider ports
-        markNodeWalkable(
-          store.state.graph.grid.pfGrid,
-          store.state.graph.grid.offset,
-          {
-            ...node,
-            x: prevPos.x,
-            y: prevPos.y,
-          },
-          true,
-        );
-      }
-
-      markNodeWalkable(
-        store.state.graph.grid.pfGrid,
-        store.state.graph.grid.offset,
-        {
-          ...node,
-          x: pos.x,
-          y: pos.y,
-        },
-        false,
-      );
-    }, { lazy: true });
-
     // 拖动时更新坐标，使用 mutation
     const onNodeDragging = (left: number, top: number) => {
-      store.commit('dragNode', {
-        nodeId: node.id,
+      store.dispatch('dragNode', {
+        id: node.id,
         position: {
           x: left,
           y: top,
+        },
+        prevPosition: {
+          x: node.x,
+          y: node.y,
         },
       });
     };

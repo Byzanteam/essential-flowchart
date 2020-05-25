@@ -57,7 +57,8 @@ function markPort (
   x = Math.ceil(x / SCALE_FACTOR);
   y = Math.ceil(y / SCALE_FACTOR);
 
-  grid.setWalkableAt(x, y, !walkable);
+  // when set to blocked, the position of the port should be kept walkable
+  if (!walkable) grid.setWalkableAt(x, y, !walkable);
 
   // eslint-disable-next-line default-case
   switch (direction) {

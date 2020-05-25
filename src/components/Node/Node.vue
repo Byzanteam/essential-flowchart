@@ -30,7 +30,7 @@ import {
   defineComponent, PropType,
 } from '@vue/composition-api';
 import store from '@/store';
-import { INode } from '@/types/graph';
+import { IPosition, INode } from '@/types';
 import NodeInner from './NodeInner.vue';
 import Port from '../Port/Port.vue';
 
@@ -51,33 +51,40 @@ export default defineComponent({
   },
 
   setup (props) {
-    // TODO: use func
-    const { node } = props;
+    let draggingNodePosition: IPosition | null = null;
 
-    // 拖动时更新坐标，使用 mutation
     const onNodeDragging = (left: number, top: number) => {
+      if (!draggingNodePosition) {
+        draggingNodePosition = {
+          x: props.node.x,
+          y: props.node.y,
+        };
+      }
+
       store.dispatch('dragNode', {
-        id: node.id,
+        id: props.node.id,
         position: {
           x: left,
           y: top,
         },
         prevPosition: {
-          x: node.x,
-          y: node.y,
+          x: props.node.x,
+          y: props.node.y,
         },
       });
     };
 
-    // 拖动结束后触发 action 记录历史
     const onNodeDragStop = (left: number, top: number) => {
       store.dispatch('dragNodeStop', {
-        id: node.id,
+        id: props.node.id,
         position: {
           x: left,
           y: top,
         },
+        prevPosition: { ...draggingNodePosition },
       });
+
+      draggingNodePosition = null;
     };
 
     return {

@@ -1,3 +1,4 @@
+import { PortDirection } from '@/types';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {
@@ -10,7 +11,7 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 100,
-      ports: {}, // TODO: port
+      ports: {},
     };
 
     store.commit('addNode', { node });
@@ -38,7 +39,40 @@ describe('addNode', () => {
       y: 100,
       width: 100,
       height: 40,
-      ports: {}, // TODO: port
+      ports: {
+        1: {
+          id: '1',
+          direction: PortDirection.TOP,
+          position: {
+            x: 150,
+            y: 100,
+          },
+        },
+        2: {
+          id: '2',
+          direction: PortDirection.RIGHT,
+          position: {
+            x: 200,
+            y: 120,
+          },
+        },
+        3: {
+          id: '3',
+          direction: PortDirection.BOTTOM,
+          position: {
+            x: 150,
+            y: 140,
+          },
+        },
+        4: {
+          id: '4',
+          direction: PortDirection.LEFT,
+          position: {
+            x: 100,
+            y: 120,
+          },
+        },
+      },
     };
 
     store.commit('addNode', { node });

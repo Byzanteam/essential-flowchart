@@ -25,10 +25,6 @@ export default function expandGrid (state: IState, expansion: IOffset) {
   };
 
   Object.values(state.graph.nodes).forEach(node => {
-    markNodeWalkable(
-      pfGrid,
-      [node.x + offset.x, node.y + offset.y, node.width, node.height],
-      false,
-    );
+    markNodeWalkable(pfGrid, offset, node, false);
   });
 }

@@ -1,7 +1,8 @@
 import { Store, ActionContext, Payload } from 'vuex';
 import {
-  IGraph, INode, ILink,
-  INodeAttrs, ILinkAttrs,
+  IGraph,
+  INode,
+  ILink,
 } from './graph';
 
 export interface IMutation extends Payload {
@@ -32,8 +33,8 @@ export interface IState {
 }
 
 export interface IStateAttrs {
-  nodes: INodeAttrs[];
-  links: ILinkAttrs[];
+  nodes: INode[];
+  links: ILink[];
 }
 
 export type FlowChartContext = ActionContext<IState, IState>;

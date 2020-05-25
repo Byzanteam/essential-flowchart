@@ -6,10 +6,10 @@ import { markNodeWalkable, isInsideGrid } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
 export default function addNode (this: FlowChartStore, state: IState, { node }: { node: INode }) {
-  let {
-    // eslint-disable-next-line prefer-const
+  const {
     pfGrid, offset: gridOffset, width, height,
   } = state.graph.grid;
+
   // node not inside grid, expand grid
   if (!isInsideGrid(pfGrid, gridOffset, node.x, node.y)) {
     if (
@@ -31,15 +31,14 @@ export default function addNode (this: FlowChartStore, state: IState, { node }: 
     }
   }
 
-  gridOffset = state.graph.grid.offset;
-
-  markNodeWalkable(
+  const updatedNode = markNodeWalkable(
     pfGrid,
-    [node.x + gridOffset.x, node.y + gridOffset.y, node.width, node.height],
+    state.graph.grid.offset,
+    node,
     false,
   );
 
-  Vue.set(state.graph.nodes, node.id, node);
+  Vue.set(state.graph.nodes, node.id, updatedNode);
 }
 
 registerRevertFunc('addNode', mutation => ({

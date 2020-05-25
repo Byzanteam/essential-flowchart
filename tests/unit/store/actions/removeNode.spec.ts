@@ -25,9 +25,11 @@ describe('removeNode', () => {
         id: 'link1',
         from: {
           nodeId: 'node1',
+          portId: '1',
         },
         to: {
           nodeId: 'node2',
+          portId: '1',
         },
       },
     ];

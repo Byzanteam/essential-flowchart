@@ -11,11 +11,37 @@ describe('buildState', () => {
       nodes: [
         {
           id: '1',
-          rect: [20, 20, 100, 50],
+          x: 20,
+          y: 20,
+          width: 100,
+          height: 50,
+          ports: {
+            1: {
+              id: '1',
+              direction: PortDirection.BOTTOM,
+            },
+            2: {
+              id: '2',
+              direction: PortDirection.RIGHT,
+            },
+          },
         },
         {
           id: '2',
-          rect: [20, 20, 200, 100],
+          x: 20,
+          y: 20,
+          width: 200,
+          height: 100,
+          ports: {
+            1: {
+              id: '1',
+              direction: PortDirection.TOP,
+            },
+            2: {
+              id: '2',
+              direction: PortDirection.RIGHT,
+            },
+          },
         },
       ],
       links: [
@@ -23,22 +49,22 @@ describe('buildState', () => {
           id: '1',
           from: {
             nodeId: '1',
-            direction: 'bottom' as PortDirection,
+            portId: '1',
           },
           to: {
             nodeId: '2',
-            direction: 'top' as PortDirection,
+            portId: '1',
           },
         },
         {
           id: '2',
           from: {
             nodeId: '1',
-            direction: 'right' as PortDirection,
+            portId: '2',
           },
           to: {
             nodeId: '2',
-            direction: 'top' as PortDirection,
+            portId: '2',
           },
         },
       ],

@@ -63,16 +63,27 @@ export default defineComponent({
     // 观测 node 的坐标，将 oldPos 变为 walkable，pos 变为 unwalkable
     watch(position, (pos, prevPos) => {
       if (prevPos) {
+        // TODO: consider ports
         markNodeWalkable(
           store.state.graph.grid.pfGrid,
-          [prevPos.x, prevPos.y, node.width, node.height],
+          store.state.graph.grid.offset,
+          {
+            ...node,
+            x: prevPos.x,
+            y: prevPos.y,
+          },
           true,
         );
       }
 
       markNodeWalkable(
         store.state.graph.grid.pfGrid,
-        [pos.x, pos.y, node.width, node.height],
+        store.state.graph.grid.offset,
+        {
+          ...node,
+          x: pos.x,
+          y: pos.y,
+        },
         false,
       );
     }, { lazy: true });

@@ -1,13 +1,8 @@
 import PF from 'pathfinding';
 import { IPosition, IGrid } from '@/types';
-import { SCALE_FACTOR } from '@/utils/grid';
+import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
 
 type Point = [number, number];
-
-const finder = PF.JumpPointFinder({
-  heuristic: PF.Heuristic.manhattan,
-  diagonalMovement: PF.DiagonalMovement.Never,
-});
 
 export default function generatePath (
   grid: IGrid,
@@ -25,7 +20,7 @@ export default function generatePath (
   };
 
   return PF.Util.compressPath(
-    finder.findPath(
+    pathFinder.findPath(
       scaledStartPos.x,
       scaledStartPos.y,
       scaledEndPos.x,

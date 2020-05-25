@@ -262,4 +262,6 @@ export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IOffset, x: nu
 export const pathFinder = new Pathfinding.BiAStarFinder({
   heuristic: Pathfinding.Heuristic.manhattan,
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
+  // @ts-ignore
+  weight: 5,
 });

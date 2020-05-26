@@ -42,12 +42,12 @@ function useGraph (stateAttrs: IStateAttrs) {
   };
 }
 
-interface IFlowChartProps {
+interface IFlowchartProps {
   stateAttrs: IStateAttrs;
 }
 
 export default defineComponent({
-  name: 'FlowChart',
+  name: 'Flowchart',
 
   components: {
     CanvasComponent,
@@ -62,7 +62,7 @@ export default defineComponent({
     },
   },
 
-  setup (props: IFlowChartProps) {
+  setup (props: IFlowchartProps) {
     const { nodes, links } = useGraph(props.stateAttrs);
 
     return {

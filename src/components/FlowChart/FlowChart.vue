@@ -29,8 +29,8 @@ import Node from '../Node/Node.vue';
 import Link from '../Link/Link.vue';
 // import { getMatrix } from './utils/grid';
 
-function useGraph (graph: IStateAttrs) {
-  buildState(graph, store);
+function useGraph (stateAttrs: IStateAttrs) {
+  buildState(stateAttrs, store);
   const { nodes, links } = store.state.graph;
 
   // 创建矩阵并将节点占据的空间标记为 1
@@ -43,7 +43,7 @@ function useGraph (graph: IStateAttrs) {
 }
 
 interface IFlowChartProps {
-  graph: IStateAttrs;
+  stateAttrs: IStateAttrs;
 }
 
 export default defineComponent({
@@ -56,14 +56,14 @@ export default defineComponent({
   },
 
   props: {
-    graph: {
+    stateAttrs: {
       type: Object as PropType<IStateAttrs>,
       required: true,
     },
   },
 
   setup (props: IFlowChartProps) {
-    const { nodes, links } = useGraph(props.graph);
+    const { nodes, links } = useGraph(props.stateAttrs);
 
     return {
       nodes,

@@ -1,15 +1,17 @@
 <template>
   <CanvasComponent>
-    <Node
+    <component
       v-for="node in nodes"
+      :is="nodeComponent"
       :key="node.id"
       :node="node"
     >
       {{ node.id }}
-    </Node>
+    </component>
 
-    <Link
+    <component
       v-for="link in links"
+      :is="linkComponent"
       :key="link.id"
       :link="link"
     />
@@ -42,8 +44,18 @@ function useGraph (stateAttrs: IStateAttrs) {
   };
 }
 
+type IFlowchartComponent = ReturnType<typeof defineComponent>;
+interface IFlowchartComponents {
+  node?: IFlowchartComponent;
+  link?: IFlowchartComponent;
+}
+
 interface IFlowchartProps {
   stateAttrs: IStateAttrs;
+  /**
+   * Custom components
+   */
+  components?: IFlowchartComponents;
 }
 
 export default defineComponent({
@@ -51,8 +63,6 @@ export default defineComponent({
 
   components: {
     CanvasComponent,
-    Node,
-    Link,
   },
 
   props: {
@@ -60,12 +70,22 @@ export default defineComponent({
       type: Object as PropType<IStateAttrs>,
       required: true,
     },
+
+    components: {
+      type: Object as PropType<IFlowchartComponent>,
+      default: () => ({}),
+    },
   },
 
   setup (props: IFlowchartProps) {
     const { nodes, links } = useGraph(props.stateAttrs);
 
+    const nodeComponent = props.components?.node || Node;
+    const linkComponent = props.components?.link || Link;
+
     return {
+      nodeComponent,
+      linkComponent,
       nodes,
       links,
     };

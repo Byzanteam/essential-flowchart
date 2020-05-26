@@ -31,14 +31,10 @@ import NodeDefault from '../Node/Default.vue';
 import PortDefault from '../Port/Default.vue';
 import LinkWrapperComponent from '../Link/Wrapper';
 import LinkDefault from '../Link/Default.vue';
-// import { getMatrix } from './utils/grid';
 
-function useGraph (stateAttrs: IStateAttrs) {
+function useState (stateAttrs: IStateAttrs) {
   buildState(stateAttrs, store);
   const { nodes, links } = store.state.graph;
-
-  // 创建矩阵并将节点占据的空间标记为 1
-  // const matrix = getMatrix(graph.offset, Object.values(nodes));
 
   return {
     nodes: ref(nodes),
@@ -83,7 +79,7 @@ export default defineComponent({
   },
 
   setup (props: IFlowchartProps) {
-    const { nodes, links } = useGraph(props.stateAttrs);
+    const { nodes, links } = useState(props.stateAttrs);
 
     const {
       components: {

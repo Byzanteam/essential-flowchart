@@ -10,9 +10,9 @@
 
     <LinkWrapperComponent
       v-for="link in links"
-      :link-component="linkComponent"
       :key="link.id"
       :link="link"
+      :link-component="linkComponent"
     />
   </CanvasComponent>
 </template>

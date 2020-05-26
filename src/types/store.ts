@@ -29,6 +29,9 @@ export type ISelectable = INode | ILink;
 export interface IState {
   history: IHistory;
   graph: IGraph;
+  linkVersions: {
+    [linkId: string]: number | undefined;
+  };
   selected: ISelectedOrHovered | null;
 }
 

@@ -30,6 +30,7 @@ const state: IState = {
       ...buildEmptyGrid(defaultWidth, defaultHeight),
     },
   },
+  linkVersions: {},
   selected: null,
 };
 

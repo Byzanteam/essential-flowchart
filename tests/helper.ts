@@ -144,6 +144,7 @@ export function createStore (
           ...buildEmptyGrid(width, height),
         },
       },
+      linkVersions: {},
       selected: (stateAttrs && stateAttrs.selected) || null,
     },
     mutations: mutations || allMutations,

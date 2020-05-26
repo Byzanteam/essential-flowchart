@@ -1,17 +1,17 @@
 <template>
   <CanvasComponent>
-    <component
+    <NodeWrapperComponent
       v-for="node in nodes"
-      :is="nodeComponent"
       :key="node.id"
       :node="node"
+      :node-component="nodeComponent"
     >
       {{ node.id }}
-    </component>
+    </NodeWrapperComponent>
 
-    <component
+    <LinkWrapperComponent
       v-for="link in links"
-      :is="linkComponent"
+      :link-component="linkComponent"
       :key="link.id"
       :link="link"
     />
@@ -27,8 +27,10 @@ import store from '@/store';
 import { IStateAttrs } from '@/types';
 import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
-import Node from '../Node/Node.vue';
-import Link from '../Link/Link.vue';
+import NodeWrapperComponent from '../Node/Wrapper.vue';
+import NodeDefault from '../Node/Default.vue';
+import LinkWrapperComponent from '../Link/Wrapper';
+import LinkDefault from '../Link/Default.vue';
 // import { getMatrix } from './utils/grid';
 
 function useGraph (stateAttrs: IStateAttrs) {
@@ -63,6 +65,8 @@ export default defineComponent({
 
   components: {
     CanvasComponent,
+    NodeWrapperComponent,
+    LinkWrapperComponent,
   },
 
   props: {
@@ -80,8 +84,12 @@ export default defineComponent({
   setup (props: IFlowchartProps) {
     const { nodes, links } = useGraph(props.stateAttrs);
 
-    const nodeComponent = props.components?.node || Node;
-    const linkComponent = props.components?.link || Link;
+    const {
+      components: {
+        node: nodeComponent = NodeDefault,
+        link: linkComponent = LinkDefault,
+      } = {},
+    } = props;
 
     return {
       nodeComponent,

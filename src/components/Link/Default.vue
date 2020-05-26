@@ -28,12 +28,11 @@ import {
 
 import store from '@/store';
 import {
+  IPosition,
   ILink,
   IGrid,
 } from '@/types';
 import { SCALE_FACTOR } from '@/utils/grid';
-
-import generatePath from './utils/generatePath';
 
 type Point = [number, number];
 
@@ -50,35 +49,36 @@ function generatePathCommands (path: Point[], grid: IGrid): string {
 }
 
 export default defineComponent({
-  name: 'Link',
+  name: 'LinkDefault',
 
   props: {
     link: {
       type: Object as PropType<ILink>,
       required: true,
     },
+
+    startPos: {
+      type: Object as PropType<IPosition>,
+      required: true,
+    },
+    endPos: {
+      type: Object as PropType<IPosition>,
+      required: true,
+    },
+
+    path: {
+      type: Array as PropType<Point[]>,
+      required: true,
+    },
   },
 
   setup (props) {
-    const graph = computed(() => store.state.graph);
-
-    const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
-    const toNode = computed(() => graph.value.nodes[props.link.to.nodeId]);
-
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position!);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const endPos = computed(() => toNode.value.ports[props.link.from.portId].position!);
-
     const pathCommands = computed(() => generatePathCommands(
-      generatePath(graph.value.grid, startPos.value, endPos.value),
-      graph.value.grid,
+      props.path,
+      store.state.graph.grid,
     ));
 
     return {
-      startPos,
-      endPos,
-
       pathCommands,
     };
   },

@@ -9,17 +9,21 @@
     axis="both"
     w="auto"
     h="auto"
-    class="node"
+    class="node-wrapper"
     @dragging="onNodeDragging"
     @dragstop="onNodeDragStop"
   >
-    <node-inner :node="node" />
+    <component
+      :is="nodeComponent"
+      :node="node"
+    />
 
-    <Port
+    <PortWrapperComponent
       v-for="(port, id) in node.ports"
       :key="id"
       :node="node"
       :port="port"
+      :port-component="portComponent"
     />
   </vue-draggable-resizable>
 </template>
@@ -32,21 +36,29 @@ import {
 } from '@vue/composition-api';
 import store from '@/store';
 import { IPosition, INode } from '@/types';
-import NodeInner from './NodeInner.vue';
-import Port from '../Port/Port.vue';
+import PortWrapperComponent from '../Port/Wrapper';
+
+type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
 export default defineComponent({
-  name: 'Node',
+  name: 'NodeWrapper',
 
   components: {
     VueDraggableResizable,
-    NodeInner,
-    Port,
+    PortWrapperComponent,
   },
 
   props: {
     node: {
       type: Object as PropType<INode>,
+      required: true,
+    },
+    nodeComponent: {
+      type: Object as PropType<IFlowchartComponent>,
+      required: true,
+    },
+    portComponent: {
+      type: Object as PropType<IFlowchartComponent>,
       required: true,
     },
   },
@@ -98,7 +110,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.node {
+.node-wrapper {
   display: inline-block;
   position: absolute;
 }

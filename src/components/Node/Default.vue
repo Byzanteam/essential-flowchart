@@ -1,7 +1,7 @@
 <template>
   <div
     :style="{ width: node.width + 'px', height: node.height + 'px'}"
-    class="node__inner"
+    class="node__default"
   >
     {{ node.id }}
   </div>
@@ -12,7 +12,7 @@ import { defineComponent, PropType } from '@vue/composition-api';
 import { INode } from '@/types/graph';
 
 export default defineComponent({
-  name: 'NodeInner',
+  name: 'NodeDefault',
 
   props: {
     node: {
@@ -25,7 +25,7 @@ export default defineComponent({
 
 <style lang="scss">
 .node {
-  &__inner {
+  &__default {
     background-color: #fff;
   }
 }

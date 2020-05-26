@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <flow-chart :graph="graph">
+    <flowchart :state-attrs="stateAttrs">
 
-    </flow-chart>
+    </flowchart>
   </div>
 </template>
 
@@ -10,9 +10,9 @@
 import { defineComponent, onMounted } from '@vue/composition-api';
 import { IStateAttrs, PortDirection } from '@/types';
 import store from '@/store/index';
-import FlowChart from './components/FlowChart/FlowChart.vue';
+import Flowchart from './components/Flowchart/Flowchart.vue';
 
-const graph: IStateAttrs = {
+const stateAttrs: IStateAttrs = {
   // offset: [0, 0],
   // scale: 1,
   nodes: [
@@ -98,7 +98,7 @@ export default defineComponent({
   name: 'App',
 
   components: {
-    FlowChart,
+    Flowchart,
   },
 
   setup () {
@@ -107,7 +107,7 @@ export default defineComponent({
     });
 
     return {
-      graph,
+      stateAttrs,
     };
   },
 });

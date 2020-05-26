@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { IState, FlowChartStore } from '@/types';
+import { IState, FlowchartStore } from '@/types';
 import { buildEmptyGrid } from '@/utils/grid';
 import mutations from './mutations';
 import actions from './actions';
@@ -33,7 +33,7 @@ const state: IState = {
   selected: null,
 };
 
-const store: FlowChartStore = new Vuex.Store({
+const store: FlowchartStore = new Vuex.Store({
   state,
   mutations,
   actions,

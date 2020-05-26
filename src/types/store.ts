@@ -37,6 +37,6 @@ export interface IStateAttrs {
   links: ILink[];
 }
 
-export type FlowChartContext = ActionContext<IState, IState>;
+export type FlowchartContext = ActionContext<IState, IState>;
 
-export type FlowChartStore = Store<IState>;
+export type FlowchartStore = Store<IState>;

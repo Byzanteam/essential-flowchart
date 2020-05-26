@@ -1,7 +1,7 @@
-import { FlowChartStore, IStateAttrs } from '@/types';
+import { FlowchartStore, IStateAttrs } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
-export function buildState (rawState: IStateAttrs, store: FlowChartStore) {
+export function buildState (rawState: IStateAttrs, store: FlowchartStore) {
   const { nodes, links } = rawState;
 
   nodes.forEach(node => {

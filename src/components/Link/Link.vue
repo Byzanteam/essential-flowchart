@@ -1,8 +1,5 @@
 <template>
-  <svg
-    v-if="toNode"
-    class="link"
-  >
+  <svg class="link">
     <circle
       :cx="startPos.x"
       :cy="startPos.y"
@@ -10,7 +7,7 @@
     />
 
     <path
-      :d="points"
+      :d="pathCommands"
       stroke="blue"
       strokeWidth="3"
       fill="none"
@@ -28,10 +25,29 @@
 import {
   defineComponent, computed, PropType,
 } from '@vue/composition-api';
+
 import store from '@/store';
-import { INode, ILink } from '@/types/graph';
-import getLinkPosition from './utils/getLinkPosition';
+import {
+  ILink,
+  IGrid,
+} from '@/types';
+import { SCALE_FACTOR } from '@/utils/grid';
+
 import generatePath from './utils/generatePath';
+
+type Point = [number, number];
+
+function generatePathCommands (path: Point[], grid: IGrid): string {
+  if (!path.length) return '';
+
+  const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
+
+  const [first, ...rest] = path;
+  return rest.reduce(
+    (acc, [x, y]) => `${acc} L${x * SCALE_FACTOR - gridOffsetX} ${y * SCALE_FACTOR - gridOffsetY}`,
+    `M${first[0] * SCALE_FACTOR - gridOffsetX} ${first[1] * SCALE_FACTOR - gridOffsetY}`,
+  );
+}
 
 export default defineComponent({
   name: 'Link',
@@ -41,29 +57,29 @@ export default defineComponent({
       type: Object as PropType<ILink>,
       required: true,
     },
-
-    fromNode: {
-      type: Object as PropType<INode>,
-      required: true,
-    },
-
-    toNode: {
-      type: Object as PropType<INode>,
-      default: null,
-    },
   },
 
   setup (props) {
-    const startPos = computed(() => getLinkPosition(props.fromNode, props.link.from.portId));
-    const endPos = computed(() => getLinkPosition(props.toNode, props.link.from.portId));
+    const graph = computed(() => store.state.graph);
 
-    const points = computed(() => generatePath(store.state.graph.grid.pfGrid, startPos.value, endPos.value));
+    const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
+    const toNode = computed(() => graph.value.nodes[props.link.to.nodeId]);
+
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position!);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const endPos = computed(() => toNode.value.ports[props.link.from.portId].position!);
+
+    const pathCommands = computed(() => generatePathCommands(
+      generatePath(graph.value.grid, startPos.value, endPos.value),
+      graph.value.grid,
+    ));
 
     return {
       startPos,
       endPos,
 
-      points,
+      pathCommands,
     };
   },
 });

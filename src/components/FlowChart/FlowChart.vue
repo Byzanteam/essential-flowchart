@@ -12,8 +12,6 @@
       v-for="link in links"
       :key="link.id"
       :link="link"
-      :from-node="nodes[link.from.nodeId]"
-      :to-node="nodes[link.to.nodeId]"
     />
   </CanvasComponent>
 </template>

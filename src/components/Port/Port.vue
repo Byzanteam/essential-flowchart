@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['port--' + port.direction]"
+    :style="portStyleObj"
     class="port"
   >
     <!-- TODO: port style -->
@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, PropType,
+  defineComponent, computed, PropType,
 } from '@vue/composition-api';
 import { INode, INodePort } from '@/types';
 
@@ -31,6 +31,19 @@ export default defineComponent({
       required: true,
     },
   },
+
+  setup (props) {
+    const portStyleObj = computed(() => ({
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      left: `${props.port.position!.x - props.node.x - 6}px`,
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      top: `${props.port.position!.y - props.node.y - 6}px`,
+    }));
+
+    return {
+      portStyleObj,
+    };
+  },
 });
 </script>
 
@@ -40,25 +53,11 @@ export default defineComponent({
   justify-content: center;
   position: absolute;
 
-  &--top {
-    width: 100%;
-    left: 0;
-    top: -12px;
-    flex-direction: row;
-  }
-
-  &--bottom {
-    width: 100%;
-    left: 0;
-    bottom: -12px;
-    flex-direction: row;
-  }
-
   &__inner {
     border-radius: 50%;
     width: 12px;
     height: 12px;
-    background-color: greenyellow;
+    border: 1px solid purple;
   }
 }
 </style>

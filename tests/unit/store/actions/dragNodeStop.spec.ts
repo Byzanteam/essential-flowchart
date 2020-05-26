@@ -37,7 +37,17 @@ describe('dragNodeStop', () => {
 
     const { x: originalX, y: originalY } = store.state.graph.nodes[node.id];
 
-    store.dispatch('dragNodeStop', { id: node.id, position: moveTo });
+    store.dispatch('dragNode', {
+      id: node.id,
+      position: moveTo,
+      prevPosition: { x: originalX, y: originalY },
+    });
+
+    store.dispatch('dragNodeStop', {
+      id: node.id,
+      position: moveTo,
+      prevPosition: { x: originalX, y: originalY },
+    });
     const { x: currentX, y: currentY } = store.state.graph.nodes[node.id];
 
     expect(currentX).toEqual(moveTo.x);

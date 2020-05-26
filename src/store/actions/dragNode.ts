@@ -1,7 +1,10 @@
 import { FlowChartContext, Id, IPosition } from '@/types';
-import { markNodeWalkable, isInsideGrid } from '@/utils/grid';
+import { isInsideGrid } from '@/utils/grid';
 
-export default function dragNode ({ dispatch, state, commit }: FlowChartContext, { id, position, prevPosition }: { id: Id; position: IPosition; prevPosition: IPosition }) {
+export default function dragNode (
+  { state, commit }: FlowChartContext,
+  { id, position, prevPosition }: { id: Id; position: IPosition; prevPosition: IPosition },
+) {
   const node = state.graph.nodes[id];
 
   if (!node) return;
@@ -9,17 +12,6 @@ export default function dragNode ({ dispatch, state, commit }: FlowChartContext,
   const {
     pfGrid, offset: gridOffset, width, height,
   } = state.graph.grid;
-
-  markNodeWalkable(
-    state.graph.grid.pfGrid,
-    state.graph.grid.offset,
-    {
-      ...node,
-      x: prevPosition.x,
-      y: prevPosition.y,
-    },
-    true,
-  );
 
   // node not inside grid, expand grid
   if (!isInsideGrid(pfGrid, gridOffset, position.x, position.y)) {
@@ -36,25 +28,5 @@ export default function dragNode ({ dispatch, state, commit }: FlowChartContext,
     }
   }
 
-  markNodeWalkable(
-    pfGrid,
-    state.graph.grid.offset,
-    {
-      ...node,
-      ...position,
-    },
-    false,
-  );
-
-  const mutations = [{
-    type: 'dragNode',
-    nodeId: node.id,
-    from: {
-      x: prevPosition.x,
-      y: prevPosition.y,
-    },
-    to: { ...position },
-  }];
-
-  dispatch('historyPushEntry', mutations);
+  commit('updateNodePosition', { node, position, prevPosition });
 }

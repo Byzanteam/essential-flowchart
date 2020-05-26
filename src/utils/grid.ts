@@ -57,7 +57,8 @@ function markPort (
   x = Math.ceil(x / SCALE_FACTOR);
   y = Math.ceil(y / SCALE_FACTOR);
 
-  grid.setWalkableAt(x, y, !walkable);
+  // when set to blocked, the position of the port should be kept walkable
+  if (!walkable) grid.setWalkableAt(x, y, !walkable);
 
   // eslint-disable-next-line default-case
   switch (direction) {
@@ -259,7 +260,7 @@ export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IOffset, x: nu
   return grid.isInside((x - gridOffset.x) / SCALE_FACTOR, (y - gridOffset.y) / SCALE_FACTOR);
 }
 
-export const pathFinder = new Pathfinding.BiAStarFinder({
+export const pathFinder = Pathfinding.JumpPointFinder({
   heuristic: Pathfinding.Heuristic.manhattan,
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
 });

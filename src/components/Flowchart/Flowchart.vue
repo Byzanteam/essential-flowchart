@@ -5,9 +5,8 @@
       :key="node.id"
       :node="node"
       :node-component="nodeComponent"
-    >
-      {{ node.id }}
-    </NodeWrapperComponent>
+      :port-component="portComponent"
+    />
 
     <LinkWrapperComponent
       v-for="link in links"
@@ -29,6 +28,7 @@ import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
 import NodeDefault from '../Node/Default.vue';
+import PortDefault from '../Port/Default.vue';
 import LinkWrapperComponent from '../Link/Wrapper';
 import LinkDefault from '../Link/Default.vue';
 // import { getMatrix } from './utils/grid';
@@ -49,6 +49,7 @@ function useGraph (stateAttrs: IStateAttrs) {
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 interface IFlowchartComponents {
   node?: IFlowchartComponent;
+  port?: IFlowchartComponent;
   link?: IFlowchartComponent;
 }
 
@@ -87,12 +88,14 @@ export default defineComponent({
     const {
       components: {
         node: nodeComponent = NodeDefault,
+        port: portComponent = PortDefault,
         link: linkComponent = LinkDefault,
       } = {},
     } = props;
 
     return {
       nodeComponent,
+      portComponent,
       linkComponent,
       nodes,
       links,

@@ -1,5 +1,6 @@
 <template>
   <vue-draggable-resizable
+    :onDragStart="onDragStart"
     :x="node.x"
     :y="node.y"
     :z="50"
@@ -53,14 +54,14 @@ export default defineComponent({
   setup (props) {
     let draggingNodePosition: IPosition | null = null;
 
-    const onNodeDragging = (left: number, top: number) => {
-      if (!draggingNodePosition) {
-        draggingNodePosition = {
-          x: props.node.x,
-          y: props.node.y,
-        };
-      }
+    const onDragStart = () => {
+      draggingNodePosition = {
+        x: props.node.x,
+        y: props.node.y,
+      };
+    };
 
+    const onNodeDragging = (left: number, top: number) => {
       store.dispatch('dragNode', {
         id: props.node.id,
         position: {
@@ -90,6 +91,7 @@ export default defineComponent({
     return {
       onNodeDragging,
       onNodeDragStop,
+      onDragStart,
     };
   },
 });

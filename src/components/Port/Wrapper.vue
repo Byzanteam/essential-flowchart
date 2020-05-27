@@ -16,7 +16,6 @@
 import {
   defineComponent, PropType,
 } from '@vue/composition-api';
-import { v4 } from 'uuid';
 import {
   INode, INodePort, IPosition, FlowchartStore,
 } from '@/types';
@@ -42,7 +41,7 @@ function findPortEl (el: HTMLElement): HTMLElement | null {
 // hook
 function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
-    const linkId = v4();
+    const linkId = `${Date.now()}`; // TODO: generate id
     const fromNodeId = node.id;
     const fromPortId = port.id;
 

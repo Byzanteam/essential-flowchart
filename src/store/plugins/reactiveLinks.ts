@@ -35,6 +35,26 @@ function getBoundingRect (
   ];
 }
 
+//
+// +-----------------------+
+// |                       |
+// | horizontal line       |
+// +---------------------->+
+// |                       |
+// |                       | (padding /2 )
+// +-----------------------+
+
+//        +----+----+
+//        |  v ^    |
+//        |  e |    |
+//        |  r |    |
+//        |  t |    |
+//        |  i |    |
+//        |  c |    |
+//        |  a |    |
+//        |  l |    |
+//        +----+----+
+
 function getPaddingLineBoundingRect (
   startPoint: Point,
   endPoint: Point,
@@ -53,10 +73,10 @@ function getPaddingLineBoundingRect (
 
     return [
       Math.min(x1, x2),
-      y1 - length / 2,
+      y1 - y / 2,
 
       length,
-      1 + 2 * y,
+      1 + y,
     ];
   }
 
@@ -65,10 +85,10 @@ function getPaddingLineBoundingRect (
   length = Math.abs(y1 - y2);
 
   return [
+    x1 - x / 2,
     Math.min(y1, y2),
-    x1 - length / 2,
 
-    1 + 2 * x,
+    1 + x,
     length,
   ];
 }

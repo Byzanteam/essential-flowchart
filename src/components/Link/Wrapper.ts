@@ -1,5 +1,5 @@
 import {
-  defineComponent, computed, PropType,
+  defineComponent, computed, watch, PropType,
   createElement,
 } from '@vue/composition-api';
 
@@ -44,7 +44,13 @@ export default defineComponent({
       store.state.linkVersions[props.link.id],
     ));
 
-    store.commit('updateLinkPath', { linkId: props.link.id, path: [...path.value] });
+    watch(
+      () => path.value,
+      newPath => store.commit(
+        'updateLinkPath',
+        { linkId: props.link.id, path: [...newPath] },
+      ),
+    );
 
     return () => createElement(props.linkComponent, {
       props: {

@@ -16,7 +16,7 @@ interface IRectangle {
 }
 type Padding = [number, number];
 
-const defaultLinePadding = [20, 20];
+const DEFAULT_LINE_PADDING = [20, 20];
 
 function getBoundingRect (
   position: IPosition,
@@ -63,7 +63,7 @@ function getPaddingLineBoundingRect (
   const [x1, y1] = startPoint;
   const [x2, y2] = endPoint;
 
-  const [x, y] = padding || defaultLinePadding;
+  const [x, y] = padding || DEFAULT_LINE_PADDING;
 
   let length: number;
 

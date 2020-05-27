@@ -30,7 +30,7 @@ export interface IState {
   history: IHistory;
   graph: IGraph;
   linkVersions: {
-    [linkId: string]: number | undefined;
+    [linkId: string]: number;
   };
   selected: ISelectedOrHovered | null;
 }

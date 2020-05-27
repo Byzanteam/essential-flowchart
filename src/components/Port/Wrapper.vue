@@ -64,24 +64,25 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         const toNodeId = portEl.getAttribute('data-node-id');
         const toPortId = portEl.getAttribute('data-port-id');
 
-        // TODO: validate link
-        if ((fromNodeId === toNodeId) && (fromPortId === toPortId)) {
-          store.dispatch('removeLink', { linkId, history: false });
-        } else {
-          const link = {
-            id: linkId,
-            from: {
-              nodeId: fromNodeId,
-              portId: fromPortId,
-            },
-            to: {
-              nodeId: toNodeId,
-              portId: toPortId,
-            },
-          };
+        const link = {
+          id: linkId,
+          from: {
+            nodeId: fromNodeId,
+            portId: fromPortId,
+          },
+          to: {
+            nodeId: toNodeId,
+            portId: toPortId,
+          },
+        };
 
-          store.dispatch('addLink', { link });
-        }
+        // TODO: validate link
+        store.dispatch('addLink', { link })
+          .then(valid => {
+            if (!valid) {
+              store.dispatch('removeLink', { linkId, history: false });
+            }
+          });
       } else { // cancel link
         store.dispatch('removeLink', { linkId, history: false });
       }
@@ -91,11 +92,8 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
       window.removeEventListener('mousemove', mouseMoveHandler, false);
     }
 
-    // add listeners
-    window.addEventListener('mousemove', mouseMoveHandler, false);
-    window.addEventListener('mouseup', mouseUpHandler, false);
-
     // add link when start
+    // TODO: validate link
     store.dispatch('addLink', {
       link: {
         id: linkId,
@@ -106,6 +104,12 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         to: {},
       },
       history: false,
+    }).then(valid => {
+      if (valid) {
+        // add listeners
+        window.addEventListener('mousemove', mouseMoveHandler, false);
+        window.addEventListener('mouseup', mouseUpHandler, false);
+      }
     });
 
     // prevent text selection

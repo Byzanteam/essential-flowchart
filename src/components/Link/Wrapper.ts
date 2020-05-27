@@ -45,10 +45,10 @@ export default defineComponent({
     ));
 
     watch(
-      () => path.value,
+      () => path,
       newPath => store.commit(
         'updateLinkPath',
-        { linkId: props.link.id, path: [...newPath] },
+        { linkId: props.link.id, path: [...newPath.value] },
       ),
     );
 

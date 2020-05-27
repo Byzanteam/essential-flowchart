@@ -26,7 +26,7 @@ import {
   defineComponent, computed, PropType,
 } from '@vue/composition-api';
 
-import store from '@/store';
+import { useStore } from '@/hooks/store';
 import {
   IPosition,
   ILink,
@@ -73,6 +73,7 @@ export default defineComponent({
   },
 
   setup (props) {
+    const store = useStore();
     const pathCommands = computed(() => generatePathCommands(
       props.path,
       store.state.graph.grid,

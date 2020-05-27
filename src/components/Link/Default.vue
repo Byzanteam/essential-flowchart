@@ -28,13 +28,12 @@ import {
 
 import { useStore } from '@/hooks/store';
 import {
+  Point,
   IPosition,
   ILink,
   IGrid,
 } from '@/types';
 import { SCALE_FACTOR } from '@/utils/grid';
-
-type Point = [number, number];
 
 function generatePathCommands (path: Point[], grid: IGrid): string {
   if (!path.length) return '';

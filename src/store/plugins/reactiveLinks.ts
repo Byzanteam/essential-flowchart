@@ -1,5 +1,6 @@
 import {
   Id,
+  Point,
   IPosition,
   IState,
   FlowchartStore,
@@ -13,7 +14,6 @@ interface IRectangle {
   width: number;
   height: number;
 }
-type Point = [number, number];
 type Padding = [number, number];
 
 const defaultLinePadding = [20, 20];

@@ -1,10 +1,8 @@
 import PF from 'pathfinding';
-import { IPosition, IGrid } from '@/types';
+import { Point, IPosition, IGrid } from '@/types';
 import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
 
 import generateRightAnglePath from './generateRightAnglePath';
-
-type Point = [number, number];
 
 export default function generatePath (
   grid: IGrid,

@@ -1,5 +1,6 @@
 import * as Pathfinding from 'pathfinding';
 import {
+  Point,
   IGrid,
   IOffset,
   INode,
@@ -7,7 +8,6 @@ import {
   PortDirection,
 } from '@/types';
 
-type Point = [number, number];
 type Line = [Point, Point];
 
 export const SCALE_FACTOR = 5;
@@ -40,7 +40,7 @@ function markLine (
   // @ts-ignore
   const points = Pathfinding.Util.interpolate(startX, startY, endX, endY);
 
-  points.forEach(([x, y]: [number, number]) => {
+  points.forEach(([x, y]: Point) => {
     grid.setWalkableAt(x, y, walkable);
   });
 }
@@ -233,10 +233,10 @@ export function markNodeWalkable (
   width = Math.ceil(width / SCALE_FACTOR);
   height = Math.ceil(height / SCALE_FACTOR);
 
-  const topLeft: [number, number] = [x, y];
-  const topRight: [number, number] = [x + width, y];
-  const bottomRight: [number, number] = [x + width, y + height];
-  const bottomLeft: [number, number] = [x, y + height];
+  const topLeft: Point = [x, y];
+  const topRight: Point = [x + width, y];
+  const bottomRight: Point = [x + width, y + height];
+  const bottomLeft: Point = [x, y + height];
 
   const lines: Record<PortDirection, Line> = {
     [PortDirection.TOP]: [topLeft, topRight],

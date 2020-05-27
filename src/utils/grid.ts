@@ -1,14 +1,10 @@
 import * as Pathfinding from 'pathfinding';
 import {
-  IGrid,
-  IOffset,
-  INode,
-  INodePort,
-  PortDirection,
+  IGrid, INode, INodePort, PortDirection,
+  IOffset, Point2D,
 } from '@/types';
 
-type Point = [number, number];
-type Line = [Point, Point];
+type Line = [Point2D, Point2D];
 
 export const SCALE_FACTOR = 5;
 const defaultOffset = SCALE_FACTOR;

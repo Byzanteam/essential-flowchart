@@ -1,17 +1,15 @@
 import PF from 'pathfinding';
-import { IPosition, IGrid } from '@/types';
+import { IPosition, IGrid, Point2D } from '@/types';
 import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
 
 import generateRightAnglePath from './generateRightAnglePath';
-
-type Point = [number, number];
 
 export default function generatePath (
   grid: IGrid,
   startPos: IPosition,
   endPos: IPosition,
   _version?: number,
-): Point[] {
+): Point2D[] {
   const gridOffset = grid.offset;
   const scaledStartPos = {
     x: Math.ceil((startPos.x + gridOffset.x) / SCALE_FACTOR),
@@ -31,7 +29,7 @@ export default function generatePath (
         scaledEndPos.y,
         grid.pfGrid.clone(),
       ),
-    ) as Point[];
+    ) as Point2D[];
 
     if (!path.length) return generateRightAnglePath(scaledStartPos, scaledEndPos);
 

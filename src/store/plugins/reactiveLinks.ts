@@ -7,7 +7,8 @@ import {
   ILink,
 } from '@/types';
 
-type BoundingBox = [number, number, number, number];
+// [x, y, width, height];
+type BoundingRect = [number, number, number, number];
 interface IRectangle {
   width: number;
   height: number;
@@ -15,12 +16,12 @@ interface IRectangle {
 
 type Padding = [number, number];
 
-function getBoundingBox (
+function getBoundingRect (
   position: IPosition,
   prevPosition: IPosition,
   { width, height }: IRectangle,
   padding?: Padding,
-): BoundingBox {
+): BoundingRect {
   const [x, y] = padding || [0, 0];
 
   return [
@@ -31,7 +32,7 @@ function getBoundingBox (
     height + Math.abs(position.y - prevPosition.y) + 2 * y,
   ];
 }
-function getMovingBoundingBox ({
+function getMovingBoundingRect ({
   position,
   prevPosition,
   node,
@@ -39,12 +40,12 @@ function getMovingBoundingBox ({
   position: IPosition;
   prevPosition: IPosition;
   node: INode;
-}): BoundingBox {
+}): BoundingRect {
   // TODO: padding
-  return getBoundingBox(position, prevPosition, node, [12, 12]);
+  return getBoundingRect(position, prevPosition, node, [12, 12]);
 }
 
-function getLinkBoundingBox (link: ILink, state: IState): BoundingBox {
+function getLinkBoundingRect (link: ILink, state: IState): BoundingRect {
   const { nodes } = state.graph;
 
   const { from, to } = link;
@@ -52,12 +53,12 @@ function getLinkBoundingBox (link: ILink, state: IState): BoundingBox {
   const { position: fromPosition } = nodes[from.nodeId].ports[from.portId];
   const { position: toPosition } = nodes[to.nodeId].ports[to.portId];
 
-  return getBoundingBox(fromPosition!, toPosition!, { width: 0, height: 0 });
+  return getBoundingRect(fromPosition!, toPosition!, { width: 0, height: 0 });
 }
 
 function isInCollision (
-  [x1, y1, width1, height1]: BoundingBox,
-  [x2, y2, width2, height2]: BoundingBox,
+  [x1, y1, width1, height1]: BoundingRect,
+  [x2, y2, width2, height2]: BoundingRect,
 ): boolean {
   return x1 < x2 + width2
     && x1 + width1 > x2
@@ -69,7 +70,7 @@ function isInCollision (
 export default function reactiveLinks (store: FlowchartStore) {
   store.subscribe((mutation, state: IState) => {
     if (mutation.type === 'updateNodePosition') {
-      const movingBoundingBox = getMovingBoundingBox(mutation.payload);
+      const movingBoundingRect = getMovingBoundingRect(mutation.payload);
 
       const nodeId: Id = mutation.payload.node.id;
 
@@ -77,9 +78,9 @@ export default function reactiveLinks (store: FlowchartStore) {
         if (link.from.nodeId === nodeId) return;
         if (link.to.nodeId === nodeId) return;
 
-        const linkBoundingBox = getLinkBoundingBox(link, state);
+        const linkBoundingRect = getLinkBoundingRect(link, state);
 
-        if (isInCollision(movingBoundingBox, linkBoundingBox)) {
+        if (isInCollision(movingBoundingRect, linkBoundingRect)) {
           store.commit('touchLink', { linkId: link.id });
         }
       });

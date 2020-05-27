@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { IState, FlowChartStore } from '@/types';
+import { IState, FlowchartStore } from '@/types';
 import { buildEmptyGrid } from '@/utils/grid';
 import mutations from './mutations';
 import actions from './actions';
-import plugins from './plugins';
+import reactiveLinks from './plugins/reactiveLinks';
 
 const [defaultWidth, defaultHeight]: [number, number] = [1440, 900];
 
@@ -30,14 +30,15 @@ const state: IState = {
       ...buildEmptyGrid(defaultWidth, defaultHeight),
     },
   },
+  linkVersions: {},
   selected: null,
 };
 
-const store: FlowChartStore = new Vuex.Store({
+const store: FlowchartStore = new Vuex.Store({
   state,
   mutations,
   actions,
-  plugins,
+  plugins: [reactiveLinks],
 });
 
 export default store;

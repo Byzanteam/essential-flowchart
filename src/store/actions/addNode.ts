@@ -1,8 +1,8 @@
 import {
-  FlowChartContext, INode,
+  FlowchartContext, INode,
 } from '@/types';
 
-export default function (context: FlowChartContext, node: INode) {
+export default function (context: FlowchartContext, node: INode) {
   const mutations = [{
     type: 'addNode',
     node: { ...node },

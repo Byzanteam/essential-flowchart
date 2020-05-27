@@ -29,6 +29,9 @@ export type ISelectable = INode | ILink;
 export interface IState {
   history: IHistory;
   graph: IGraph;
+  linkVersions: {
+    [linkId: string]: number;
+  };
   selected: ISelectedOrHovered | null;
 }
 
@@ -37,6 +40,6 @@ export interface IStateAttrs {
   links: ILink[];
 }
 
-export type FlowChartContext = ActionContext<IState, IState>;
+export type FlowchartContext = ActionContext<IState, IState>;
 
-export type FlowChartStore = Store<IState>;
+export type FlowchartStore = Store<IState>;

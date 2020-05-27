@@ -35,7 +35,13 @@ export default defineComponent({
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const endPos = computed(() => toNode.value.ports[props.link.to.portId].position!);
 
-    const path = computed(() => generatePath(graph.value.grid, startPos.value, endPos.value));
+    const path = computed(() => generatePath(
+      graph.value.grid,
+      startPos.value,
+      endPos.value,
+      // track change
+      store.state.linkVersions[props.link.id],
+    ));
 
     return () => createElement(props.linkComponent, {
       props: {

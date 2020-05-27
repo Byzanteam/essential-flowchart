@@ -1,8 +1,8 @@
-import { FlowChartContext, Id, IPosition } from '@/types';
+import { FlowchartContext, Id, IPosition } from '@/types';
 import { isInsideGrid } from '@/utils/grid';
 
 export default function dragNode (
-  { state, commit }: FlowChartContext,
+  { state, commit }: FlowchartContext,
   { id, position, prevPosition }: { id: Id; position: IPosition; prevPosition: IPosition },
 ) {
   const node = state.graph.nodes[id];

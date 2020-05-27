@@ -8,6 +8,7 @@ export default function generatePath (
   grid: IGrid,
   startPos: IPosition,
   endPos: IPosition,
+  _version?: number,
 ): Point[] {
   const gridOffset = grid.offset;
   const scaledStartPos = {

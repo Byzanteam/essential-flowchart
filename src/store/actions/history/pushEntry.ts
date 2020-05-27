@@ -1,9 +1,9 @@
 import {
-  FlowChartContext,
+  FlowchartContext,
   IMutation,
 } from '@/types';
 
-export default function ({ commit }: FlowChartContext, mutations: IMutation[]) {
+export default function ({ commit }: FlowchartContext, mutations: IMutation[]) {
   mutations.forEach(mutation => {
     commit(mutation);
   });

@@ -5,6 +5,7 @@ import updateNodePosition from './mutations/updateNodePosition';
 import addLink from './mutations/addLink';
 import removeLink from './mutations/removeLink';
 import touchLink from './mutations/touchLink';
+import updateLink from './mutations/updateLink';
 
 import setSelected from './mutations/setSelected';
 
@@ -20,6 +21,7 @@ export default {
   addLink,
   removeLink,
   touchLink,
+  updateLink,
 
   setSelected,
 

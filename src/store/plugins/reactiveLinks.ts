@@ -51,7 +51,7 @@ function getLinkBoundingRect (link: ILink, state: IState): BoundingRect {
   const { from, to } = link;
 
   const { position: fromPosition } = nodes[from.nodeId].ports[from.portId];
-  const { position: toPosition } = nodes[to.nodeId].ports[to.portId];
+  const { position: toPosition } = nodes[to.nodeId!].ports[to.portId!];
 
   return getBoundingRect(fromPosition!, toPosition!, { width: 0, height: 0 });
 }

@@ -2,6 +2,8 @@ import PF from 'pathfinding';
 import { IPosition, IGrid } from '@/types';
 import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
 
+import generateRightAnglePath from './generateRightAnglePath';
+
 type Point = [number, number];
 
 export default function generatePath (
@@ -20,13 +22,21 @@ export default function generatePath (
     y: Math.ceil((endPos.y + gridOffset.y) / SCALE_FACTOR),
   };
 
-  return PF.Util.compressPath(
-    pathFinder.findPath(
-      scaledStartPos.x,
-      scaledStartPos.y,
-      scaledEndPos.x,
-      scaledEndPos.y,
-      grid.pfGrid.clone(),
-    ),
-  ) as Point[];
+  try {
+    const path = PF.Util.compressPath(
+      pathFinder.findPath(
+        scaledStartPos.x,
+        scaledStartPos.y,
+        scaledEndPos.x,
+        scaledEndPos.y,
+        grid.pfGrid.clone(),
+      ),
+    ) as Point[];
+
+    if (!path.length) return generateRightAnglePath(scaledStartPos, scaledEndPos);
+
+    return path;
+  } catch (e) {
+    return generateRightAnglePath(scaledStartPos, scaledEndPos);
+  }
 }

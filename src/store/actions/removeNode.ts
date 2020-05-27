@@ -1,6 +1,6 @@
-import { FlowChartContext, Id } from '@/types';
+import { FlowchartContext, Id } from '@/types';
 
-export default function removeNode (context: FlowChartContext, nodeId: Id) {
+export default function removeNode (context: FlowchartContext, nodeId: Id) {
   const { nodes, links } = context.state.graph;
 
   const node = nodes[nodeId];

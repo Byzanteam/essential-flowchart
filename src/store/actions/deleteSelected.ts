@@ -1,7 +1,7 @@
-import { FlowChartContext } from '@/types';
+import { FlowchartContext } from '@/types';
 
 // TODO
-export default function deleteSelected ({ dispatch, state }: FlowChartContext) {
+export default function deleteSelected ({ dispatch, state }: FlowchartContext) {
   const { selected } = state;
 
   if (selected) {

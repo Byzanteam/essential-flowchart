@@ -1,11 +1,11 @@
 import Vue from 'vue';
 
-import { IState, INode, FlowChartStore } from '@/types';
+import { IState, INode, FlowchartStore } from '@/types';
 import { markNodeWalkable, isInsideGrid } from '@/utils/grid';
 
 import { registerRevertFunc } from '@/utils/history';
 
-export default function addNode (this: FlowChartStore, state: IState, { node }: { node: INode }) {
+export default function addNode (this: FlowchartStore, state: IState, { node }: { node: INode }) {
   const {
     pfGrid, offset: gridOffset, width, height,
   } = state.graph.grid;

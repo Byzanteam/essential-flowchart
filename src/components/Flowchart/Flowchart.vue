@@ -10,9 +10,9 @@
 
     <LinkWrapperComponent
       v-for="link in links"
-      :link-component="linkComponent"
       :key="link.id"
       :link="link"
+      :link-component="linkComponent"
     />
   </CanvasComponent>
 </template>
@@ -23,7 +23,7 @@ import {
   PropType,
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
-import { IStateAttrs, FlowChartStore } from '@/types';
+import { IStateAttrs, FlowchartStore } from '@/types';
 import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
@@ -32,7 +32,7 @@ import PortDefault from '../Port/Default.vue';
 import LinkWrapperComponent from '../Link/Wrapper';
 import LinkDefault from '../Link/Default.vue';
 
-function useState (stateAttrs: IStateAttrs, store: FlowChartStore) {
+function useState (stateAttrs: IStateAttrs, store: FlowchartStore) {
   buildState(stateAttrs, store);
   const { nodes, links } = store.state.graph;
 

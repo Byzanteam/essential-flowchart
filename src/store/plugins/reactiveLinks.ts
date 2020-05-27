@@ -13,8 +13,10 @@ interface IRectangle {
   width: number;
   height: number;
 }
-
+type Point = [number, number];
 type Padding = [number, number];
+
+const defaultLinePadding = [20, 20];
 
 function getBoundingRect (
   position: IPosition,
@@ -32,6 +34,45 @@ function getBoundingRect (
     height + Math.abs(position.y - prevPosition.y) + 2 * y,
   ];
 }
+
+function getPaddingLineBoundingRect (
+  startPoint: Point,
+  endPoint: Point,
+  padding?: Padding,
+): BoundingRect {
+  const [x1, y1] = startPoint;
+  const [x2, y2] = endPoint;
+
+  const [x, y] = padding || defaultLinePadding;
+
+  let length: number;
+
+  // is horizontal
+  if (y1 === y2) {
+    length = Math.abs(x1 - x2);
+
+    return [
+      Math.min(x1, x2),
+      y1 - length / 2,
+
+      length,
+      1 + 2 * y,
+    ];
+  }
+
+  // is vertical
+
+  length = Math.abs(y1 - y2);
+
+  return [
+    Math.min(y1, y2),
+    x1 - length / 2,
+
+    1 + 2 * x,
+    length,
+  ];
+}
+
 function getMovingBoundingRect ({
   position,
   prevPosition,
@@ -45,17 +86,6 @@ function getMovingBoundingRect ({
   return getBoundingRect(position, prevPosition, node, [12, 12]);
 }
 
-function getLinkBoundingRect (link: ILink, state: IState): BoundingRect {
-  const { nodes } = state.graph;
-
-  const { from, to } = link;
-
-  const { position: fromPosition } = nodes[from.nodeId].ports[from.portId];
-  const { position: toPosition } = nodes[to.nodeId].ports[to.portId];
-
-  return getBoundingRect(fromPosition!, toPosition!, { width: 0, height: 0 });
-}
-
 function isIntersectant (
   [x1, y1, width1, height1]: BoundingRect,
   [x2, y2, width2, height2]: BoundingRect,
@@ -65,7 +95,6 @@ function isIntersectant (
     && y1 < y2 + height2
     && height1 + y1 > y2;
 }
-
 
 export default function reactiveLinks (store: FlowchartStore) {
   store.subscribe((mutation, state: IState) => {
@@ -78,11 +107,25 @@ export default function reactiveLinks (store: FlowchartStore) {
         if (link.from.nodeId === nodeId) return;
         if (link.to.nodeId === nodeId) return;
 
-        const linkBoundingRect = getLinkBoundingRect(link, state);
+        const linkPath = state.linkPath[link.id];
 
-        if (isIntersectant(movingBoundingRect, linkBoundingRect)) {
+        if (!linkPath) return;
+
+        let found = false;
+        const [first, ...rest] = linkPath;
+
+        rest.reduce((prevPoint: Point, point: Point): Point => {
+          if (found) return point;
+
+          const linkBoundingRect = getPaddingLineBoundingRect(prevPoint, point);
+
+          if (!isIntersectant(movingBoundingRect, linkBoundingRect)) return point;
+
+          found = true;
           store.commit('touchLink', { linkId: link.id });
-        }
+
+          return point;
+        }, first);
       });
     }
   });

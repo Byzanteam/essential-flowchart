@@ -44,6 +44,8 @@ export default defineComponent({
       store.state.linkVersions[props.link.id],
     ));
 
+    store.commit('updateLinkPath', { linkId: props.link.id, path });
+
     return () => createElement(props.linkComponent, {
       props: {
         link: props.link,

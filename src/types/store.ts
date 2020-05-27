@@ -34,7 +34,7 @@ export interface IState {
   };
   linkPath: {
     // type Point = [number, number];
-    [linkId: string]: [number, number];
+    [linkId: string]: [number, number][];
   };
   selected: ISelectedOrHovered | null;
 }

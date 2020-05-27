@@ -131,17 +131,18 @@ export default function reactiveLinks (store: FlowchartStore) {
 
         if (!linkPath) return;
 
-        let found = false;
+        let intersectant = false;
         const [first, ...rest] = linkPath;
 
+        // check each segment of the line
         rest.reduce((prevPoint: Point, point: Point): Point => {
-          if (found) return point;
+          if (intersectant) return point;
 
           const linkBoundingRect = getPaddingLineBoundingRect(prevPoint, point);
 
           if (!isIntersectant(movingBoundingRect, linkBoundingRect)) return point;
 
-          found = true;
+          intersectant = true;
           store.commit('touchLink', { linkId: link.id });
 
           return point;

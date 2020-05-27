@@ -64,19 +64,25 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
       if (portEl) { // complete link
         const toNodeId = portEl.getAttribute('data-node-id');
         const toPortId = portEl.getAttribute('data-port-id');
-        const link = {
-          id: linkId,
-          from: {
-            nodeId: fromNodeId,
-            portId: fromPortId,
-          },
-          to: {
-            nodeId: toNodeId,
-            portId: toPortId,
-          },
-        };
 
-        store.dispatch('addLink', { link });
+        // TODO: validate link
+        if ((fromNodeId === toNodeId) && (fromPortId === toPortId)) {
+          store.dispatch('removeLink', { linkId, history: false });
+        } else {
+          const link = {
+            id: linkId,
+            from: {
+              nodeId: fromNodeId,
+              portId: fromPortId,
+            },
+            to: {
+              nodeId: toNodeId,
+              portId: toPortId,
+            },
+          };
+
+          store.dispatch('addLink', { link });
+        }
       } else { // cancel link
         store.dispatch('removeLink', { linkId, history: false });
       }

@@ -24,7 +24,7 @@ import { useStore } from '@/hooks/store';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
-function findPortEl (el: HTMLElement) {
+function findPortEl (el: HTMLElement): HTMLElement | null {
   let curr: HTMLElement | null = el;
   let found = false;
   while (!found && curr) {
@@ -39,6 +39,7 @@ function findPortEl (el: HTMLElement) {
   return curr;
 }
 
+// hook
 function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
     const linkId = v4();
@@ -51,7 +52,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         y: e.y,
       };
 
-      store.dispatch('drawLink', {
+      store.dispatch('moveLink', {
         linkId,
         toPosition,
       });
@@ -60,8 +61,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
     function mouseUpHandler (e: MouseEvent) {
       const portEl = findPortEl(e.target as HTMLElement);
 
-      // complete link
-      if (portEl) {
+      if (portEl) { // complete link
         const toNodeId = portEl.getAttribute('data-node-id');
         const toPortId = portEl.getAttribute('data-port-id');
         const link = {
@@ -77,8 +77,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         };
 
         store.dispatch('addLink', { link });
-      // cancel link
-      } else {
+      } else { // cancel link
         store.dispatch('removeLink', { linkId, history: false });
       }
 
@@ -91,6 +90,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
     window.addEventListener('mousemove', mouseMoveHandler, false);
     window.addEventListener('mouseup', mouseUpHandler, false);
 
+    // add link when start
     store.dispatch('addLink', {
       link: {
         id: linkId,
@@ -103,6 +103,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
       history: false,
     });
 
+    // prevent text selection
     evt.preventDefault();
     // prevent node move
     evt.stopPropagation();

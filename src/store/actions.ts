@@ -7,7 +7,7 @@ import deleteSelected from './actions/deleteSelected';
 
 import addLink from './actions/addLink';
 import removeLink from './actions/removeLink';
-import drawLink from './actions/drawLink';
+import moveLink from './actions/moveLink';
 
 import historyActions from './actions/history';
 
@@ -22,5 +22,5 @@ export default {
 
   addLink,
   removeLink,
-  drawLink,
+  moveLink,
 };

@@ -3,7 +3,7 @@ import {
   createElement,
 } from '@vue/composition-api';
 
-import store from '@/store';
+import { useStore } from '@/hooks/store';
 import { ILink } from '@/types';
 
 import generatePath from './utils/generatePath';
@@ -25,6 +25,7 @@ export default defineComponent({
   },
 
   setup (props) {
+    const store = useStore();
     const graph = computed(() => store.state.graph);
 
     const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);

@@ -34,7 +34,7 @@ import VueDraggableResizable from 'vue-draggable-resizable';
 import {
   defineComponent, PropType,
 } from '@vue/composition-api';
-import store from '@/store';
+import { useStore } from '@/hooks/store';
 import { IPosition, INode } from '@/types';
 import PortWrapperComponent from '../Port/Wrapper';
 
@@ -64,6 +64,7 @@ export default defineComponent({
   },
 
   setup (props) {
+    const store = useStore();
     let draggingNodePosition: IPosition | null = null;
 
     const onDragStart = () => {

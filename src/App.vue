@@ -7,9 +7,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from '@vue/composition-api';
+import { defineComponent } from '@vue/composition-api';
 import { IStateAttrs, PortDirection } from '@/types';
-import store from '@/store/index';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
 const stateAttrs: IStateAttrs = {
@@ -102,10 +101,6 @@ export default defineComponent({
   },
 
   setup () {
-    onMounted(() => {
-      console.log(store);
-    });
-
     return {
       stateAttrs,
     };

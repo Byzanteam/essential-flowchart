@@ -32,6 +32,10 @@ export interface IState {
   linkVersions: {
     [linkId: string]: number;
   };
+  linkPath: {
+    // type Point = [number, number];
+    [linkId: string]: [number, number];
+  };
   selected: ISelectedOrHovered | null;
 }
 

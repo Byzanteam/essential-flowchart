@@ -31,6 +31,7 @@ const state: IState = {
     },
   },
   linkVersions: {},
+  linkPath: {},
   selected: null,
 };
 

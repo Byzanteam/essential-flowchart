@@ -145,6 +145,7 @@ export function createStore (
         },
       },
       linkVersions: {},
+      linkPath: {},
       selected: (stateAttrs && stateAttrs.selected) || null,
     },
     mutations: mutations || allMutations,

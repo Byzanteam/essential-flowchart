@@ -33,7 +33,6 @@ import {
   ILink,
   IGrid,
 } from '@/types';
-import { SCALE_FACTOR } from '@/utils/grid';
 
 function generatePathCommands (path: Point[], grid: IGrid): string {
   if (!path.length) return '';
@@ -42,8 +41,8 @@ function generatePathCommands (path: Point[], grid: IGrid): string {
 
   const [first, ...rest] = path;
   return rest.reduce(
-    (acc, [x, y]) => `${acc} L${x * SCALE_FACTOR - gridOffsetX} ${y * SCALE_FACTOR - gridOffsetY}`,
-    `M${first[0] * SCALE_FACTOR - gridOffsetX} ${first[1] * SCALE_FACTOR - gridOffsetY}`,
+    (acc, [x, y]) => `${acc} L${x - gridOffsetX} ${y - gridOffsetY}`,
+    `M${first[0] - gridOffsetX} ${first[1] - gridOffsetY}`,
   );
 }
 

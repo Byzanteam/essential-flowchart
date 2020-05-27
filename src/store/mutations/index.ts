@@ -5,7 +5,7 @@ import updateNodePosition from './updateNodePosition';
 import addLink from './addLink';
 import removeLink from './removeLink';
 import touchLink from './touchLink';
-import updateLink from './updateLink';
+import moveLink from './moveLink';
 
 import setSelected from './setSelected';
 
@@ -21,7 +21,7 @@ export default {
   addLink,
   removeLink,
   touchLink,
-  updateLink,
+  moveLink,
 
   setSelected,
 

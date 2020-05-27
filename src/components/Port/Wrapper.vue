@@ -51,7 +51,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         y: e.y,
       };
 
-      store.dispatch('moveLink', {
+      store.commit('moveLink', {
         linkId,
         toPosition,
       });

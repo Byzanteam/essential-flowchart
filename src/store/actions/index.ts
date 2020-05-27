@@ -7,7 +7,6 @@ import deleteSelected from './deleteSelected';
 
 import addLink from './addLink';
 import removeLink from './removeLink';
-import moveLink from './moveLink';
 
 import historyActions from './history';
 
@@ -22,5 +21,4 @@ export default {
 
   addLink,
   removeLink,
-  moveLink,
 };

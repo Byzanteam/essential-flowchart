@@ -1,10 +1,17 @@
 import { FlowchartContext, ILink } from '@/types';
 
-export default function addLink (context: FlowchartContext, link: ILink) {
-  const mutations = [{
+export default function addLink (
+  { commit, dispatch }: FlowchartContext,
+  { link, history = true }: { link: ILink; history: boolean },
+) {
+  const mutation = {
     type: 'addLink',
     link: { ...link },
-  }];
+  };
 
-  context.dispatch('historyPushEntry', mutations);
+  if (history) {
+    dispatch('historyPushEntry', mutation);
+  } else {
+    commit(mutation);
+  }
 }

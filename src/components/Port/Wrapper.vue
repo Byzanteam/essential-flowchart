@@ -1,6 +1,8 @@
 <template>
   <div
-    @mousedown="onMousedown"
+    :data-port-id="port.id"
+    :data-node-id="node.id"
+    @mousedown="onMouseDown"
   >
     <component
       :is="portComponent"
@@ -22,13 +24,28 @@ import { useStore } from '@/hooks/store';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
+function findPortEl (el: HTMLElement) {
+  let curr: HTMLElement | null = el;
+  let found = false;
+  while (!found && curr) {
+    const nodeId = curr.getAttribute && curr.getAttribute('data-node-id');
+    const portId = curr.getAttribute && curr.getAttribute('data-port-id');
+
+    found = !!(portId && nodeId);
+    if (!found) {
+      curr = curr.parentElement;
+    }
+  }
+  return curr;
+}
+
 function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
-  const onMousedown = (evt: MouseEvent) => {
+  const onMouseDown = (evt: MouseEvent) => {
     const linkId = v4();
     const fromNodeId = node.id;
     const fromPortId = port.id;
 
-    const mousemoveHandler = (e: MouseEvent) => {
+    function mouseMoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
         x: e.x,
         y: e.y,
@@ -38,18 +55,52 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         linkId,
         toPosition,
       });
-    };
+    }
 
-    // add mouse move listener
-    window.addEventListener('mousemove', mousemoveHandler, false);
+    function mouseUpHandler (e: MouseEvent) {
+      const portEl = findPortEl(e.target as HTMLElement);
+
+      // complete link
+      if (portEl) {
+        const toNodeId = portEl.getAttribute('data-node-id');
+        const toPortId = portEl.getAttribute('data-port-id');
+        const link = {
+          id: linkId,
+          from: {
+            nodeId: fromNodeId,
+            portId: fromPortId,
+          },
+          to: {
+            nodeId: toNodeId,
+            portId: toPortId,
+          },
+        };
+
+        store.dispatch('addLink', { link });
+      // cancel link
+      } else {
+        store.dispatch('removeLink', { linkId, history: false });
+      }
+
+      // remove listeners
+      window.removeEventListener('mouseup', mouseUpHandler, false);
+      window.removeEventListener('mousemove', mouseMoveHandler, false);
+    }
+
+    // add listeners
+    window.addEventListener('mousemove', mouseMoveHandler, false);
+    window.addEventListener('mouseup', mouseUpHandler, false);
 
     store.dispatch('addLink', {
-      id: linkId,
-      from: {
-        nodeId: fromNodeId,
-        portId: fromPortId,
+      link: {
+        id: linkId,
+        from: {
+          nodeId: fromNodeId,
+          portId: fromPortId,
+        },
+        to: {},
       },
-      to: {},
+      history: false,
     });
 
     evt.preventDefault();
@@ -58,7 +109,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
   };
 
   return {
-    onMousedown,
+    onMouseDown,
   };
 }
 
@@ -85,10 +136,10 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
 
-    const { onMousedown } = useMouseDownOnPort(store, props.node, props.port);
+    const { onMouseDown } = useMouseDownOnPort(store, props.node, props.port);
 
     return {
-      onMousedown,
+      onMouseDown,
     };
   },
 });

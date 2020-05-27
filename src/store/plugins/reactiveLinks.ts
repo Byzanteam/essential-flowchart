@@ -56,7 +56,7 @@ function getLinkBoundingRect (link: ILink, state: IState): BoundingRect {
   return getBoundingRect(fromPosition!, toPosition!, { width: 0, height: 0 });
 }
 
-function isInCollision (
+function isIntersectant (
   [x1, y1, width1, height1]: BoundingRect,
   [x2, y2, width2, height2]: BoundingRect,
 ): boolean {
@@ -80,7 +80,7 @@ export default function reactiveLinks (store: FlowchartStore) {
 
         const linkBoundingRect = getLinkBoundingRect(link, state);
 
-        if (isInCollision(movingBoundingRect, linkBoundingRect)) {
+        if (isIntersectant(movingBoundingRect, linkBoundingRect)) {
           store.commit('touchLink', { linkId: link.id });
         }
       });

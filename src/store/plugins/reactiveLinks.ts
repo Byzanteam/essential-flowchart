@@ -14,82 +14,18 @@ interface IRectangle {
   width: number;
   height: number;
 }
-type Padding = [number, number];
-
-const DEFAULT_LINE_PADDING = [20, 20];
 
 function getBoundingRect (
   position: IPosition,
   prevPosition: IPosition,
   { width, height }: IRectangle,
-  padding?: Padding,
 ): BoundingRect {
-  const [x, y] = padding || [0, 0];
-
   return [
-    Math.min(position.x, prevPosition.x) - x,
-    Math.min(position.y, prevPosition.y) - y,
+    Math.min(position.x, prevPosition.x),
+    Math.min(position.y, prevPosition.y),
 
-    width + Math.abs(position.x - prevPosition.x) + 2 * x,
-    height + Math.abs(position.y - prevPosition.y) + 2 * y,
-  ];
-}
-
-//
-// +-----------------------+
-// |                       |
-// | horizontal line       |
-// +---------------------->+
-// |                       |
-// |                       | (padding /2 )
-// +-----------------------+
-
-//        +----+----+
-//        |  v ^    |
-//        |  e |    |
-//        |  r |    |
-//        |  t |    |
-//        |  i |    |
-//        |  c |    |
-//        |  a |    |
-//        |  l |    |
-//        +----+----+
-
-function getPaddingLineBoundingRect (
-  startPoint: Point,
-  endPoint: Point,
-  padding?: Padding,
-): BoundingRect {
-  const [x1, y1] = startPoint;
-  const [x2, y2] = endPoint;
-
-  const [x, y] = padding || DEFAULT_LINE_PADDING;
-
-  let length: number;
-
-  // is horizontal
-  if (y1 === y2) {
-    length = Math.abs(x1 - x2);
-
-    return [
-      Math.min(x1, x2),
-      y1 - y / 2,
-
-      length,
-      1 + y,
-    ];
-  }
-
-  // is vertical
-
-  length = Math.abs(y1 - y2);
-
-  return [
-    x1 - x / 2,
-    Math.min(y1, y2),
-
-    1 + x,
-    length,
+    width + Math.abs(position.x - prevPosition.x),
+    height + Math.abs(position.y - prevPosition.y),
   ];
 }
 
@@ -102,14 +38,19 @@ function getMovingBoundingRect ({
   prevPosition: IPosition;
   node: INode;
 }): BoundingRect {
-  // TODO: padding
-  return getBoundingRect(position, prevPosition, node, [12, 12]);
+  return getBoundingRect(position, prevPosition, node);
 }
 
+// detect whether the line is intersectant with the node
 function isIntersectant (
   [x1, y1, width1, height1]: BoundingRect,
-  [x2, y2, width2, height2]: BoundingRect,
+  [[x3, y3], [x4, y4]]: [Point, Point],
 ): boolean {
+  const x2 = Math.min(x3, x4);
+  const y2 = Math.min(y3, y4);
+  const width2 = Math.abs(x3 - x4);
+  const height2 = Math.abs(y3 - y4);
+
   return x1 < x2 + width2
     && x1 + width1 > x2
     && y1 < y2 + height2
@@ -138,9 +79,7 @@ export default function reactiveLinks (store: FlowchartStore) {
         rest.reduce((prevPoint: Point, point: Point): Point => {
           if (intersectant) return point;
 
-          const linkBoundingRect = getPaddingLineBoundingRect(prevPoint, point);
-
-          if (!isIntersectant(movingBoundingRect, linkBoundingRect)) return point;
+          if (!isIntersectant(movingBoundingRect, [prevPoint, point])) return point;
 
           intersectant = true;
           store.commit('touchLink', { linkId: link.id });

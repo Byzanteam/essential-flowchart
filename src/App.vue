@@ -17,8 +17,8 @@ const rawState: IStateInput = {
   nodes: [
     {
       id: 'node1',
-      x: 20,
-      y: 20,
+      x: 200,
+      y: 200,
       width: 50,
       height: 50,
       ports: {
@@ -30,8 +30,8 @@ const rawState: IStateInput = {
     },
     {
       id: 'node2',
-      x: 100,
-      y: 100,
+      x: 150,
+      y: 290,
       width: 50,
       height: 50,
       ports: {
@@ -55,8 +55,8 @@ const rawState: IStateInput = {
     },
     {
       id: 'node3',
-      x: 200,
-      y: 180,
+      x: 300,
+      y: 480,
       width: 50,
       height: 50,
       ports: {

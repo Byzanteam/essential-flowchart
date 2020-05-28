@@ -4,6 +4,7 @@ import { FlowchartStore, IStateInput } from '@/types';
 export function buildState (rawState: IStateInput, store: FlowchartStore) {
   const { nodes, links } = rawState;
 
+  // TODO: expand grid
   nodes.forEach(node => {
     store.commit('addNode', {
       node: { ...node },

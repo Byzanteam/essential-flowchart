@@ -36,7 +36,7 @@ import {
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
 import { IPosition, INode } from '@/types';
-import PortWrapperComponent from '../Port/Wrapper';
+import PortWrapperComponent from '../Port/Wrapper.vue';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 

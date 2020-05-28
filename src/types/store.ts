@@ -5,6 +5,7 @@ import {
   ILink,
   Point,
 } from './graph';
+import { IPosition } from './generics';
 
 export interface IMutation extends Payload {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +38,7 @@ export interface IState {
     [linkId: string]: Point[];
   };
   selected: ISelectedOrHovered | null;
+  mousePosition: IPosition | null;
 }
 
 export interface IStateAttrs {

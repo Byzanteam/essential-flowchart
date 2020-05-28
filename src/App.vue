@@ -64,6 +64,18 @@ const stateAttrs: IStateAttrs = {
           id: 'port1',
           direction: PortDirection.TOP,
         },
+        port2: {
+          id: 'port2',
+          direction: PortDirection.RIGHT,
+        },
+        port3: {
+          id: 'port3',
+          direction: PortDirection.BOTTOM,
+        },
+        port4: {
+          id: 'port4',
+          direction: PortDirection.LEFT,
+        },
       },
     },
   ],

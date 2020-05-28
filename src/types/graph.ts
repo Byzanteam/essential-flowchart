@@ -39,7 +39,7 @@ export interface ILinkPort {
 export interface ILink {
   id: Id;
   from: ILinkPort;
-  to: ILinkPort;
+  to: Partial<ILinkPort> & { position?: IPosition };
 }
 
 // grid

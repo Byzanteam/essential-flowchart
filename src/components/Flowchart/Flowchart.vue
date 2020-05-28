@@ -19,7 +19,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref,
+  defineComponent, computed,
   PropType,
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
@@ -34,11 +34,12 @@ import LinkDefault from '../Link/Default.vue';
 
 function useState (stateAttrs: IStateAttrs, store: FlowchartStore) {
   buildState(stateAttrs, store);
-  const { nodes, links } = store.state.graph;
+  const nodes = computed(() => store.state.graph.nodes);
+  const links = computed(() => store.state.graph.links);
 
   return {
-    nodes: ref(nodes),
-    links: ref(links),
+    nodes,
+    links,
   };
 }
 

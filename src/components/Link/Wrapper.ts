@@ -29,35 +29,49 @@ export default defineComponent({
     const graph = computed(() => store.state.graph);
 
     const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
-    const toNode = computed(() => graph.value.nodes[props.link.to.nodeId]);
 
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position!);
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const endPos = computed(() => toNode.value.ports[props.link.to.portId].position!);
+    const endPos = computed(() => {
+      if (props.link.to.nodeId && props.link.to.portId) {
+        const toNode = graph.value.nodes[props.link.to.nodeId];
+        return toNode.ports[props.link.to.portId].position;
+      }
+      return store.state.mousePosition;
+    });
 
-    const path = computed(() => generatePath(
-      graph.value.grid,
-      startPos.value,
-      endPos.value,
-      // track change
-      store.state.linkVersions[props.link.id],
-    ));
+    const path = computed(() => {
+      if (endPos.value) {
+        return generatePath(
+          graph.value.grid,
+          startPos.value,
+          endPos.value!,
+          // track change
+          store.state.linkVersions[props.link.id],
+        );
+      }
+      return [];
+    });
 
     watch(path, newPath => store.commit(
       'updateLinkPath',
       { linkId: props.link.id, path: [...newPath] },
     ));
 
-    return () => createElement(props.linkComponent, {
-      props: {
-        link: props.link,
+    return () => {
+      if (endPos.value) {
+        return createElement(props.linkComponent, {
+          props: {
+            link: props.link,
 
-        startPos: startPos.value,
-        endPos: endPos.value,
+            startPos: startPos.value,
+            endPos: endPos.value,
 
-        path: path.value,
-      },
-    });
+            path: path.value,
+          },
+        });
+      }
+      return null;
+    };
   },
 });

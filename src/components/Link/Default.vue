@@ -28,10 +28,7 @@ import {
 
 import { useStore } from '@/hooks/store';
 import {
-  Point,
-  IPosition,
-  ILink,
-  IGrid,
+  Point, IPosition, ILink, IGrid,
 } from '@/types';
 
 function generatePathCommands (path: Point[], grid: IGrid): string {

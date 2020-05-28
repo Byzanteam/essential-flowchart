@@ -24,6 +24,7 @@ export default function updateNodePosition (
         ...prevPosition,
       },
       true,
+      state.config,
     );
 
     updatedNode = markNodeWalkable(
@@ -34,6 +35,7 @@ export default function updateNodePosition (
         ...position,
       },
       false,
+      state.config,
     );
 
     Vue.set(nodes, updatedNode.id, updatedNode);

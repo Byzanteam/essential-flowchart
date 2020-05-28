@@ -36,6 +36,7 @@ export default function addNode (this: FlowchartStore, state: IState, { node }: 
     state.graph.grid.offset,
     node,
     false,
+    state.config,
   );
 
   Vue.set(state.graph.nodes, node.id, updatedNode);

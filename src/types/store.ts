@@ -27,6 +27,11 @@ export interface ISelectedOrHovered {
 
 export type ISelectable = INode | ILink;
 
+export interface IConfig {
+  nodePadding?: number;
+  portGap?: number;
+}
+
 export interface IState {
   history: IHistory;
   graph: IGraph;
@@ -37,6 +42,7 @@ export interface IState {
     [linkId: string]: Point[];
   };
   selected: ISelectedOrHovered | null;
+  config: IConfig;
 }
 
 export interface IStateAttrs {

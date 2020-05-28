@@ -9,10 +9,14 @@ import {
 } from '@/types';
 
 type Line = [Point, Point];
+type IMarkNodeWalkableConfig = {
+  nodePadding?: number;
+  portGap?: number;
+}
 
 export const SCALE_FACTOR = 5;
-const DEFAULT_OFFSET = SCALE_FACTOR;
-const DEFAULT_GAP = SCALE_FACTOR * 2;
+const DEFAULT_NODE_PADDING = SCALE_FACTOR;
+const DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
   // prevent vuex to observing pfGrid
@@ -49,6 +53,7 @@ function markPort (
   grid: Pathfinding.Grid,
   port: INodePort,
   walkable: boolean,
+  { nodePadding }: { nodePadding: number },
 ) {
   const { direction, position } = port;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -64,26 +69,26 @@ function markPort (
   switch (direction) {
     case PortDirection.TOP:
       grid.setWalkableAt(x, y + 1, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - 1, y - DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + 1, y - DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x - 1, y - 1], [x - 1, y - nodePadding / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + 1, y - nodePadding / SCALE_FACTOR]], walkable);
       break;
 
     case PortDirection.RIGHT:
       grid.setWalkableAt(x - 1, y, walkable);
-      markLine(grid, [[x + 1, y + 1], [x + DEFAULT_OFFSET / SCALE_FACTOR, y + 1]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + DEFAULT_OFFSET / SCALE_FACTOR, y - 1]], walkable);
+      markLine(grid, [[x + 1, y + 1], [x + nodePadding / SCALE_FACTOR, y + 1]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + nodePadding / SCALE_FACTOR, y - 1]], walkable);
       break;
 
     case PortDirection.BOTTOM:
       grid.setWalkableAt(x, y - 1, walkable);
-      markLine(grid, [[x - 1, y + 1], [x - 1, y + DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y + 1], [x + 1, y + DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x - 1, y + 1], [x - 1, y + nodePadding / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y + 1], [x + 1, y + nodePadding / SCALE_FACTOR]], walkable);
       break;
 
     case PortDirection.LEFT:
       grid.setWalkableAt(x + 1, y, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - DEFAULT_OFFSET / SCALE_FACTOR, y - 1]], walkable);
-      markLine(grid, [[x - 1, y + 1], [x - DEFAULT_OFFSET / SCALE_FACTOR, y + 1]], walkable);
+      markLine(grid, [[x - 1, y - 1], [x - nodePadding / SCALE_FACTOR, y - 1]], walkable);
+      markLine(grid, [[x - 1, y + 1], [x - nodePadding / SCALE_FACTOR, y + 1]], walkable);
       break;
   }
 }
@@ -102,19 +107,19 @@ function groupBy<Item> (collection: Array<Item>, criteria: (item: Item) => strin
   }, {} as Record<string, Item[]>);
 }
 
-function nextDots (start: number, length: number): number[] {
+function nextDots (start: number, length: number, portGap: number): number[] {
   let current = Math.ceil(start);
   const dots = [];
 
   for (let i = 0; i < length; i += 1) {
     dots.push(current + 1);
-    current += 2 + DEFAULT_GAP;
+    current += 2 + portGap;
   }
 
   return dots;
 }
 
-function updatePorts (node: INode, gridOffset: IOffset): INode {
+function updatePorts (node: INode, gridOffset: IOffset, { portGap }: { portGap: number }): INode {
   const { x: offsetX, y: offsetY } = gridOffset;
   let { x, y } = node;
 
@@ -130,34 +135,34 @@ function updatePorts (node: INode, gridOffset: IOffset): INode {
 
   const updatedPorts = Object.entries(groupedPorts).reduce((acc, [direction, ports]) => {
     const { length } = ports;
-    const portsLength = 3 * length + DEFAULT_GAP * (length - 1);
+    const portsLength = 3 * length + portGap * (length - 1);
     let dots: number[];
 
     // eslint-disable-next-line default-case
     switch (direction) {
       case PortDirection.TOP:
-        dots = nextDots(x + (width - portsLength) / 2, length);
+        dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
           acc[port.id] = { ...port, position: { x: dots[index], y } };
         });
         break;
 
       case PortDirection.RIGHT:
-        dots = nextDots(y + (height - portsLength) / 2, length);
+        dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
           acc[port.id] = { ...port, position: { x: x + width, y: dots[index] } };
         });
         break;
 
       case PortDirection.BOTTOM:
-        dots = nextDots(x + (width - portsLength) / 2, length);
+        dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
           acc[port.id] = { ...port, position: { x: dots[index], y: y + height } };
         });
         break;
 
       case PortDirection.LEFT:
-        dots = nextDots(y + (height - portsLength) / 2, length);
+        dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
           acc[port.id] = { ...port, position: { x, y: dots[index] } };
         });
@@ -174,41 +179,32 @@ function updatePorts (node: INode, gridOffset: IOffset): INode {
 }
 
 //
-//
-// Step one: draw rectangle
-//     (x, y)                       (x + width, y)
-//       ^---------------------------->+
-//       |          (width)            |
-//       |                             |
-//       |(height)                     |
-//       |                             |
-//       |                             |
-//       <-----------------------------v
-// (x, y + height)                   (x + width, y + height)
-//
-
-// step two: draw ports
-//
-//                 ^ ^     ^ ^
-//                 | |     | |
-//                 | |     | |
-//     (x, y)      | |     | |      (x + width, y)
-//       ^-------->+ +-----+ +-------->+
-//       |          +       +          |
-//       |                             |
-//       |                             v  (12px)
-// <-----+                             ------->
-//        +                           +
-// <-----+                             ------->
-//       ^                             |
-//       |                             |
-//       |                             |
-//       |          +      +           |
-//       <---------+ +<---+ +----------v
-// (x, y + height) | |    | |        (x + width, y + height)
-//                 | |    | |
-//                 | |    | |
-//                 v v    v v
+// +-------------------------------+ +---+ +-------------------------------+
+// |                               | |   | |                               |
+// |                               | |   | |                               |
+// |         (x, y)                | |   | |                               |
+// |         ·                     v v   v v                     ·         |
+// |                                +     +                                |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |--------->                                                   <---------+
+//            +                                                 +
+// |--------->                                                   <---------+
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                                                       |
+// |                                   +                                   |
+// |         ·                        ^ ^                        ·         |
+// |                                  | |                                  |
+// |                                  | |                                  |
+// |                                  | |                                  |
+// +----------------------------------+ +----------------------------------+
 //
 
 export function markNodeWalkable (
@@ -216,8 +212,9 @@ export function markNodeWalkable (
   gridOffset: IOffset,
   node: INode,
   walkable: boolean,
+  { nodePadding = DEFAULT_NODE_PADDING, portGap = DEFAULT_PORT_GAP }: IMarkNodeWalkableConfig,
 ): INode {
-  const updatedNode = updatePorts(node, gridOffset);
+  const updatedNode = updatePorts(node, gridOffset, { portGap });
 
   const { x: offsetX, y: offsetY } = gridOffset;
 
@@ -228,8 +225,8 @@ export function markNodeWalkable (
     height,
   } = node;
 
-  x = Math.ceil((x + offsetX) / SCALE_FACTOR);
-  y = Math.ceil((y + offsetY) / SCALE_FACTOR);
+  x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR);
+  y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR);
   width = Math.ceil(width / SCALE_FACTOR);
   height = Math.ceil(height / SCALE_FACTOR);
 
@@ -250,7 +247,7 @@ export function markNodeWalkable (
 
   // mark ports
   Object.values(updatedNode.ports).forEach(
-    port => markPort(grid, port, walkable),
+    port => markPort(grid, port, walkable, { nodePadding }),
   );
 
   return updatedNode;

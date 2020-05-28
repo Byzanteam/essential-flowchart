@@ -9,22 +9,27 @@
     axis="both"
     w="auto"
     h="auto"
+    :class="{ 'selected': isSelected }"
     class="node-wrapper"
     @dragging="onNodeDragging"
     @dragstop="onNodeDragStop"
+    @click.native="onNodeClick"
   >
-    <component
-      :is="nodeComponent"
-      :node="node"
-    />
+    <span>
+      <component
+        :is="nodeComponent"
+        :node="node"
+        :is-selected="isSelected"
+      />
 
-    <PortWrapperComponent
-      v-for="(port, id) in node.ports"
-      :key="id"
-      :node="node"
-      :port="port"
-      :port-component="portComponent"
-    />
+      <PortWrapperComponent
+        v-for="(port, id) in node.ports"
+        :key="id"
+        :node="node"
+        :port="port"
+        :port-component="portComponent"
+      />
+    </span>
   </vue-draggable-resizable>
 </template>
 
@@ -97,6 +102,12 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
+
+    isSelected: {
+      type: Boolean,
+      default: false,
+    },
+
     nodeComponent: {
       type: Object as PropType<IFlowchartComponent>,
       required: true,
@@ -116,10 +127,15 @@ export default defineComponent({
       onNodeDragStop,
     } = useDragNode(store, props.node);
 
+    const onNodeClick = () => {
+      store.dispatch('selectNode', props.node.id);
+    };
+
     return {
       onNodeDragging,
       onNodeDragStop,
       onDragStart,
+      onNodeClick,
     };
   },
 });

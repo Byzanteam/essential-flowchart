@@ -31,7 +31,7 @@ import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
 import NodeDefault from '../Node/Default.vue';
 import PortDefault from '../Port/Default.vue';
-import LinkWrapperComponent from '../Link/Wrapper';
+import LinkWrapperComponent from '../Link/Wrapper.vue';
 import LinkDefault from '../Link/Default.vue';
 
 function useState (rawState: IStateInput, store: FlowchartStore) {

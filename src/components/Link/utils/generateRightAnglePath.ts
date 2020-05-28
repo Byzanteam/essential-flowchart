@@ -8,7 +8,7 @@ export default function generateRightAnglePath (
   const height = Math.abs(startPos.y - endPos.y);
   const isHorizontal = width > height;
 
-  const vertex: Point2D = isHorizontal ? [startPos.x, startPos.y] : [startPos.x, endPos.y];
+  const vertex: Point2D = isHorizontal ? [endPos.x, startPos.y] : [startPos.x, endPos.y];
 
   return [
     [startPos.x, startPos.y],

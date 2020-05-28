@@ -2,6 +2,7 @@ import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
   INode,
+  INodeInput,
   ILink,
   Point,
 } from './graph';
@@ -47,8 +48,8 @@ export interface IState {
   config: IConfig;
 }
 
-export interface IStateAttrs {
-  nodes: INode[];
+export interface IStateInput {
+  nodes: INodeInput[];
   links: ILink[];
 }
 

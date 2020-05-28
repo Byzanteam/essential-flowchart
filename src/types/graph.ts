@@ -11,22 +11,33 @@ export enum PortDirection {
 
 export type Point = [number, number];
 
-export interface INodePort {
+export interface INodePortInput {
   id: Id;
   direction: PortDirection;
-  position?: IPosition;
+}
+
+export type INodePort = INodePortInput & {
+  position: IPosition;
 }
 
 // A node of a graph
-export interface INode {
+interface IBasicNode {
   id: Id;
 
   x: number;
   y: number;
   width: number;
   height: number;
+}
+export type INode = IBasicNode & {
   ports: {
     [portId: string]: INodePort;
+  };
+}
+
+export type INodeInput = IBasicNode & {
+  ports: {
+    [portId: string]: INodePortInput;
   };
 }
 

@@ -23,7 +23,7 @@ import {
   PropType,
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
-import { IStateAttrs, FlowchartStore } from '@/types';
+import { IStateInput, FlowchartStore } from '@/types';
 import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
@@ -32,8 +32,8 @@ import PortDefault from '../Port/Default.vue';
 import LinkWrapperComponent from '../Link/Wrapper';
 import LinkDefault from '../Link/Default.vue';
 
-function useState (stateAttrs: IStateAttrs, store: FlowchartStore) {
-  buildState(stateAttrs, store);
+function useState (rawState: IStateInput, store: FlowchartStore) {
+  buildState(rawState, store);
   const nodes = computed(() => store.state.graph.nodes);
   const links = computed(() => store.state.graph.links);
 
@@ -51,7 +51,7 @@ interface IFlowchartComponents {
 }
 
 interface IFlowchartProps {
-  stateAttrs: IStateAttrs;
+  rawState: IStateInput;
   /**
    * Custom components
    */
@@ -68,8 +68,8 @@ export default defineComponent({
   },
 
   props: {
-    stateAttrs: {
-      type: Object as PropType<IStateAttrs>,
+    rawState: {
+      type: Object as PropType<IStateInput>,
       required: true,
     },
 
@@ -81,7 +81,7 @@ export default defineComponent({
 
   setup (props: IFlowchartProps) {
     const store = useStore();
-    const { nodes, links } = useState(props.stateAttrs, store);
+    const { nodes, links } = useState(props.rawState, store);
 
     const {
       components: {

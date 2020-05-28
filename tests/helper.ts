@@ -3,7 +3,7 @@ import allMutations from '@/store/mutations';
 import allActions from '@/store/actions';
 import {
   Id,
-  INodePort,
+  INodePortInput,
   ILinkPort,
   PortDirection,
   IState,
@@ -35,9 +35,9 @@ const defaultPorts = [
   },
 ];
 
-interface IStateAttrs {
+interface IStateInput {
   gridDimension?: [number, number];
-  graphNodeAttrs?: {id: Id; rect?: NodeRect; ports?: INodePort[]}[];
+  graphNodeAttrs?: {id: Id; rect?: NodeRect; ports?: INodePortInput[]}[];
   graphNodeIds?: Id[];
   graphLinkAttrs?: {
     id: Id;
@@ -49,12 +49,12 @@ interface IStateAttrs {
 }
 
 interface ICreateStoreObject<T> {
-  stateAttrs?: IStateAttrs;
+  stateAttrs?: IStateInput;
   mutations?: MutationTree<T>;
   actions?: ActionTree<T, T>;
 }
 
-function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
+function buildNodes (store: Store<IState>, stateAttrs?: IStateInput) {
   if (!stateAttrs) return;
 
   stateAttrs.graphNodeAttrs
@@ -90,7 +90,7 @@ function buildNodes (store: Store<IState>, stateAttrs?: IStateAttrs) {
     });
 }
 
-function buildLinks (store: Store<IState>, stateAttrs?: IStateAttrs) {
+function buildLinks (store: Store<IState>, stateAttrs?: IStateInput) {
   if (!stateAttrs) return;
   if (!stateAttrs.graphLinkAttrs) return;
 

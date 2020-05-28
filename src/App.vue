@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <flowchart :state-attrs="stateAttrs">
+    <flowchart :raw-state="rawState">
 
     </flowchart>
   </div>
@@ -8,10 +8,10 @@
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { IStateAttrs, PortDirection } from '@/types';
+import { IStateInput, PortDirection } from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
-const stateAttrs: IStateAttrs = {
+const rawState: IStateInput = {
   // offset: [0, 0],
   // scale: 1,
   nodes: [
@@ -114,7 +114,7 @@ export default defineComponent({
 
   setup () {
     return {
-      stateAttrs,
+      rawState,
     };
   },
 });

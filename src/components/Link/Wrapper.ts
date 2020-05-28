@@ -30,8 +30,7 @@ export default defineComponent({
 
     const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position!);
+    const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position);
     const endPos = computed(() => {
       if (props.link.to.nodeId && props.link.to.portId) {
         const toNode = graph.value.nodes[props.link.to.nodeId];
@@ -45,7 +44,7 @@ export default defineComponent({
         return generatePath(
           graph.value.grid,
           startPos.value,
-          endPos.value!,
+          endPos.value,
           // track change
           store.state.linkVersions[props.link.id],
         );

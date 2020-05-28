@@ -4,6 +4,7 @@ import {
   IGrid,
   IOffset,
   INode,
+  INodeInput,
   INodePort,
   PortDirection,
 } from '@/types';
@@ -122,7 +123,7 @@ function nextDots (start: number, length: number, portGap: number): number[] {
   return dots;
 }
 
-function updatePorts (node: INode, gridOffset: IOffset, { portGap }: { portGap: number }): INode {
+function updatePorts (node: INodeInput, gridOffset: IOffset, { portGap }: { portGap: number }): INode {
   const { x: offsetX, y: offsetY } = gridOffset;
   let { x, y } = node;
 
@@ -213,7 +214,7 @@ function updatePorts (node: INode, gridOffset: IOffset, { portGap }: { portGap: 
 export function markNodeWalkable (
   grid: Pathfinding.Grid,
   gridOffset: IOffset,
-  node: INode,
+  node: INodeInput,
   walkable: boolean,
   { nodePadding = DEFAULT_NODE_PADDING, portGap = DEFAULT_PORT_GAP }: IMarkNodeWalkableConfig,
 ): INode {

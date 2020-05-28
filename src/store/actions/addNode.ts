@@ -2,11 +2,17 @@ import {
   FlowchartContext, INodeInput,
 } from '@/types';
 
-export default function (context: FlowchartContext, node: INodeInput) {
+import { autoGridExpansions } from '@/utils/grid';
+
+export default function addNode ({ state, commit, dispatch }: FlowchartContext, node: INodeInput) {
+  autoGridExpansions(state.graph.grid, node).forEach(expansion => {
+    commit('expandGrid', expansion);
+  });
+
   const mutations = [{
     type: 'addNode',
     node: { ...node },
   }];
 
-  context.dispatch('historyPushEntry', mutations);
+  dispatch('historyPushEntry', mutations);
 }

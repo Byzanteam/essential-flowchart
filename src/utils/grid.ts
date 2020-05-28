@@ -260,11 +260,30 @@ export function markNodeWalkable (
   return updatedNode;
 }
 
-export function isInsideGrid (grid: Pathfinding.Grid, gridOffset: IOffset, x: number, y: number) {
-  return grid.isInside((x - gridOffset.x) / SCALE_FACTOR, (y - gridOffset.y) / SCALE_FACTOR);
-}
-
 export const pathFinder = Pathfinding.JumpPointFinder({
   heuristic: Pathfinding.Heuristic.manhattan,
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
 });
+
+const GRID_PADDING = 100;
+export function autoGridExpansions (grid: IGrid, node: INodeInput): IOffset[] {
+  const {
+    offset: gridOffset, width, height,
+  } = grid;
+
+  const negativeX = node.x < gridOffset.x + GRID_PADDING;
+  const negativeY = node.y < gridOffset.y + GRID_PADDING;
+  const positiveX = width + gridOffset.x - GRID_PADDING < node.x;
+  const positiveY = height + gridOffset.y - GRID_PADDING < node.y;
+
+  return [
+    {
+      x: negativeX ? -500 : 0,
+      y: negativeY ? -500 : 0,
+    },
+    {
+      x: positiveX ? 500 : 0,
+      y: positiveY ? 500 : 0,
+    },
+  ];
+}

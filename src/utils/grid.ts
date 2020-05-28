@@ -1,14 +1,18 @@
 import * as Pathfinding from 'pathfinding';
 import {
-  IGrid, INode, INodePort, PortDirection,
-  IOffset, Point2D,
+  Point,
+  IGrid,
+  IOffset,
+  INode,
+  INodePort,
+  PortDirection,
 } from '@/types';
 
-type Line = [Point2D, Point2D];
+type Line = [Point, Point];
 
 export const SCALE_FACTOR = 5;
-const defaultOffset = SCALE_FACTOR;
-const defaultGap = SCALE_FACTOR * 2;
+const DEFAULT_OFFSET = SCALE_FACTOR;
+const DEFAULT_GAP = SCALE_FACTOR * 2;
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
   // prevent vuex to observing pfGrid
@@ -36,7 +40,7 @@ function markLine (
   // @ts-ignore
   const points = Pathfinding.Util.interpolate(startX, startY, endX, endY);
 
-  points.forEach(([x, y]: [number, number]) => {
+  points.forEach(([x, y]: Point) => {
     grid.setWalkableAt(x, y, walkable);
   });
 }
@@ -60,26 +64,26 @@ function markPort (
   switch (direction) {
     case PortDirection.TOP:
       grid.setWalkableAt(x, y + 1, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - 1, y - defaultOffset / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + 1, y - defaultOffset / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x - 1, y - 1], [x - 1, y - DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + 1, y - DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
       break;
 
     case PortDirection.RIGHT:
       grid.setWalkableAt(x - 1, y, walkable);
-      markLine(grid, [[x + 1, y + 1], [x + defaultOffset / SCALE_FACTOR, y + 1]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + defaultOffset / SCALE_FACTOR, y - 1]], walkable);
+      markLine(grid, [[x + 1, y + 1], [x + DEFAULT_OFFSET / SCALE_FACTOR, y + 1]], walkable);
+      markLine(grid, [[x + 1, y - 1], [x + DEFAULT_OFFSET / SCALE_FACTOR, y - 1]], walkable);
       break;
 
     case PortDirection.BOTTOM:
       grid.setWalkableAt(x, y - 1, walkable);
-      markLine(grid, [[x - 1, y + 1], [x - 1, y + defaultOffset / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y + 1], [x + 1, y + defaultOffset / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x - 1, y + 1], [x - 1, y + DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
+      markLine(grid, [[x + 1, y + 1], [x + 1, y + DEFAULT_OFFSET / SCALE_FACTOR]], walkable);
       break;
 
     case PortDirection.LEFT:
       grid.setWalkableAt(x + 1, y, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - defaultOffset / SCALE_FACTOR, y - 1]], walkable);
-      markLine(grid, [[x - 1, y + 1], [x - defaultOffset / SCALE_FACTOR, y + 1]], walkable);
+      markLine(grid, [[x - 1, y - 1], [x - DEFAULT_OFFSET / SCALE_FACTOR, y - 1]], walkable);
+      markLine(grid, [[x - 1, y + 1], [x - DEFAULT_OFFSET / SCALE_FACTOR, y + 1]], walkable);
       break;
   }
 }
@@ -104,7 +108,7 @@ function nextDots (start: number, length: number): number[] {
 
   for (let i = 0; i < length; i += 1) {
     dots.push(current + 1);
-    current += 2 + defaultGap;
+    current += 2 + DEFAULT_GAP;
   }
 
   return dots;
@@ -126,7 +130,7 @@ function updatePorts (node: INode, gridOffset: IOffset): INode {
 
   const updatedPorts = Object.entries(groupedPorts).reduce((acc, [direction, ports]) => {
     const { length } = ports;
-    const portsLength = 3 * length + defaultGap * (length - 1);
+    const portsLength = 3 * length + DEFAULT_GAP * (length - 1);
     let dots: number[];
 
     // eslint-disable-next-line default-case
@@ -229,10 +233,10 @@ export function markNodeWalkable (
   width = Math.ceil(width / SCALE_FACTOR);
   height = Math.ceil(height / SCALE_FACTOR);
 
-  const topLeft: [number, number] = [x, y];
-  const topRight: [number, number] = [x + width, y];
-  const bottomRight: [number, number] = [x + width, y + height];
-  const bottomLeft: [number, number] = [x, y + height];
+  const topLeft: Point = [x, y];
+  const topRight: Point = [x + width, y];
+  const bottomRight: Point = [x + width, y + height];
+  const bottomLeft: Point = [x, y + height];
 
   const lines: Record<PortDirection, Line> = {
     [PortDirection.TOP]: [topLeft, topRight],

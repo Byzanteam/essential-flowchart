@@ -1,5 +1,5 @@
 import {
-  defineComponent, computed, PropType,
+  defineComponent, computed, watch, PropType,
   createElement,
 } from '@vue/composition-api';
 
@@ -40,16 +40,26 @@ export default defineComponent({
       return props.link.to.position;
     });
 
-    return () => {
+    const path = computed(() => {
       if (endPos.value) {
-        const path = computed(() => generatePath(
+        return generatePath(
           graph.value.grid,
           startPos.value,
           endPos.value!,
           // track change
           store.state.linkVersions[props.link.id],
-        ));
+        );
+      }
+      return [];
+    });
 
+    watch(path, newPath => store.commit(
+      'updateLinkPath',
+      { linkId: props.link.id, path: [...newPath] },
+    ));
+
+    return () => {
+      if (endPos.value) {
         return createElement(props.linkComponent, {
           props: {
             link: props.link,

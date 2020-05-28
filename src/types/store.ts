@@ -3,6 +3,7 @@ import {
   IGraph,
   INode,
   ILink,
+  Point,
 } from './graph';
 
 export interface IMutation extends Payload {
@@ -31,6 +32,9 @@ export interface IState {
   graph: IGraph;
   linkVersions: {
     [linkId: string]: number;
+  };
+  linkPath: {
+    [linkId: string]: Point[];
   };
   selected: ISelectedOrHovered | null;
 }

@@ -6,6 +6,7 @@ import addLink from './addLink';
 import removeLink from './removeLink';
 import touchLink from './touchLink';
 import moveLink from './moveLink';
+import updateLinkPath from './updateLinkPath';
 
 import setSelected from './setSelected';
 
@@ -22,6 +23,7 @@ export default {
   removeLink,
   touchLink,
   moveLink,
+  updateLinkPath,
 
   setSelected,
 

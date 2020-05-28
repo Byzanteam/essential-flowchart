@@ -28,19 +28,18 @@ import {
 
 import { useStore } from '@/hooks/store';
 import {
-  IPosition, ILink, IGrid, Point2D,
+  Point, IPosition, ILink, IGrid,
 } from '@/types';
-import { SCALE_FACTOR } from '@/utils/grid';
 
-function generatePathCommands (path: Point2D[], grid: IGrid): string {
+function generatePathCommands (path: Point[], grid: IGrid): string {
   if (!path.length) return '';
 
   const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
 
   const [first, ...rest] = path;
   return rest.reduce(
-    (acc, [x, y]) => `${acc} L${x * SCALE_FACTOR - gridOffsetX} ${y * SCALE_FACTOR - gridOffsetY}`,
-    `M${first[0] * SCALE_FACTOR - gridOffsetX} ${first[1] * SCALE_FACTOR - gridOffsetY}`,
+    (acc, [x, y]) => `${acc} L${x - gridOffsetX} ${y - gridOffsetY}`,
+    `M${first[0] - gridOffsetX} ${first[1] - gridOffsetY}`,
   );
 }
 
@@ -63,7 +62,7 @@ export default defineComponent({
     },
 
     path: {
-      type: Array as PropType<Point2D[]>,
+      type: Array as PropType<Point[]>,
       required: true,
     },
   },

@@ -30,21 +30,25 @@ export default defineComponent({
 
     const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
 
-    const startPos = computed(() => fromNode.value.ports[props.link.from.portId].position);
-    const endPos = computed(() => {
+    const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
+    const endPort = computed(() => {
       if (props.link.to.nodeId && props.link.to.portId) {
         const toNode = graph.value.nodes[props.link.to.nodeId];
-        return toNode.ports[props.link.to.portId].position;
+        return toNode.ports[props.link.to.portId];
       }
-      return store.state.mousePosition;
+      if (store.state.mousePosition) {
+        return {
+          position: store.state.mousePosition,
+        };
+      }
     });
 
     const path = computed(() => {
-      if (endPos.value) {
+      if (endPort.value) {
         return generatePath(
           graph.value.grid,
-          startPos.value,
-          endPos.value,
+          startPort.value,
+          endPort.value,
           // track change
           store.state.linkVersions[props.link.id],
         );
@@ -58,13 +62,13 @@ export default defineComponent({
     ));
 
     return () => {
-      if (endPos.value) {
+      if (endPort.value) {
         return createElement(props.linkComponent, {
           props: {
             link: props.link,
 
-            startPos: startPos.value,
-            endPos: endPos.value,
+            startPos: startPort.value.position,
+            endPos: endPort.value.position,
 
             path: path.value,
           },

@@ -9,6 +9,8 @@ export enum PortDirection {
   LEFT = 'left',
 }
 
+export type Point = [number, number];
+
 export interface INodePort {
   id: Id;
   direction: PortDirection;

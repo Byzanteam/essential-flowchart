@@ -1,10 +1,12 @@
 import PF from 'pathfinding';
-import { IPosition, IGrid } from '@/types';
+import { Point, IPosition, IGrid } from '@/types';
 import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
 
 import generateRightAnglePath from './generateRightAnglePath';
 
-type Point = [number, number];
+function scalePath (path: Point[]): Point[] {
+  return path.map(([x, y]) => [x * SCALE_FACTOR, y * SCALE_FACTOR]);
+}
 
 export default function generatePath (
   grid: IGrid,
@@ -33,10 +35,10 @@ export default function generatePath (
       ),
     ) as Point[];
 
-    if (!path.length) return generateRightAnglePath(scaledStartPos, scaledEndPos);
+    if (!path.length) return scalePath(generateRightAnglePath(scaledStartPos, scaledEndPos));
 
-    return path;
+    return scalePath(path);
   } catch (e) {
-    return generateRightAnglePath(scaledStartPos, scaledEndPos);
+    return scalePath(generateRightAnglePath(scaledStartPos, scaledEndPos));
   }
 }

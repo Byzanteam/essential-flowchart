@@ -71,6 +71,8 @@ export default function reactiveLinks (store: FlowchartStore) {
         const linkPath = state.linkPath[link.id];
 
         if (!linkPath) return;
+        // skip blank path
+        if (linkPath.length <= 1) return;
 
         let intersectant = false;
         const [first, ...rest] = linkPath;

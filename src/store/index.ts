@@ -33,6 +33,7 @@ const state: IState = {
   linkVersions: {},
   linkPath: {},
   selected: null,
+  mousePosition: null,
   config: {},
 };
 

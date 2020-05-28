@@ -1,19 +1,22 @@
 import { FlowchartContext, Id } from '@/types';
 
-export default function removeLink (context: FlowchartContext, linkId: Id) {
-  const { links } = context.state.graph;
-  if (!links.length) return;
-
-  const link = links[linkId];
-
+export default function removeLink (
+  { state, dispatch, commit }: FlowchartContext,
+  { linkId, history = true }: { linkId: Id; history: boolean },
+) {
+  const link = state.graph.links[linkId];
   if (!link) return;
 
-  const mutations = [{
+  const mutation = {
     type: 'removeLink',
     link: {
       ...link,
     },
-  }];
+  };
 
-  context.dispatch('historyPushEntry', mutations);
+  if (history) {
+    dispatch('historyPushEntry', mutation);
+  } else {
+    commit(mutation);
+  }
 }

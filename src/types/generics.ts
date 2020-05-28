@@ -9,3 +9,5 @@ export interface IOffset {
   x: number;
   y: number;
 }
+
+export type Point2D = [number, number];

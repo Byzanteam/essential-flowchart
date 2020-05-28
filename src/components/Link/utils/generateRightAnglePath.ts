@@ -1,11 +1,9 @@
-import { IPosition } from '@/types';
-
-type Point = [number, number];
+import { IPosition, Point2D } from '@/types';
 
 export default function generateRightAnglePath (
   startPos: IPosition,
   endPos: IPosition,
-): Point[] {
+): Point2D[] {
   const width = Math.abs(startPos.x - endPos.x);
   const height = Math.abs(startPos.y - endPos.y);
   const leftToRight = startPos.x < endPos.x;
@@ -23,7 +21,7 @@ export default function generateRightAnglePath (
     end = topToBottom ? endPos : startPos;
   }
 
-  const vertex: Point = isHorizontal ? [start.x, end.y] : [end.x, start.y];
+  const vertex: Point2D = isHorizontal ? [start.x, end.y] : [end.x, start.y];
 
   return [
     [start.x, start.y],

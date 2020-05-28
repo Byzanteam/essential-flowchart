@@ -35,10 +35,54 @@ import {
   defineComponent, PropType,
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
-import { IPosition, INode } from '@/types';
+import { IPosition, INode, FlowchartStore } from '@/types';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
+
+function useDragNode (store: FlowchartStore, node: INode) {
+  let draggingNodePosition: IPosition | null = null;
+
+  function onDragStart () {
+    draggingNodePosition = {
+      x: node.x,
+      y: node.y,
+    };
+  }
+
+  function onNodeDragging (left: number, top: number) {
+    store.dispatch('dragNode', {
+      id: node.id,
+      position: {
+        x: left,
+        y: top,
+      },
+      prevPosition: {
+        x: node.x,
+        y: node.y,
+      },
+    });
+  }
+
+  function onNodeDragStop (left: number, top: number) {
+    store.dispatch('dragNodeStop', {
+      id: node.id,
+      position: {
+        x: left,
+        y: top,
+      },
+      prevPosition: { ...draggingNodePosition },
+    });
+
+    draggingNodePosition = null;
+  }
+
+  return {
+    onDragStart,
+    onNodeDragging,
+    onNodeDragStop,
+  };
+}
 
 export default defineComponent({
   name: 'NodeWrapper',
@@ -65,41 +109,12 @@ export default defineComponent({
 
   setup (props) {
     const store = useStore();
-    let draggingNodePosition: IPosition | null = null;
 
-    const onDragStart = () => {
-      draggingNodePosition = {
-        x: props.node.x,
-        y: props.node.y,
-      };
-    };
-
-    const onNodeDragging = (left: number, top: number) => {
-      store.dispatch('dragNode', {
-        id: props.node.id,
-        position: {
-          x: left,
-          y: top,
-        },
-        prevPosition: {
-          x: props.node.x,
-          y: props.node.y,
-        },
-      });
-    };
-
-    const onNodeDragStop = (left: number, top: number) => {
-      store.dispatch('dragNodeStop', {
-        id: props.node.id,
-        position: {
-          x: left,
-          y: top,
-        },
-        prevPosition: { ...draggingNodePosition },
-      });
-
-      draggingNodePosition = null;
-    };
+    const {
+      onDragStart,
+      onNodeDragging,
+      onNodeDragStop,
+    } = useDragNode(store, props.node);
 
     return {
       onNodeDragging,

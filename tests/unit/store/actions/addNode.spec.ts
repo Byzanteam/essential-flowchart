@@ -118,20 +118,20 @@ describe('addNode', () => {
       // TODO: scale_factor
       expect(pfGrid.isWalkableAt(Math.ceil(x / SCALE_FACTOR), Math.ceil(y / SCALE_FACTOR))).toEqual(true);
       expect(pathFinder.findPath(
-        Math.ceil(99 / SCALE_FACTOR),
-        Math.ceil(99 / SCALE_FACTOR),
+        0,
+        0,
         Math.ceil(x / SCALE_FACTOR),
         Math.ceil(y / SCALE_FACTOR),
-        store.state.graph.grid.pfGrid.clone(),
+        pfGrid.clone(),
       ).length > 0).toEqual(true);
     });
 
     expect(pathFinder.findPath(
-      Math.ceil(99 / SCALE_FACTOR),
-      Math.ceil(99 / SCALE_FACTOR),
+      0,
+      0,
       Math.ceil(150 / SCALE_FACTOR),
       Math.ceil(120 / SCALE_FACTOR),
-      store.state.graph.grid.pfGrid.clone(),
+      pfGrid.clone(),
     ).length === 0).toEqual(true);
   });
 });

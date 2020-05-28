@@ -15,7 +15,7 @@ type IMarkNodeWalkableConfig = {
 }
 
 export const SCALE_FACTOR = 5;
-const DEFAULT_NODE_PADDING = SCALE_FACTOR;
+const DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
 const DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
@@ -62,33 +62,36 @@ function markPort (
   x = Math.ceil(x / SCALE_FACTOR);
   y = Math.ceil(y / SCALE_FACTOR);
 
-  // when set to blocked, the position of the port should be kept walkable
-  if (!walkable) grid.setWalkableAt(x, y, !walkable);
+  const scaledNodePadding = nodePadding / SCALE_FACTOR;
 
   // eslint-disable-next-line default-case
   switch (direction) {
     case PortDirection.TOP:
       grid.setWalkableAt(x, y + 1, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - 1, y - nodePadding / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + 1, y - nodePadding / SCALE_FACTOR]], walkable);
+      grid.setWalkableAt(x, y - scaledNodePadding, !walkable);
+      markLine(grid, [[x - 1, y], [x - 1, y - scaledNodePadding + 1]], walkable);
+      markLine(grid, [[x + 1, y], [x + 1, y - scaledNodePadding + 1]], walkable);
       break;
 
     case PortDirection.RIGHT:
       grid.setWalkableAt(x - 1, y, walkable);
-      markLine(grid, [[x + 1, y + 1], [x + nodePadding / SCALE_FACTOR, y + 1]], walkable);
-      markLine(grid, [[x + 1, y - 1], [x + nodePadding / SCALE_FACTOR, y - 1]], walkable);
+      grid.setWalkableAt(x + scaledNodePadding, y, !walkable);
+      markLine(grid, [[x, y - 1], [x + scaledNodePadding - 1, y - 1]], walkable);
+      markLine(grid, [[x, y + 1], [x + scaledNodePadding - 1, y + 1]], walkable);
       break;
 
     case PortDirection.BOTTOM:
       grid.setWalkableAt(x, y - 1, walkable);
-      markLine(grid, [[x - 1, y + 1], [x - 1, y + nodePadding / SCALE_FACTOR]], walkable);
-      markLine(grid, [[x + 1, y + 1], [x + 1, y + nodePadding / SCALE_FACTOR]], walkable);
+      grid.setWalkableAt(x, y + scaledNodePadding, !walkable);
+      markLine(grid, [[x + 1, y], [x + 1, y + scaledNodePadding - 1]], walkable);
+      markLine(grid, [[x - 1, y], [x - 1, y + scaledNodePadding - 1]], walkable);
       break;
 
     case PortDirection.LEFT:
       grid.setWalkableAt(x + 1, y, walkable);
-      markLine(grid, [[x - 1, y - 1], [x - nodePadding / SCALE_FACTOR, y - 1]], walkable);
-      markLine(grid, [[x - 1, y + 1], [x - nodePadding / SCALE_FACTOR, y + 1]], walkable);
+      grid.setWalkableAt(x - scaledNodePadding, y, !walkable);
+      markLine(grid, [[x, y + 1], [x - scaledNodePadding + 1, y + 1]], walkable);
+      markLine(grid, [[x, y - 1], [x - scaledNodePadding + 1, y - 1]], walkable);
       break;
   }
 }
@@ -180,19 +183,19 @@ function updatePorts (node: INode, gridOffset: IOffset, { portGap }: { portGap: 
 
 //
 // +-------------------------------+ +---+ +-------------------------------+
-// |                               | |   | |                               |
+// |                               ^ ^   ^ ^                               |
 // |                               | |   | |                               |
 // |         (x, y)                | |   | |                               |
-// |         ·                     v v   v v                     ·         |
+// |         ·                     | |   | |                     ·         |
 // |                                +     +                                |
 // |                                                                       |
 // |                                                                       |
 // |                                                                       |
 // |                                                                       |
 // |                                                                       |
-// |--------->                                                   <---------+
+// |<---------                                                   --------->+
 //            +                                                 +
-// |--------->                                                   <---------+
+// |<---------                                                   --------->+
 // |                                                                       |
 // |                                                                       |
 // |                                                                       |
@@ -200,10 +203,10 @@ function updatePorts (node: INode, gridOffset: IOffset, { portGap }: { portGap: 
 // |                                                                       |
 // |                                                                       |
 // |                                   +                                   |
-// |         ·                        ^ ^                        ·         |
+// |         ·                        | |                        ·         |
 // |                                  | |                                  |
 // |                                  | |                                  |
-// |                                  | |                                  |
+// |                                  v v                                  |
 // +----------------------------------+ +----------------------------------+
 //
 
@@ -227,8 +230,8 @@ export function markNodeWalkable (
 
   x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR);
   y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR);
-  width = Math.ceil(width / SCALE_FACTOR);
-  height = Math.ceil(height / SCALE_FACTOR);
+  width = Math.ceil((width + nodePadding * 2) / SCALE_FACTOR);
+  height = Math.ceil((height + nodePadding * 2) / SCALE_FACTOR);
 
   const topLeft: Point = [x, y];
   const topRight: Point = [x + width, y];
@@ -242,13 +245,22 @@ export function markNodeWalkable (
     [PortDirection.LEFT]: [bottomLeft, topLeft],
   };
 
-  // mark rectangle
-  Object.values(lines).forEach(line => markLine(grid, line, walkable));
+  const steps: Function[] = [
+    () => {
+      // mark rectangle
+      Object.values(lines).forEach(line => markLine(grid, line, walkable));
+    },
 
-  // mark ports
-  Object.values(updatedNode.ports).forEach(
-    port => markPort(grid, port, walkable, { nodePadding }),
-  );
+    () => {
+      // mark ports
+      Object.values(updatedNode.ports).forEach(
+        port => markPort(grid, port, walkable, { nodePadding }),
+      );
+    },
+  ];
+
+  if (walkable) steps.reverse();
+  steps.forEach(step => step());
 
   return updatedNode;
 }

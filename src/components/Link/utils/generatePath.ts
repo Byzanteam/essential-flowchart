@@ -49,11 +49,14 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig):
   const scaledStartPos = scalePosition(getPaddingPoint(startPort, config));
   const scaledEndPos = scalePosition(getPaddingPoint(endPort, config));
 
-  return [
-    [startPort.position.x, startPort.position.y],
-    ...scalePath(generateRightAnglePath(scaledStartPos, scaledEndPos)),
-    [endPort.position.x, endPort.position.y],
-  ];
+  const originalStartPos = scalePosition(startPort.position);
+  const originalEndPos = scalePosition(endPort.position);
+
+  return scalePath([
+    [originalStartPos.x, originalStartPos.y],
+    ...generateRightAnglePath(scaledStartPos, scaledEndPos),
+    [originalEndPos.x, originalEndPos.y],
+  ]);
 }
 
 export default function generatePath (

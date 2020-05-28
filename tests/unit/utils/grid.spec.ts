@@ -1,5 +1,6 @@
 import { PortDirection } from '@/types';
 import { buildEmptyGrid, markNodeWalkable } from '@/utils/grid';
+import { buildConfig } from '@/utils/config';
 
 describe('clean walkable', () => {
   it('works', () => {
@@ -22,8 +23,8 @@ describe('clean walkable', () => {
       },
     };
 
-    markNodeWalkable(grid.pfGrid, grid.offset, node, false, {});
-    markNodeWalkable(grid.pfGrid, grid.offset, node, true, {});
+    markNodeWalkable(grid.pfGrid, grid.offset, node, false, buildConfig({}));
+    markNodeWalkable(grid.pfGrid, grid.offset, node, true, buildConfig({}));
 
     // @ts-ignore
     grid.pfGrid.nodes.forEach(row => {

@@ -1,5 +1,6 @@
 import { PortDirection } from '@/types';
-import { pathFinder, SCALE_FACTOR } from '@/utils/grid';
+import { pathFinder } from '@/utils/grid';
+import { SCALE_FACTOR } from '@/utils/config';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {

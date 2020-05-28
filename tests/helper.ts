@@ -11,6 +11,7 @@ import {
 } from '@/types';
 
 import { buildEmptyGrid } from '@/utils/grid';
+import { buildConfig } from '@/utils/config';
 
 type NodeRect = [number, number, number, number];
 
@@ -148,7 +149,7 @@ export function createStore (
       linkPath: {},
       selected: (stateAttrs && stateAttrs.selected) || null,
       mousePosition: null,
-      config: {},
+      config: buildConfig({}),
     },
     mutations: mutations || allMutations,
     actions: actions || allActions,

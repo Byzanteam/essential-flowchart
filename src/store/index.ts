@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { IState, FlowchartStore } from '@/types';
 import { buildEmptyGrid } from '@/utils/grid';
+import { buildConfig } from '@/utils/config';
 import mutations from './mutations';
 import actions from './actions';
 import reactiveLinks from './plugins/reactiveLinks';
@@ -34,7 +35,7 @@ const state: IState = {
   linkPath: {},
   selected: null,
   mousePosition: null,
-  config: {},
+  config: buildConfig({}),
 };
 
 const store: FlowchartStore = new Vuex.Store({

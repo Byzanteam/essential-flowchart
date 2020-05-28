@@ -1,6 +1,7 @@
 import * as Pathfinding from 'pathfinding';
 import {
   Point,
+  IConfig,
   IGrid,
   IOffset,
   INode,
@@ -8,16 +9,9 @@ import {
   INodePort,
   PortDirection,
 } from '@/types';
+import { SCALE_FACTOR } from '@/utils/config';
 
 type Line = [Point, Point];
-type IMarkNodeWalkableConfig = {
-  nodePadding?: number;
-  portGap?: number;
-}
-
-export const SCALE_FACTOR = 5;
-const DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
-const DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
 
 export function buildEmptyGrid (width: number, height: number): IGrid {
   // prevent vuex to observing pfGrid
@@ -216,7 +210,7 @@ export function markNodeWalkable (
   gridOffset: IOffset,
   node: INodeInput,
   walkable: boolean,
-  { nodePadding = DEFAULT_NODE_PADDING, portGap = DEFAULT_PORT_GAP }: IMarkNodeWalkableConfig,
+  { nodePadding, portGap }: IConfig,
 ): INode {
   const updatedNode = updatePorts(node, gridOffset, { portGap });
 

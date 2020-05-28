@@ -30,9 +30,11 @@ export interface ISelectedOrHovered {
 export type ISelectable = INode | ILink;
 
 export interface IConfig {
-  nodePadding?: number;
-  portGap?: number;
+  nodePadding: number;
+  portGap: number;
 }
+
+export type IConfigInput = Partial<IConfig>;
 
 export interface IState {
   history: IHistory;

@@ -5,13 +5,13 @@ import updateNodePosition from './updateNodePosition';
 import addLink from './addLink';
 import removeLink from './removeLink';
 import touchLink from './touchLink';
-import moveLink from './moveLink';
 import updateLinkPath from './updateLinkPath';
 
 import setSelected from './setSelected';
 
 import expandGrid from './expandGird';
 
+import updateMousePosition from './updateMousePosition';
 import historyMutations from './history';
 
 export default {
@@ -22,12 +22,12 @@ export default {
   addLink,
   removeLink,
   touchLink,
-  moveLink,
   updateLinkPath,
 
   setSelected,
 
   expandGrid,
 
+  updateMousePosition,
   ...historyMutations,
 };

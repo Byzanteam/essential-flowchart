@@ -37,7 +37,7 @@ export default defineComponent({
         const toNode = graph.value.nodes[props.link.to.nodeId];
         return toNode.ports[props.link.to.portId].position;
       }
-      return props.link.to.position;
+      return store.state.mousePosition;
     });
 
     const path = computed(() => {

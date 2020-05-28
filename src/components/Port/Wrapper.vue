@@ -51,10 +51,7 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
         y: e.y,
       };
 
-      store.commit('moveLink', {
-        linkId,
-        toPosition,
-      });
+      store.commit('updateMousePosition', toPosition);
     }
 
     function mouseUpHandler (e: MouseEvent) {
@@ -86,6 +83,8 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
       } else { // cancel link
         store.dispatch('removeLink', { linkId, history: false });
       }
+
+      store.commit('updateMousePosition', null);
 
       // remove listeners
       window.removeEventListener('mouseup', mouseUpHandler, false);

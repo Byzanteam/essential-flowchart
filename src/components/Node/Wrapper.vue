@@ -9,27 +9,24 @@
     axis="both"
     w="auto"
     h="auto"
-    :class="{ 'selected': isSelected }"
     class="node-wrapper"
     @dragging="onNodeDragging"
     @dragstop="onNodeDragStop"
-    @click.native="onNodeClick"
+    @activated="onNodeClick"
   >
-    <span>
-      <component
-        :is="nodeComponent"
-        :node="node"
-        :is-selected="isSelected"
-      />
+    <component
+      :is="nodeComponent"
+      :node="node"
+      :is-selected="isSelected"
+    />
 
-      <PortWrapperComponent
-        v-for="(port, id) in node.ports"
-        :key="id"
-        :node="node"
-        :port="port"
-        :port-component="portComponent"
-      />
-    </span>
+    <PortWrapperComponent
+      v-for="(port, id) in node.ports"
+      :key="id"
+      :node="node"
+      :port="port"
+      :port-component="portComponent"
+    />
   </vue-draggable-resizable>
 </template>
 

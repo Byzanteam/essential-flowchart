@@ -35,57 +35,15 @@
 import VueDraggableResizable from 'vue-draggable-resizable';
 import {
   defineComponent, computed,
-  PropType, Ref,
+  PropType,
 } from '@vue/composition-api';
-import { useStore } from '@/hooks/store';
-import { IPosition, INode, FlowchartStore } from '@/types';
+import useStore from '@/hooks/useStore';
+import { INode } from '@/types';
+
+import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
-
-function useDragNode (store: FlowchartStore, node: Ref<INode>) {
-  let draggingNodePosition: IPosition | null = null;
-
-  function onDragStart () {
-    draggingNodePosition = {
-      x: node.value.x,
-      y: node.value.y,
-    };
-  }
-
-  function onNodeDragging (left: number, top: number) {
-    store.dispatch('dragNode', {
-      id: node.value.id,
-      position: {
-        x: left,
-        y: top,
-      },
-      prevPosition: {
-        x: node.value.x,
-        y: node.value.y,
-      },
-    });
-  }
-
-  function onNodeDragStop (left: number, top: number) {
-    store.dispatch('dragNodeStop', {
-      id: node.value.id,
-      position: {
-        x: left,
-        y: top,
-      },
-      prevPosition: { ...draggingNodePosition },
-    });
-
-    draggingNodePosition = null;
-  }
-
-  return {
-    onDragStart,
-    onNodeDragging,
-    onNodeDragStop,
-  };
-}
 
 export default defineComponent({
   name: 'NodeWrapper',

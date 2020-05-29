@@ -7,29 +7,11 @@
 </template>
 
 <script lang="ts">
-import {
-  defineComponent,
-  reactive, ref, computed,
-  Ref,
-} from '@vue/composition-api';
+import { defineComponent, computed } from '@vue/composition-api';
 
-import { useStore } from '@/hooks/store';
+import useStore from '@/hooks/useStore';
 
-function useSize () {
-  const canvasRef: Ref<null | HTMLElement> = ref(null);
-
-  const size = reactive({
-    width: 0,
-    height: 0,
-    offsetX: 0,
-    offsetY: 0,
-  });
-
-  return {
-    canvasRef,
-    size,
-  };
-}
+import useSize from './hooks/useSize';
 
 export default defineComponent({
   name: 'Canvas',

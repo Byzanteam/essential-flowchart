@@ -1,7 +1,6 @@
 import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
-  INode,
   INodeInput,
   ILink,
   Point,

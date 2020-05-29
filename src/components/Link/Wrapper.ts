@@ -41,6 +41,7 @@ export default defineComponent({
           position: store.state.mousePosition,
         };
       }
+      return null;
     });
 
     const path = computed(() => {

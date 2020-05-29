@@ -7,7 +7,7 @@ import removeLink from './removeLink';
 import touchLink from './touchLink';
 import updateLinkPath from './updateLinkPath';
 
-import setSelected from './setSelected';
+import updateSelected from './updateSelected';
 
 import expandGrid from './expandGird';
 
@@ -24,7 +24,7 @@ export default {
   touchLink,
   updateLinkPath,
 
-  setSelected,
+  updateSelected,
 
   expandGrid,
 

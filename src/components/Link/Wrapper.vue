@@ -1,6 +1,22 @@
+<template>
+  <span
+    v-if="endPort"
+    @click="onLinkClick"
+  >
+    <component
+      :is="linkComponent"
+      :link="link"
+      :start-pos="startPort.position"
+      :end-pos="endPort.position"
+      :path="path"
+      :is-selected="isSelected"
+    />
+  </span>
+</template>
+
+<script lang="ts">
 import {
   defineComponent, computed, watch, PropType,
-  createElement,
 } from '@vue/composition-api';
 
 import { useStore } from '@/hooks/store';
@@ -18,6 +34,12 @@ export default defineComponent({
       type: Object as PropType<ILink>,
       required: true,
     },
+
+    isSelected: {
+      type: Boolean,
+      default: false,
+    },
+
     linkComponent: {
       type: Object as PropType<IFlowchartComponent>,
       required: true,
@@ -63,20 +85,16 @@ export default defineComponent({
       { linkId: props.link.id, path: [...newPath] },
     ));
 
-    return () => {
-      if (endPort.value) {
-        return createElement(props.linkComponent, {
-          props: {
-            link: props.link,
+    const onLinkClick = () => {
+      store.dispatch('selectLink', props.link.id);
+    };
 
-            startPos: startPort.value.position,
-            endPos: endPort.value.position,
-
-            path: path.value,
-          },
-        });
-      }
-      return null;
+    return {
+      startPort,
+      endPort,
+      path,
+      onLinkClick,
     };
   },
 });
+</script>

@@ -8,6 +8,7 @@ export default function ({ commit }: FlowchartContext, mutations: IMutation[] | 
     // eslint-disable-next-line no-param-reassign
     mutations = [mutations];
   }
+
   mutations.forEach(mutation => {
     commit(mutation);
   });

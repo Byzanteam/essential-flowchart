@@ -4,6 +4,7 @@
       v-for="node in nodes"
       :key="node.id"
       :node="node"
+      :is-selected="isNodeSelected(node.id)"
       :node-component="nodeComponent"
       :port-component="portComponent"
     />
@@ -12,6 +13,7 @@
       v-for="link in links"
       :key="link.id"
       :link="link"
+      :is-selected="isLinkSelected(link.id)"
       :link-component="linkComponent"
     />
   </CanvasComponent>
@@ -23,13 +25,13 @@ import {
   PropType,
 } from '@vue/composition-api';
 import { useStore } from '@/hooks/store';
-import { IStateInput, FlowchartStore } from '@/types';
+import { IStateInput, FlowchartStore, Id } from '@/types';
 import { buildState } from '@/utils/graph';
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
 import NodeDefault from '../Node/Default.vue';
 import PortDefault from '../Port/Default.vue';
-import LinkWrapperComponent from '../Link/Wrapper';
+import LinkWrapperComponent from '../Link/Wrapper.vue';
 import LinkDefault from '../Link/Default.vue';
 
 function useState (rawState: IStateInput, store: FlowchartStore) {
@@ -56,6 +58,29 @@ interface IFlowchartProps {
    * Custom components
    */
   components?: IFlowchartComponents;
+}
+
+function useSelected (store: FlowchartStore) {
+  const selected = computed(() => store.state.selected);
+
+  function isNodeSelected (nodeId: Id) {
+    return !!(selected.value
+      && selected.value.type === 'node'
+      && selected.value.id === nodeId
+    );
+  }
+
+  function isLinkSelected (linkId: Id) {
+    return !!(selected.value
+      && selected.value.type === 'link'
+      && selected.value.id === linkId
+    );
+  }
+
+  return {
+    isNodeSelected,
+    isLinkSelected,
+  };
 }
 
 export default defineComponent({
@@ -97,6 +122,7 @@ export default defineComponent({
       linkComponent,
       nodes,
       links,
+      ...useSelected(store),
     };
   },
 });

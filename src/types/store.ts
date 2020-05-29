@@ -1,7 +1,6 @@
 import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
-  INode,
   INodeInput,
   ILink,
   Point,
@@ -27,7 +26,7 @@ export interface ISelectedOrHovered {
   id: string;
 }
 
-export type ISelectable = INode | ILink;
+export type SelectedOrHovered = ISelectedOrHovered | null;
 
 export interface IConfig {
   nodePadding: number;
@@ -45,9 +44,9 @@ export interface IState {
   linkPath: {
     [linkId: string]: Point[];
   };
-  selected: ISelectedOrHovered | null;
   mousePosition: IPosition | null;
   config: IConfig;
+  selected: SelectedOrHovered;
 }
 
 export interface IStateInput {

@@ -17,9 +17,14 @@ function findPortEl (el: HTMLElement): HTMLElement | null {
   return curr;
 }
 
+// https://gist.github.com/6174/6062387
+function generateUuid (): string {
+  return Math.random().toString(36).substring(2, 15);
+}
+
 export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
-    const linkId = `${Date.now()}`; // TODO: generate id
+    const linkId = generateUuid();
     const fromNodeId = node.id;
     const fromPortId = port.id;
 

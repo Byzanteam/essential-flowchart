@@ -1,15 +1,10 @@
 import { FlowchartContext, Id } from '@/types';
 
-export default function selectNode ({ state, dispatch }: FlowchartContext, nodeId: Id) {
+export default function selectNode ({ state, commit }: FlowchartContext, nodeId: Id) {
   if (state.selected && state.selected.id === nodeId) return;
 
-  const mutation = {
-    type: 'updateSelected',
-    selected: {
-      type: 'node',
-      id: nodeId,
-    },
-  };
-
-  dispatch('historyPushEntry', mutation);
+  commit('updateSelected', {
+    type: 'node',
+    id: nodeId,
+  });
 }

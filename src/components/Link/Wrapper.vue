@@ -1,6 +1,6 @@
 <template>
   <span
-    v-if="endPos"
+    v-if="endPort"
     @click="onLinkClick"
   >
     <component

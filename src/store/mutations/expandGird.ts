@@ -2,6 +2,8 @@ import { IState, IOffset } from '@/types';
 import { buildEmptyGrid, markNodeWalkable } from '@/utils/grid';
 
 export default function expandGrid (state: IState, expansion: IOffset) {
+  if (expansion.x === 0 && expansion.y === 0) return;
+
   const prevOffset: IOffset = state.graph.grid.offset;
   let { width, height } = state.graph.grid;
 
@@ -25,6 +27,6 @@ export default function expandGrid (state: IState, expansion: IOffset) {
   };
 
   Object.values(state.graph.nodes).forEach(node => {
-    markNodeWalkable(pfGrid, offset, node, false);
+    markNodeWalkable(pfGrid, offset, node, false, state.config);
   });
 }

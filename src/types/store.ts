@@ -2,6 +2,7 @@ import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
   INode,
+  INodeInput,
   ILink,
   Point,
 } from './graph';
@@ -28,6 +29,13 @@ export interface ISelectedOrHovered {
 
 export type ISelectable = INode | ILink;
 
+export interface IConfig {
+  nodePadding: number;
+  portGap: number;
+}
+
+export type IConfigInput = Partial<IConfig>;
+
 export interface IState {
   history: IHistory;
   graph: IGraph;
@@ -39,10 +47,11 @@ export interface IState {
   };
   selected: ISelectedOrHovered | null;
   mousePosition: IPosition | null;
+  config: IConfig;
 }
 
-export interface IStateAttrs {
-  nodes: INode[];
+export interface IStateInput {
+  nodes: INodeInput[];
   links: ILink[];
 }
 

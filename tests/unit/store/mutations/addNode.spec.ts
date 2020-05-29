@@ -80,7 +80,18 @@ describe('addNode', () => {
     const { pfGrid } = store.state.graph.grid;
 
     const blockedNodes = [
-      [100, 100],
+      // topLeft
+      // [100, 100],
+      [90, 90],
+      // topRight
+      // [200, 100],
+      [210, 90],
+      // bottomRight
+      // [200, 140],
+      [210, 150],
+      // bottomLeft
+      // [100, 140],
+      [90, 150],
     ];
 
     blockedNodes.forEach(([x, y]) => {

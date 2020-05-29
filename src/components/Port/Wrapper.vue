@@ -55,6 +55,8 @@ function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort
     }
 
     function mouseUpHandler (e: MouseEvent) {
+      store.commit('updateMousePosition', null);
+
       const portEl = findPortEl(e.target as HTMLElement);
 
       if (portEl) { // complete link

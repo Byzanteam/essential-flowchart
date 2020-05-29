@@ -1,6 +1,6 @@
 <template>
   <div ref="canvasRef">
-    <div class="canvas__inner">
+    <div class="canvas__inner" :style="canvasStyleObj">
       <slot />
     </div>
   </div>
@@ -9,9 +9,11 @@
 <script lang="ts">
 import {
   defineComponent,
-  reactive, ref,
+  reactive, ref, computed,
   Ref,
 } from '@vue/composition-api';
+
+import { useStore } from '@/hooks/store';
 
 function useSize () {
   const canvasRef: Ref<null | HTMLElement> = ref(null);
@@ -34,10 +36,17 @@ export default defineComponent({
 
   setup () {
     const { size, canvasRef } = useSize();
+    const store = useStore();
+
+    const canvasStyleObj = computed(() => ({
+      width: `${store.state.graph.grid.width}px`,
+      height: `${store.state.graph.grid.height}px`,
+    }));
 
     return {
       canvasRef,
       size,
+      canvasStyleObj,
     };
   },
 });
@@ -45,10 +54,8 @@ export default defineComponent({
 
 <style lang="scss">
 .canvas__inner {
-  background-color: red;
+  background-color: purple;
   cursor: move;
-  height: 10000px;
   position: relative;
-  width: 10000px;
 }
 </style>

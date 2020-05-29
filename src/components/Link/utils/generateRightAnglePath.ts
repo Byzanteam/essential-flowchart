@@ -6,26 +6,13 @@ export default function generateRightAnglePath (
 ): Point2D[] {
   const width = Math.abs(startPos.x - endPos.x);
   const height = Math.abs(startPos.y - endPos.y);
-  const leftToRight = startPos.x < endPos.x;
-  const topToBottom = startPos.y < endPos.y;
   const isHorizontal = width > height;
 
-  let start: IPosition;
-  let end: IPosition;
-
-  if (isHorizontal) {
-    start = leftToRight ? startPos : endPos;
-    end = leftToRight ? endPos : startPos;
-  } else {
-    start = topToBottom ? startPos : endPos;
-    end = topToBottom ? endPos : startPos;
-  }
-
-  const vertex: Point2D = isHorizontal ? [start.x, end.y] : [end.x, start.y];
+  const vertex: Point2D = isHorizontal ? [endPos.x, startPos.y] : [startPos.x, endPos.y];
 
   return [
-    [start.x, start.y],
+    [startPos.x, startPos.y],
     vertex,
-    [end.x, end.y],
+    [endPos.x, endPos.y],
   ];
 }

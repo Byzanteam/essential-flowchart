@@ -1,3 +1,4 @@
+import Vue from 'vue';
 import { FlowchartContext, Id } from '@/types';
 
 export default function discardLink (
@@ -12,4 +13,6 @@ export default function discardLink (
       ...link,
     },
   });
+
+  Vue.delete(state.linkPath, linkId);
 }

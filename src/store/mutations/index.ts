@@ -2,6 +2,9 @@ import addNode from './addNode';
 import removeNode from './removeNode';
 import updateNodePosition from './updateNodePosition';
 
+import newLink from './newLink';
+import discardLink from './discardLink';
+
 import addLink from './addLink';
 import removeLink from './removeLink';
 import touchLink from './touchLink';
@@ -18,6 +21,9 @@ export default {
   addNode,
   removeNode,
   updateNodePosition,
+
+  newLink,
+  discardLink,
 
   addLink,
   removeLink,

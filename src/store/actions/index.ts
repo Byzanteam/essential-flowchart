@@ -6,6 +6,9 @@ import dragNodeStop from './dragNodeStop';
 import deleteSelected from './deleteSelected';
 import selectNode from './selectNode';
 
+import newLink from './newLink';
+import discardLink from './discardLink';
+
 import addLink from './addLink';
 import removeLink from './removeLink';
 import selectLink from './selectLink';
@@ -22,6 +25,9 @@ export default {
   dragNodeStop,
   selectNode,
   deleteSelected,
+
+  newLink,
+  discardLink,
 
   addLink,
   removeLink,

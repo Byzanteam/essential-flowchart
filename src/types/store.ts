@@ -30,10 +30,16 @@ export interface ISelectedOrHovered {
 
 export type SelectedOrHovered = ISelectedOrHovered | null;
 
+export interface ILinkPipelinePhase {
+  (link: INewLink, graph?: IGraph): INewLink | null;
+  (link: INewLink, graph?: IGraph): ILink | null;
+  (link: ILink, graph?: IGraph): ILink | null;
+}
+
 export interface IConfig {
   nodePadding: number;
   portGap: number;
-  linkValidations: Array<(link: INewLink | ILink, graph: IGraph) => boolean>;
+  linkPipeline: ILinkPipelinePhase[];
 }
 
 export type IConfigInput = Partial<IConfig>;

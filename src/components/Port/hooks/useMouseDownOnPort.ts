@@ -2,8 +2,10 @@ import {
   Id,
   INode, INodePort, IPosition,
   LinkType,
+  INewLink,
   FlowchartStore,
 } from '@/types';
+import runPipeline from '@/pipelines/runPipeline';
 
 function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
   let curr: HTMLElement | null = el;
@@ -26,17 +28,18 @@ function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
   return target;
 }
 
-// https://gist.github.com/6174/6062387
-function generateUuid (): string {
-  return Math.random().toString(36).substring(2, 15);
-}
-
 export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
-    // TODO: move linkId out
-    const linkId = generateUuid();
     const fromNodeId = node.id;
     const fromPortId = port.id;
+
+    const newLink = runPipeline({
+      type: LinkType.New,
+      from: {
+        nodeId: fromNodeId,
+        portId: fromPortId,
+      },
+    } as INewLink, store.state);
 
     function mouseMoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
@@ -50,6 +53,12 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     function mouseUpHandler (e: MouseEvent) {
       store.commit('updateMousePosition', null);
 
+      // remove listeners
+      window.removeEventListener('mouseup', mouseUpHandler, false);
+      window.removeEventListener('mousemove', mouseMoveHandler, false);
+
+      if (!newLink) return;
+
       const target = findTarget(e.target as HTMLElement);
 
       if (target) { // complete link
@@ -58,50 +67,35 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
           portId: toPortId,
         } = target;
 
-        const link = {
-          id: linkId,
+        const link = runPipeline({
+          ...newLink,
           type: LinkType.Created,
-          from: {
-            nodeId: fromNodeId,
-            portId: fromPortId,
-          },
           to: {
             nodeId: toNodeId,
             portId: toPortId,
           },
-        };
+        }, store.state);
 
-        // add link
-        store.dispatch('addLink', { link });
+        if (link) {
+          store.dispatch('addLink', { link });
+        } else {
+          store.dispatch('discardLink', { linkId: newLink.id });
+        }
       } else { // discard link
-        store.dispatch('discardLink', { linkId });
+        store.dispatch('discardLink', { linkId: newLink.id });
       }
-
-      store.commit('updateMousePosition', null);
-
-      // remove listeners
-      window.removeEventListener('mouseup', mouseUpHandler, false);
-      window.removeEventListener('mousemove', mouseMoveHandler, false);
     }
 
-    // new link when start
-    store.dispatch('newLink', {
-      link: {
-        id: linkId,
-        type: LinkType.New,
-        from: {
-          nodeId: fromNodeId,
-          portId: fromPortId,
-        },
-        to: {},
-      },
-    }).then(valid => {
-      if (valid) {
-        // add listeners
-        window.addEventListener('mousemove', mouseMoveHandler, false);
-        window.addEventListener('mouseup', mouseUpHandler, false);
-      }
-    });
+    if (newLink) {
+      // new link when start
+      store.dispatch('newLink', {
+        link: newLink,
+      });
+
+      // add listeners
+      window.addEventListener('mousemove', mouseMoveHandler, false);
+      window.addEventListener('mouseup', mouseUpHandler, false);
+    }
 
     // prevent text selection
     evt.preventDefault();

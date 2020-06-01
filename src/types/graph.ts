@@ -63,9 +63,11 @@ export interface ILink {
   from: ILinkPort;
   to: ILinkPort;
 }
-export interface INewLink extends ILink {
+export interface INewLink {
+  id: Id;
   type: LinkType.New;
-  to: ILinkPort & { position?: IPosition };
+  from: ILinkPort;
+  to: ILinkPort;
 }
 
 // grid

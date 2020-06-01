@@ -1,5 +1,6 @@
 import { IConfigInput, IConfig } from '@/types';
-import distinctFromNodeAndToNode from '@/validations/distinctFromNodeAndToNode';
+import generateLinkId from '@/pipelines/generateLinkId';
+import distinctFromNodeAndToNode from '@/pipelines/distinctFromNodeAndToNode';
 
 export const SCALE_FACTOR = 5;
 
@@ -10,12 +11,12 @@ export function buildConfig (
   {
     nodePadding = DEFAULT_NODE_PADDING,
     portGap = DEFAULT_PORT_GAP,
-    linkValidations = [distinctFromNodeAndToNode],
+    linkPipeline = [generateLinkId, distinctFromNodeAndToNode],
   }: IConfigInput,
 ): IConfig {
   return {
     nodePadding,
     portGap,
-    linkValidations,
+    linkPipeline,
   };
 }

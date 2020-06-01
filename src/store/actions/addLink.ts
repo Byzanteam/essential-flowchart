@@ -19,6 +19,11 @@ export default function addLink (
     } else {
       commit(mutation);
     }
+  } else {
+    dispatch({
+      type: 'discardLink',
+      linkId: link.id,
+    });
   }
 
   return isValid;

@@ -2,8 +2,9 @@ import { FlowchartContext, ILink } from '@/types';
 
 export default function addLink (
   { commit, dispatch, state }: FlowchartContext,
-  { link, history = true, validateLink }: { link: ILink; history: boolean; validateLink?: Function },
-) {
+  { link, history = true }: { link: ILink; history: boolean },
+): boolean {
+  const { validateLink } = state.config;
   let valid = true;
 
   if (validateLink) {

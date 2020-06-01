@@ -14,5 +14,6 @@ export function buildConfig (
   return {
     nodePadding,
     portGap,
+    validateLink: (_newLink, _graph) => true,
   };
 }

@@ -6,6 +6,7 @@
     :z="50"
     :resizable="false"
     :grid="[1, 1]"
+    :scale="scale"
     axis="both"
     w="auto"
     h="auto"
@@ -43,10 +44,13 @@ import PortWrapperComponent from '../Port/Wrapper.vue';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
-function useDragNode (store: FlowchartStore, node: Ref<INode>) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function useDragNode (store: FlowchartStore, node: Ref<INode>, _scale: number) {
   let draggingNodePosition: IPosition | null = null;
 
-  function onDragStart () {
+  function onDragStart (evt: MouseEvent) {
+    evt.stopPropagation(); // prevent canvas move
+
     draggingNodePosition = {
       x: node.value.x,
       y: node.value.y,
@@ -119,6 +123,7 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
     const node = computed(() => props.node);
+    const scale = computed(() => store.state.graph.scale);
 
     const onNodeClick = () => {
       store.dispatch('selectNode', props.node.id);
@@ -126,7 +131,8 @@ export default defineComponent({
 
     return {
       onNodeClick,
-      ...useDragNode(store, node),
+      scale,
+      ...useDragNode(store, node, scale.value),
     };
   },
 });

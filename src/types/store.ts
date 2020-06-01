@@ -52,6 +52,7 @@ export interface IState {
 export interface IStateInput {
   nodes: INodeInput[];
   links: ILink[];
+  scale?: number;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

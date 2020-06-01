@@ -13,7 +13,7 @@ import Flowchart from './components/Flowchart/Flowchart.vue';
 
 const rawState: IStateInput = {
   // offset: [0, 0],
-  // scale: 1,
+  scale: 0.5,
   nodes: [
     {
       id: 'node1',

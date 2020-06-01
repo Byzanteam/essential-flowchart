@@ -12,6 +12,7 @@ import updateSelected from './updateSelected';
 import expandGrid from './expandGird';
 
 import updateMousePosition from './updateMousePosition';
+import updateScale from './updateScale';
 import historyMutations from './history';
 
 export default {
@@ -29,5 +30,6 @@ export default {
   expandGrid,
 
   updateMousePosition,
+  updateScale,
   ...historyMutations,
 };

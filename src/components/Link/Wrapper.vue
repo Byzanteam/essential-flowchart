@@ -60,7 +60,10 @@ export default defineComponent({
       }
       if (store.state.mousePosition) {
         return {
-          position: store.state.mousePosition,
+          position: {
+            x: store.state.mousePosition.x / graph.value.scale,
+            y: store.state.mousePosition.y / graph.value.scale,
+          },
         };
       }
       return null;

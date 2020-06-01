@@ -37,28 +37,28 @@ export default defineComponent({
     let panZoomInstance = null;
 
     const bindEvents = (instance: PanZoom) => {
-      instance.on('panstart', e => {
-        emit('panstart', e);
+      instance.on('panstart', (ins: PanZoom) => {
+        emit('panstart', ins);
       });
 
-      instance.on('panend', e => {
-        emit('panend', e);
+      instance.on('pan', (ins: PanZoom) => {
+        emit('pan', ins);
       });
 
-      instance.on('pan', e => {
-        emit('pan', e);
+      instance.on('panend', (ins: PanZoom) => {
+        emit('panend', ins);
       });
 
-      instance.on('zoom', e => {
-        emit('zoom', e);
+      instance.on('zoom', (ins: PanZoom) => {
+        emit('zoom', ins);
       });
 
-      instance.on('transform', e => {
-        emit('transform', e);
+      instance.on('zoomend', (ins: PanZoom) => {
+        emit('zoomend', ins);
       });
 
-      instance.on('zoomend', e => {
-        emit('zoomend', e);
+      instance.on('transform', (ins: PanZoom) => {
+        emit('transform', ins);
       });
     };
 

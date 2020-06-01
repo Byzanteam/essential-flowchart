@@ -1,6 +1,9 @@
 <template>
   <div class="canvas">
-    <PanZoom @init="onPanZoomInit">
+    <PanZoom
+      @init="onPanZoomInit"
+      @zoomend="onCanvasZoomEnd"
+    >
       <div
         :style="canvasStyleObj"
         class="canvas__inner"
@@ -17,7 +20,7 @@ import {
   reactive, ref, computed,
   Ref,
 } from '@vue/composition-api';
-import { PanZoom } from 'panzoom';
+import { PanZoom, Transform } from 'panzoom';
 
 import { useStore } from '@/hooks/store';
 import PanZoomComponent from './PanZoom.vue';
@@ -59,8 +62,12 @@ export default defineComponent({
       panZoom.zoomAbs(
         gridOffset.x, // initial x
         gridOffset.y, // inital y
-        store.state.graph.scale, // initial zoom
+        store.state.graph.scale, // initial scale
       );
+    };
+    const onCanvasZoomEnd = (e: PanZoom) => {
+      const transform: Transform = e.getTransform();
+      store.commit('updateScale', transform.scale);
     };
 
     return {
@@ -69,6 +76,7 @@ export default defineComponent({
       canvasStyleObj,
 
       onPanZoomInit,
+      onCanvasZoomEnd,
     };
   },
 });

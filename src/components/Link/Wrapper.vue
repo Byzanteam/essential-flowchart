@@ -59,10 +59,12 @@ export default defineComponent({
         return toNode.ports[props.link.to.portId];
       }
       if (store.state.mousePosition) {
+        const { scale, offset } = store.state.graph;
+
         return {
           position: {
-            x: store.state.mousePosition.x / graph.value.scale,
-            y: store.state.mousePosition.y / graph.value.scale,
+            x: (store.state.mousePosition.x - offset.x) / scale,
+            y: (store.state.mousePosition.y - offset.y) / scale,
           },
         };
       }

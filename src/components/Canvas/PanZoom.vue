@@ -53,6 +53,7 @@ export default defineComponent({
         emit('zoom', ins);
       });
 
+      // https://github.com/anvaka/panzoom/issues/177
       instance.on('zoomend', (ins: PanZoom) => {
         emit('zoomend', ins);
       });

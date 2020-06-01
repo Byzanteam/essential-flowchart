@@ -2,7 +2,8 @@
   <div class="canvas">
     <PanZoom
       @init="onPanZoomInit"
-      @zoomend="onCanvasZoomEnd"
+      @panend="onCanvasPanEnd"
+      @zoom="onCanvasZoom"
     >
       <div
         :style="canvasStyleObj"
@@ -65,9 +66,17 @@ export default defineComponent({
         store.state.graph.scale, // initial scale
       );
     };
-    const onCanvasZoomEnd = (e: PanZoom) => {
-      const transform: Transform = e.getTransform();
+    const onCanvasZoom = (instance: PanZoom) => {
+      const transform: Transform = instance.getTransform();
       store.commit('updateScale', transform.scale);
+    };
+
+    const onCanvasPanEnd = (instance: PanZoom) => {
+      const transform: Transform = instance.getTransform();
+      store.commit('updateOffset', {
+        x: transform.x,
+        y: transform.y,
+      });
     };
 
     return {
@@ -76,7 +85,8 @@ export default defineComponent({
       canvasStyleObj,
 
       onPanZoomInit,
-      onCanvasZoomEnd,
+      onCanvasPanEnd,
+      onCanvasZoom,
     };
   },
 });

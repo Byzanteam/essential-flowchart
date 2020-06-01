@@ -1,8 +1,13 @@
 <template>
-  <div ref="canvasRef">
-    <div class="canvas__inner" :style="canvasStyleObj">
-      <slot />
-    </div>
+  <div class="canvas">
+    <PanZoom>
+      <div
+        :style="canvasStyleObj"
+        class="canvas__inner"
+      >
+        <slot />
+      </div>
+    </PanZoom>
   </div>
 </template>
 
@@ -14,6 +19,7 @@ import {
 } from '@vue/composition-api';
 
 import { useStore } from '@/hooks/store';
+import PanZoom from './PanZoom.vue';
 
 function useSize () {
   const canvasRef: Ref<null | HTMLElement> = ref(null);
@@ -34,9 +40,15 @@ function useSize () {
 export default defineComponent({
   name: 'Canvas',
 
+  components: {
+    PanZoom,
+  },
+
   setup () {
     const { size, canvasRef } = useSize();
     const store = useStore();
+
+    // const gridOffset = computed(() => store.state.graph.grid.offset);
 
     const canvasStyleObj = computed(() => ({
       width: `${store.state.graph.grid.width}px`,
@@ -53,9 +65,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.canvas__inner {
+.canvas {
   background-color: purple;
-  cursor: move;
-  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &__inner {
+    cursor: move;
+    position: relative;
+  }
 }
 </style>

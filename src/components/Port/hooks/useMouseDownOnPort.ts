@@ -1,20 +1,27 @@
 import {
+  Id,
   INode, INodePort, IPosition, FlowchartStore,
 } from '@/types';
 
-function findPortEl (el: HTMLElement): HTMLElement | null {
+function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
   let curr: HTMLElement | null = el;
-  let found = false;
-  while (!found && curr) {
+  let target = null;
+
+  while (!target && curr) {
     const nodeId = curr.getAttribute && curr.getAttribute('data-node-id');
     const portId = curr.getAttribute && curr.getAttribute('data-port-id');
 
-    found = !!(portId && nodeId);
-    if (!found) {
+    if (portId && nodeId) {
+      target = {
+        portId,
+        nodeId,
+      };
+    } else {
       curr = curr.parentElement;
     }
   }
-  return curr;
+
+  return target;
 }
 
 // https://gist.github.com/6174/6062387
@@ -40,11 +47,13 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     function mouseUpHandler (e: MouseEvent) {
       store.commit('updateMousePosition', null);
 
-      const portEl = findPortEl(e.target as HTMLElement);
+      const target = findTarget(e.target as HTMLElement);
 
-      if (portEl) { // complete link
-        const toNodeId = portEl.getAttribute('data-node-id');
-        const toPortId = portEl.getAttribute('data-port-id');
+      if (target) { // complete link
+        const {
+          nodeId: toNodeId,
+          portId: toPortId,
+        } = target;
 
         const link = {
           id: linkId,

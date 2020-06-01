@@ -31,7 +31,7 @@ export type SelectedOrHovered = ISelectedOrHovered | null;
 export interface IConfig {
   nodePadding: number;
   portGap: number;
-  validateLink: (newLink: ILink, graph: IGraph) => boolean;
+  linkValidations: Array<(link: ILink, graph: IGraph) => boolean>;
 }
 
 export type IConfigInput = Partial<IConfig>;

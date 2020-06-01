@@ -1,15 +1,11 @@
 import { FlowchartContext, ILink } from '@/types';
+import validateLink from '@/validations/validateLink';
 
 export default function newLink (
   { commit, state }: FlowchartContext,
   { link }: { link: ILink },
 ): boolean {
-  const { validateLink } = state.config;
-  let isValid = true;
-
-  if (validateLink) {
-    isValid = validateLink(link, state.graph);
-  }
+  const isValid = validateLink(link, state);
 
   if (isValid) {
     const mutation = {

@@ -1,6 +1,6 @@
-import { IState, ILink } from '@/types';
+import { IState, INewLink, ILink } from '@/types';
 
-export default function validateLink (link: ILink, state: IState): boolean {
+export default function validateLink (link: INewLink | ILink, state: IState): boolean {
   const { linkValidations } = state.config;
   let isValid = true;
 

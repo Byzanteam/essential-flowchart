@@ -9,6 +9,7 @@ import addLink from './addLink';
 import removeLink from './removeLink';
 import touchLink from './touchLink';
 import updateLinkPath from './updateLinkPath';
+import deleteLinkPath from './deleteLinkPath';
 
 import updateSelected from './updateSelected';
 
@@ -29,6 +30,7 @@ export default {
   removeLink,
   touchLink,
   updateLinkPath,
+  deleteLinkPath,
 
   updateSelected,
 

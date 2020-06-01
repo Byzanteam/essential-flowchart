@@ -1,9 +1,9 @@
-import { FlowchartContext, ILink } from '@/types';
+import { FlowchartContext, INewLink } from '@/types';
 import validateLink from '@/validations/validateLink';
 
 export default function newLink (
   { commit, dispatch, state }: FlowchartContext,
-  { link }: { link: ILink },
+  { link }: { link: INewLink },
 ): boolean {
   const isValid = validateLink(link, state);
 
@@ -14,7 +14,7 @@ export default function newLink (
     });
   } else {
     dispatch({
-      type: 'dispatchLink',
+      type: 'discardLink',
       linkId: link.id,
     });
   }

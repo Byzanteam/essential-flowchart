@@ -2,6 +2,8 @@ import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
   INodeInput,
+  INewLink,
+  ILinkInput,
   ILink,
   Point,
 } from './graph';
@@ -31,7 +33,7 @@ export type SelectedOrHovered = ISelectedOrHovered | null;
 export interface IConfig {
   nodePadding: number;
   portGap: number;
-  linkValidations: Array<(link: ILink, graph: IGraph) => boolean>;
+  linkValidations: Array<(link: INewLink | ILink, graph: IGraph) => boolean>;
 }
 
 export type IConfigInput = Partial<IConfig>;
@@ -52,7 +54,7 @@ export interface IState {
 
 export interface IStateInput {
   nodes: INodeInput[];
-  links: ILink[];
+  links: ILinkInput[];
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

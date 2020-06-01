@@ -1,5 +1,7 @@
-import Vue from 'vue';
-import { FlowchartContext, Id } from '@/types';
+import {
+  FlowchartContext, Id,
+  LinkType,
+} from '@/types';
 
 export default function discardLink (
   { state, commit }: FlowchartContext,
@@ -7,6 +9,7 @@ export default function discardLink (
 ) {
   const link = state.graph.links[linkId];
   if (!link) return;
+  if (link.type !== LinkType.New) return;
 
   commit('discardLink', {
     link: {
@@ -14,5 +17,5 @@ export default function discardLink (
     },
   });
 
-  Vue.delete(state.linkPath, linkId);
+  commit('deleteLinkPath', { linkId });
 }

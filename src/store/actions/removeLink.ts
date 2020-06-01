@@ -1,5 +1,3 @@
-import Vue from 'vue';
-
 import { FlowchartContext, Id } from '@/types';
 
 export default function removeLink (
@@ -22,5 +20,5 @@ export default function removeLink (
     commit(mutation);
   }
 
-  Vue.delete(state.linkPath, linkId);
+  commit('deleteLinkPath', { linkId });
 }

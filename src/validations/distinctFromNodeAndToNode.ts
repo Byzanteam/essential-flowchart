@@ -1,7 +1,7 @@
-import { ILink, IGraph } from '@/types';
+import { INewLink, ILink, IGraph } from '@/types';
 
 export default function distinctFromNodeAndToNode (
-  link: ILink,
+  link: INewLink | ILink,
   _graph: IGraph,
 ): boolean {
   const { from, to } = link;

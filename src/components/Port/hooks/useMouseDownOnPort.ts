@@ -1,6 +1,8 @@
 import {
   Id,
-  INode, INodePort, IPosition, FlowchartStore,
+  INode, INodePort, IPosition,
+  LinkType,
+  FlowchartStore,
 } from '@/types';
 
 function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
@@ -31,6 +33,7 @@ function generateUuid (): string {
 
 export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
+    // TODO: move linkId out
     const linkId = generateUuid();
     const fromNodeId = node.id;
     const fromPortId = port.id;
@@ -57,6 +60,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
 
         const link = {
           id: linkId,
+          type: LinkType.Created,
           from: {
             nodeId: fromNodeId,
             portId: fromPortId,
@@ -84,6 +88,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     store.dispatch('newLink', {
       link: {
         id: linkId,
+        type: LinkType.New,
         from: {
           nodeId: fromNodeId,
           portId: fromPortId,

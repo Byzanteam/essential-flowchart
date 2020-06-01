@@ -67,15 +67,10 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
           },
         };
 
-        // TODO: validate link
-        store.dispatch('addLink', { link })
-          .then(valid => {
-            if (!valid) {
-              store.dispatch('removeLink', { linkId, history: false });
-            }
-          });
-      } else { // cancel link
-        store.dispatch('removeLink', { linkId, history: false });
+        // add link
+        store.dispatch('addLink', { link });
+      } else { // discard link
+        store.dispatch('discardLink', { linkId });
       }
 
       store.commit('updateMousePosition', null);
@@ -85,9 +80,8 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
       window.removeEventListener('mousemove', mouseMoveHandler, false);
     }
 
-    // add link when start
-    // TODO: validate link
-    store.dispatch('addLink', {
+    // new link when start
+    store.dispatch('newLink', {
       link: {
         id: linkId,
         from: {
@@ -96,7 +90,6 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         },
         to: {},
       },
-      history: false,
     }).then(valid => {
       if (valid) {
         // add listeners

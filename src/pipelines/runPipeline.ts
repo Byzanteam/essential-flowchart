@@ -7,14 +7,12 @@ export default function runPipeline (
   const { linkPipeline } = state.config;
   let result: ILink | null = link;
 
-  if (Array.isArray(linkPipeline)) {
-    let index = 0;
+  let index = 0;
 
-    while (result && index < linkPipeline.length) {
-      const phase = linkPipeline[index];
-      result = phase(link, state.graph);
-      index += 1;
-    }
+  while (result && index < linkPipeline.length) {
+    const phase = linkPipeline[index];
+    result = phase(link, state.graph);
+    index += 1;
   }
 
   return result;

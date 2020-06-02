@@ -32,6 +32,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     const fromNodeId = node.id;
     const fromPortId = port.id;
 
+    // the id isnt set right now, it should be set in pipelines.
     const newLink = runPipeline({
       from: {
         nodeId: fromNodeId,

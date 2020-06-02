@@ -68,11 +68,18 @@ export default defineComponent({
     };
     const onCanvasZoom = (instance: PanZoom) => {
       const transform: Transform = instance.getTransform();
+      // num.toFixed(2) ?
       store.commit('updateScale', transform.scale);
+      // for zoom, convert x and y to integer
+      store.commit('updateOffset', {
+        x: Math.ceil(transform.x),
+        y: Math.ceil(transform.y),
+      });
     };
 
     const onCanvasPanEnd = (instance: PanZoom) => {
       const transform: Transform = instance.getTransform();
+      // for pan, x and y are already integer
       store.commit('updateOffset', {
         x: transform.x,
         y: transform.y,

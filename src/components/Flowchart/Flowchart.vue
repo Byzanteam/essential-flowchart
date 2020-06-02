@@ -82,6 +82,10 @@ export default defineComponent({
       } = {},
     } = props;
 
+    function zoom (delta: number) {
+      store.commit('updateScale', store.state.graph.scale + delta);
+    }
+
     return {
       nodeComponent,
       portComponent,
@@ -89,6 +93,8 @@ export default defineComponent({
       nodes,
       links,
       ...useSelected(store),
+
+      zoom,
     };
   },
 });

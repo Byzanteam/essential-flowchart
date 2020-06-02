@@ -11,7 +11,8 @@
 
 <script lang="ts">
 import {
-  defineComponent, ref, onMounted, Ref,
+  defineComponent, ref, onMounted, watch,
+  Ref,
 } from '@vue/composition-api';
 import panZoom, { PanZoom } from 'panzoom';
 
@@ -29,12 +30,27 @@ export default defineComponent({
       type: Object,
       default: () => ({}),
     },
+
+    x: {
+      type: Number,
+      default: 0,
+    },
+
+    y: {
+      type: Number,
+      default: 0,
+    },
+
+    zoom: {
+      type: Number,
+      default: 1,
+    },
   },
 
   setup (props, { emit }) {
     const sceneRef: Ref<HTMLElement | null> = ref(null);
 
-    let panZoomInstance = null;
+    let panZoomInstance: PanZoom | null = null;
 
     const bindEvents = (instance: PanZoom) => {
       instance.on('panstart', (ins: PanZoom) => {
@@ -71,8 +87,15 @@ export default defineComponent({
         };
 
         panZoomInstance = panZoom(sceneRef.value, finalOptions);
-        emit('init', panZoomInstance);
+        panZoomInstance.zoomAbs(props.x, props.y, props.zoom);
         bindEvents(panZoomInstance);
+
+        watch(() => props.zoom, zoom => {
+          if (panZoomInstance) {
+            const { x, y }  = panZoomInstance.getTransform();
+            panZoomInstance.zoomAbs(x, y, zoom);
+          }
+        }, { lazy: true });
       }
     });
 

@@ -1,15 +1,7 @@
 import { PanZoom, Transform } from 'panzoom';
-import { FlowchartStore, IOffset } from '@/types';
+import { FlowchartStore } from '@/types';
 
-export default function usePanZoomCanvas (store: FlowchartStore, gridOffset: IOffset) {
-  function onPanZoomInit (panZoom: PanZoom) {
-    panZoom.zoomAbs(
-      gridOffset.x, // initial x
-      gridOffset.y, // initial y
-      store.state.graph.scale, // initial scale
-    );
-  }
-
+export default function usePanZoomCanvas (store: FlowchartStore) {
   function onCanvasZoom (panZoom: PanZoom) {
     const transform: Transform = panZoom.getTransform();
     // num.toFixed(2) ?
@@ -31,7 +23,6 @@ export default function usePanZoomCanvas (store: FlowchartStore, gridOffset: IOf
   }
 
   return {
-    onPanZoomInit,
     onCanvasZoom,
     onCanvasPanEnd,
   };

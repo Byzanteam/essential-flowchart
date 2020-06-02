@@ -1,7 +1,9 @@
 <template>
   <div class="canvas">
     <PanZoom
-      @init="onPanZoomInit"
+      :x="gridOffset.x"
+      :y="gridOffset.y"
+      :zoom="scale"
       @panend="onCanvasPanEnd"
       @zoom="onCanvasZoom"
     >
@@ -33,7 +35,7 @@ export default defineComponent({
   },
 
   setup () {
-    const { size, canvasRef } = useSize();
+    const { size } = useSize();
     const store = useStore();
 
     const canvasStyleObj = computed(() => ({
@@ -41,14 +43,16 @@ export default defineComponent({
       height: `${store.state.graph.grid.height}px`,
     }));
 
+    const scale = computed(() => store.state.graph.scale);
+
     const gridOffset = store.state.graph.grid.offset;
 
     return {
-      canvasRef,
       size,
       canvasStyleObj,
-
-      ...usePanZoomCanvas(store, gridOffset),
+      scale,
+      gridOffset,
+      ...usePanZoomCanvas(store),
     };
   },
 });

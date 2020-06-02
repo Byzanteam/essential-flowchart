@@ -7921,8 +7921,8 @@ pako@~1.0.5:
 
 panzoom@^9.2.4:
   version "9.2.4"
-  resolved "https://registry.npm.taobao.org/panzoom/download/panzoom-9.2.4.tgz#c4aeb89e9ea21a43a01d14267a7c27d2a093d9e7"
-  integrity sha1-xK64np6iGkOgHRQmenwn0qCT2ec=
+  resolved "https://registry.yarnpkg.com/panzoom/-/panzoom-9.2.4.tgz#c4aeb89e9ea21a43a01d14267a7c27d2a093d9e7"
+  integrity sha512-pQoIZQFL+0kYfcrXxcUL2khjGp61pieXYGavvZAAiHJg5ZGBa8Ci46JC7XeTZHg8EiKv1IcTacDf9PtG0oN13Q==
   dependencies:
     amator "^1.1.0"
     ngraph.events "^1.2.1"

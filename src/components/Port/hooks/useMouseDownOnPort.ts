@@ -56,7 +56,8 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
       window.removeEventListener('mouseup', mouseUpHandler, false);
       window.removeEventListener('mousemove', mouseMoveHandler, false);
 
-      if (!newLink) return;
+      // mouseUpHandler added to mouseup event listeners unless a newLink.
+      // if (!newLink) return;
 
       const target = findTarget(e.target as HTMLElement);
 
@@ -67,7 +68,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         } = target;
 
         const link = runPipeline({
-          ...newLink,
+          ...newLink as ILink,
           to: {
             nodeId: toNodeId,
             portId: toPortId,
@@ -77,10 +78,10 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         if (link) {
           store.dispatch('addLink', { link });
         } else {
-          store.dispatch('removeLink', { linkId: newLink.id });
+          store.dispatch('removeLink', { linkId: (newLink as ILink).id });
         }
       } else { // delete link
-        store.dispatch('removeLink', { linkId: newLink.id });
+        store.dispatch('removeLink', { linkId: (newLink as ILink).id });
       }
     }
 

@@ -26,7 +26,7 @@ import {
   defineComponent, computed, PropType,
 } from '@vue/composition-api';
 
-import { useStore } from '@/hooks/store';
+import useStore from '@/hooks/useStore';
 import {
   Point, IPosition, ILink, IGrid,
 } from '@/types';

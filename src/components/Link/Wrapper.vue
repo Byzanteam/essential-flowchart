@@ -19,7 +19,7 @@ import {
   defineComponent, computed, watch, PropType,
 } from '@vue/composition-api';
 
-import { useStore } from '@/hooks/store';
+import useStore from '@/hooks/useStore';
 import { ILink } from '@/types';
 
 import generatePath from './utils/generatePath';

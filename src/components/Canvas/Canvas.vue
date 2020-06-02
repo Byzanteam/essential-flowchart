@@ -18,29 +18,13 @@
 <script lang="ts">
 import {
   defineComponent,
-  reactive, ref, computed,
-  Ref,
+  computed,
 } from '@vue/composition-api';
 import { PanZoom, Transform } from 'panzoom';
 
-import { useStore } from '@/hooks/store';
+import useStore from '@/hooks/useStore';
+import useSize from './hooks/useSize';
 import PanZoomComponent from './PanZoom.vue';
-
-function useSize () {
-  const canvasRef: Ref<null | HTMLElement> = ref(null);
-
-  const size = reactive({
-    width: 0,
-    height: 0,
-    offsetX: 0,
-    offsetY: 0,
-  });
-
-  return {
-    canvasRef,
-    size,
-  };
-}
 
 export default defineComponent({
   name: 'Canvas',

@@ -36,60 +36,15 @@
 import VueDraggableResizable from 'vue-draggable-resizable';
 import {
   defineComponent, computed,
-  PropType, Ref,
+  PropType,
 } from '@vue/composition-api';
-import { useStore } from '@/hooks/store';
-import { IPosition, INode, FlowchartStore } from '@/types';
+import useStore from '@/hooks/useStore';
+import { INode } from '@/types';
+
+import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function useDragNode (store: FlowchartStore, node: Ref<INode>, _scale: number) {
-  let draggingNodePosition: IPosition | null = null;
-
-  function onDragStart (evt: MouseEvent) {
-    evt.stopPropagation(); // prevent canvas move
-
-    draggingNodePosition = {
-      x: node.value.x,
-      y: node.value.y,
-    };
-  }
-
-  function onNodeDragging (left: number, top: number) {
-    store.dispatch('dragNode', {
-      id: node.value.id,
-      position: {
-        x: left,
-        y: top,
-      },
-      prevPosition: {
-        x: node.value.x,
-        y: node.value.y,
-      },
-    });
-  }
-
-  function onNodeDragStop (left: number, top: number) {
-    store.dispatch('dragNodeStop', {
-      id: node.value.id,
-      position: {
-        x: left,
-        y: top,
-      },
-      prevPosition: { ...draggingNodePosition },
-    });
-
-    draggingNodePosition = null;
-  }
-
-  return {
-    onDragStart,
-    onNodeDragging,
-    onNodeDragStop,
-  };
-}
 
 export default defineComponent({
   name: 'NodeWrapper',
@@ -132,7 +87,7 @@ export default defineComponent({
     return {
       onNodeClick,
       scale,
-      ...useDragNode(store, node, scale.value),
+      ...useDragNode(store, node),
     };
   },
 });

@@ -5,14 +5,14 @@ export default function runPipeline (
   state: IState,
 ): INewLink | ILink | null {
   const { linkPipeline } = state.config;
-  let result = null;
+  let result: INewLink | ILink | null = link;
 
   if (Array.isArray(linkPipeline)) {
     let index = 0;
 
     while (result && index < linkPipeline.length) {
-      const linkValidation = linkPipeline[index];
-      result = linkValidation(link, state.graph);
+      const phase = linkPipeline[index];
+      result = phase(link, state.graph);
       index += 1;
     }
   }

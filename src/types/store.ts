@@ -3,7 +3,6 @@ import {
   IGraph,
   INodeInput,
   INewLink,
-  ILinkInput,
   ILink,
   Point,
 } from './graph';
@@ -32,7 +31,6 @@ export type SelectedOrHovered = ISelectedOrHovered | null;
 
 export interface ILinkPipelinePhase {
   (link: INewLink, graph?: IGraph): INewLink | null;
-  (link: INewLink, graph?: IGraph): ILink | null;
   (link: ILink, graph?: IGraph): ILink | null;
 }
 
@@ -53,6 +51,7 @@ export interface IState {
   linkPath: {
     [linkId: string]: Point[];
   };
+  newLink: INewLink | null;
   mousePosition: IPosition | null;
   config: IConfig;
   selected: SelectedOrHovered;
@@ -60,7 +59,7 @@ export interface IState {
 
 export interface IStateInput {
   nodes: INodeInput[];
-  links: ILinkInput[];
+  links: ILink[];
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

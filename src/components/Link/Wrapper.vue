@@ -20,7 +20,7 @@ import {
 } from '@vue/composition-api';
 
 import useStore from '@/hooks/useStore';
-import { ILink } from '@/types';
+import { ILink, INewLink } from '@/types';
 
 import generatePath from './utils/generatePath';
 
@@ -31,7 +31,7 @@ export default defineComponent({
 
   props: {
     link: {
-      type: Object as PropType<ILink>,
+      type: Object as PropType<ILink | INewLink>,
       required: true,
     },
 
@@ -54,9 +54,12 @@ export default defineComponent({
 
     const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
     const endPort = computed(() => {
-      if (props.link.to.nodeId && props.link.to.portId) {
-        const toNode = graph.value.nodes[props.link.to.nodeId];
-        return toNode.ports[props.link.to.portId];
+      // link can be the INewLink
+      const link = props.link as ILink;
+
+      if (link.to && link.to.nodeId && link.to.portId) {
+        const toNode = graph.value.nodes[link.to.nodeId];
+        return toNode.ports[link.to.portId];
       }
       if (store.state.mousePosition) {
         return {

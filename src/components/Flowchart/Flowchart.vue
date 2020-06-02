@@ -16,6 +16,12 @@
       :is-selected="isLinkSelected(link.id)"
       :link-component="linkComponent"
     />
+    <LinkWrapperComponent
+      v-if="newLink"
+      :link="newLink"
+      :is-selected="false"
+      :link-component="linkComponent"
+    />
   </CanvasComponent>
 </template>
 
@@ -72,7 +78,7 @@ export default defineComponent({
 
   setup (props: IFlowchartProps) {
     const store = useStore();
-    const { nodes, links } = useState(props.rawState, store);
+    const { nodes, links, newLink } = useState(props.rawState, store);
 
     const {
       components: {
@@ -88,6 +94,7 @@ export default defineComponent({
       linkComponent,
       nodes,
       links,
+      newLink,
       ...useSelected(store),
     };
   },

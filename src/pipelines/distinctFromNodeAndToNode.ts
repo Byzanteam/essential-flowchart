@@ -5,7 +5,7 @@ import {
 function distinctFromNodeAndToNode (link: INewLink): INewLink | null;
 function distinctFromNodeAndToNode (link: ILink): ILink | null;
 function distinctFromNodeAndToNode (link: INewLink | ILink): INewLink | ILink | null {
-  const { from, to } = link;
+  const { from, to } = link as ILink;
 
   if (!from) return link;
   if (!to) return link;

@@ -46,28 +46,15 @@ export interface ILinkPort {
   portId: Id;
 }
 
-export enum LinkType {
-  New,
-  Created,
-}
-
 // A link of a graph
-export interface ILinkInput {
-  id: Id;
-  from: ILinkPort;
-  to: ILinkPort;
-}
 export interface ILink {
   id: Id;
-  type: LinkType;
   from: ILinkPort;
   to: ILinkPort;
 }
 export interface INewLink {
   id: Id;
-  type: LinkType.New;
   from: ILinkPort;
-  to: ILinkPort;
 }
 
 // grid
@@ -86,7 +73,7 @@ export interface IGraph {
     [id: string]: INode;
   };
   links: {
-    [id: string]: INewLink | ILink;
+    [id: string]: ILink;
   };
 
   grid: IGrid;

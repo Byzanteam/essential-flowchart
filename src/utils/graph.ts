@@ -1,4 +1,4 @@
-import { FlowchartStore, IStateInput, LinkType } from '@/types';
+import { FlowchartStore, IStateInput } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
 export function buildState (rawState: IStateInput, store: FlowchartStore) {
@@ -13,7 +13,7 @@ export function buildState (rawState: IStateInput, store: FlowchartStore) {
 
   links.forEach(link => {
     store.commit('addLink', {
-      link: { ...link, type: LinkType.Created },
+      link: { ...link },
     });
   });
 }

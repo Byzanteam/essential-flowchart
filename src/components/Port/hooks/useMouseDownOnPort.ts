@@ -1,7 +1,6 @@
 import {
   Id,
   INode, INodePort, IPosition,
-  LinkType,
   INewLink,
   FlowchartStore,
 } from '@/types';
@@ -34,7 +33,6 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     const fromPortId = port.id;
 
     const newLink = runPipeline({
-      type: LinkType.New,
       from: {
         nodeId: fromNodeId,
         portId: fromPortId,
@@ -69,20 +67,19 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
 
         const link = runPipeline({
           ...newLink,
-          type: LinkType.Created,
           to: {
             nodeId: toNodeId,
             portId: toPortId,
           },
         }, store.state);
 
+        store.dispatch('discardLink');
+
         if (link) {
           store.dispatch('addLink', { link });
-        } else {
-          store.dispatch('discardLink', { linkId: newLink.id });
         }
       } else { // discard link
-        store.dispatch('discardLink', { linkId: newLink.id });
+        store.dispatch('discardLink');
       }
     }
 

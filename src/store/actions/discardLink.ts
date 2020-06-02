@@ -1,21 +1,10 @@
-import {
-  FlowchartContext, Id,
-  LinkType,
-} from '@/types';
+import { FlowchartContext } from '@/types';
 
-export default function discardLink (
-  { state, commit }: FlowchartContext,
-  { linkId }: { linkId: Id },
-) {
-  const link = state.graph.links[linkId];
-  if (!link) return;
-  if (link.type !== LinkType.New) return;
+export default function discardLink ({ state, commit }: FlowchartContext) {
+  const { newLink } = state;
+  if (!newLink) return;
 
-  commit('discardLink', {
-    link: {
-      ...link,
-    },
-  });
+  commit('discardLink');
 
-  commit('deleteLinkPath', { linkId });
+  commit('deleteLinkPath', { linkId: newLink.id });
 }

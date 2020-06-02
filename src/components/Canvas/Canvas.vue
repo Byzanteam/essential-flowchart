@@ -20,10 +20,9 @@ import {
   defineComponent,
   computed,
 } from '@vue/composition-api';
-import { PanZoom, Transform } from 'panzoom';
-
 import useStore from '@/hooks/useStore';
 import useSize from './hooks/useSize';
+import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
 
 export default defineComponent({
@@ -43,41 +42,13 @@ export default defineComponent({
     }));
 
     const gridOffset = store.state.graph.grid.offset;
-    const onPanZoomInit = (panZoom: PanZoom) => {
-      panZoom.zoomAbs(
-        gridOffset.x, // initial x
-        gridOffset.y, // inital y
-        store.state.graph.scale, // initial scale
-      );
-    };
-    const onCanvasZoom = (instance: PanZoom) => {
-      const transform: Transform = instance.getTransform();
-      // num.toFixed(2) ?
-      store.commit('updateScale', transform.scale);
-      // for zoom, convert x and y to integer
-      store.commit('updateOffset', {
-        x: Math.ceil(transform.x),
-        y: Math.ceil(transform.y),
-      });
-    };
-
-    const onCanvasPanEnd = (instance: PanZoom) => {
-      const transform: Transform = instance.getTransform();
-      // for pan, x and y are already integer
-      store.commit('updateOffset', {
-        x: transform.x,
-        y: transform.y,
-      });
-    };
 
     return {
       canvasRef,
       size,
       canvasStyleObj,
 
-      onPanZoomInit,
-      onCanvasPanEnd,
-      onCanvasZoom,
+      ...usePanZoomCanvas(store, gridOffset),
     };
   },
 });
@@ -90,6 +61,7 @@ export default defineComponent({
   width: 100%;
 
   &__inner {
+    background-color: rgba(green, 0.5);
     cursor: move;
     position: relative;
   }

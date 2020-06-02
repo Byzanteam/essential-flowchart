@@ -1,7 +1,7 @@
 import {
   Id,
   INode, INodePort, IPosition,
-  INewLink,
+  ILink,
   FlowchartStore,
 } from '@/types';
 import runPipeline from '@/pipelines/runPipeline';
@@ -37,7 +37,8 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         nodeId: fromNodeId,
         portId: fromPortId,
       },
-    } as INewLink, store.state);
+      to: {},
+    } as ILink, store.state);
 
     function mouseMoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
@@ -73,19 +74,19 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
           },
         }, store.state);
 
-        store.dispatch('discardLink');
-
         if (link) {
           store.dispatch('addLink', { link });
+        } else {
+          store.dispatch('removeLink', { linkId: newLink.id });
         }
-      } else { // discard link
-        store.dispatch('discardLink');
+      } else { // delete link
+        store.dispatch('removeLink', { linkId: newLink.id });
       }
     }
 
     if (newLink) {
       // new link when start
-      store.dispatch('newLink', {
+      store.dispatch('addLink', {
         link: newLink,
       });
 

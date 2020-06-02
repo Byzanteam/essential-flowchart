@@ -20,7 +20,7 @@ import {
 } from '@vue/composition-api';
 
 import useStore from '@/hooks/useStore';
-import { ILink, INewLink } from '@/types';
+import { ILink } from '@/types';
 
 import generatePath from './utils/generatePath';
 
@@ -31,7 +31,7 @@ export default defineComponent({
 
   props: {
     link: {
-      type: Object as PropType<ILink | INewLink>,
+      type: Object as PropType<ILink>,
       required: true,
     },
 
@@ -54,9 +54,9 @@ export default defineComponent({
 
     const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
     const endPort = computed(() => {
-      // link can be the INewLink
-      const link = props.link as ILink;
+      const { link } = props;
 
+      // the link can be draft
       if (link.to && link.to.nodeId && link.to.portId) {
         const toNode = graph.value.nodes[link.to.nodeId];
         return toNode.ports[link.to.portId];

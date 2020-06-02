@@ -1,11 +1,11 @@
-import { IState, INewLink, ILink } from '@/types';
+import { IState, ILink } from '@/types';
 
 export default function runPipeline (
-  link: INewLink | ILink,
+  link: ILink,
   state: IState,
-): INewLink | ILink | null {
+): ILink | null {
   const { linkPipeline } = state.config;
-  let result: INewLink | ILink | null = link;
+  let result: ILink | null = link;
 
   if (Array.isArray(linkPipeline)) {
     let index = 0;

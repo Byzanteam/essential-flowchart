@@ -35,7 +35,6 @@ const state: IState = {
   linkPath: {},
   selected: null,
   mousePosition: null,
-  newLink: null,
   config: buildConfig({}),
 };
 

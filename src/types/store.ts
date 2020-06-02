@@ -2,7 +2,6 @@ import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
   INodeInput,
-  INewLink,
   ILink,
   Point,
 } from './graph';
@@ -30,7 +29,6 @@ export interface ISelectedOrHovered {
 export type SelectedOrHovered = ISelectedOrHovered | null;
 
 export interface ILinkPipelinePhase {
-  (link: INewLink, graph?: IGraph): INewLink | null;
   (link: ILink, graph?: IGraph): ILink | null;
 }
 
@@ -51,7 +49,6 @@ export interface IState {
   linkPath: {
     [linkId: string]: Point[];
   };
-  newLink: INewLink | null;
   mousePosition: IPosition | null;
   config: IConfig;
   selected: SelectedOrHovered;

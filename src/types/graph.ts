@@ -50,11 +50,7 @@ export interface ILinkPort {
 export interface ILink {
   id: Id;
   from: ILinkPort;
-  to: ILinkPort;
-}
-export interface INewLink {
-  id: Id;
-  from: ILinkPort;
+  to: Partial<ILinkPort>;
 }
 
 // grid

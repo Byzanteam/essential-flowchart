@@ -26,6 +26,16 @@ export default defineComponent({
   name: 'PanZoom',
 
   props: {
+    // https://github.com/anvaka/panzoom
+    // zoomSpeed: 0.065 // 6.5% per mouse wheel event
+    // pinchSpeed: 2 // zoom two times faster than the distance between fingers
+    // transformOrigin
+    // maxZoom: 1,
+    // minZoom: 0.1
+    // smoothScroll: false
+    // zoomDoubleClickSpeed: 1,
+    // bounds: true,
+    // boundsPadding: 0.1
     options: {
       type: Object,
       default: () => ({}),
@@ -49,8 +59,6 @@ export default defineComponent({
 
   setup (props, { emit }) {
     const sceneRef: Ref<HTMLElement | null> = ref(null);
-
-    let panZoomInstance: PanZoom | null = null;
 
     const bindEvents = (instance: PanZoom) => {
       instance.on('panstart', (ins: PanZoom) => {
@@ -86,15 +94,12 @@ export default defineComponent({
           ...props.options,
         };
 
-        panZoomInstance = panZoom(sceneRef.value, finalOptions);
+        const panZoomInstance: PanZoom = panZoom(sceneRef.value, finalOptions);
         panZoomInstance.zoomAbs(props.x, props.y, props.zoom);
         bindEvents(panZoomInstance);
 
         watch(() => props.zoom, zoom => {
-          if (panZoomInstance) {
-            const { x, y }  = panZoomInstance.getTransform();
-            panZoomInstance.zoomAbs(x, y, zoom);
-          }
+          panZoomInstance.zoomAbs(props.x, props.y, zoom);
         }, { lazy: true });
       }
     });

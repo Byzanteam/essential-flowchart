@@ -28,9 +28,14 @@ export interface ISelectedOrHovered {
 
 export type SelectedOrHovered = ISelectedOrHovered | null;
 
+export interface ILinkPipelinePhase {
+  (link: ILink, graph?: IGraph): ILink | null;
+}
+
 export interface IConfig {
   nodePadding: number;
   portGap: number;
+  linkPipeline: ILinkPipelinePhase[];
 }
 
 export type IConfigInput = Partial<IConfig>;

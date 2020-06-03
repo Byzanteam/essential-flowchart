@@ -19,4 +19,6 @@ export default function removeLink (
   } else {
     commit(mutation);
   }
+
+  commit('deleteLinkPath', { linkId });
 }

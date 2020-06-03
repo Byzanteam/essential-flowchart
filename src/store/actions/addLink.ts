@@ -1,27 +1,17 @@
 import { FlowchartContext, ILink } from '@/types';
 
 export default function addLink (
-  { commit, dispatch, state }: FlowchartContext,
-  { link, history = true, validateLink }: { link: ILink; history: boolean; validateLink?: Function },
+  { commit, dispatch }: FlowchartContext,
+  { link, history = true }: { link: ILink; history: boolean },
 ) {
-  let valid = true;
+  const mutation = {
+    type: 'addLink',
+    link: { ...link },
+  };
 
-  if (validateLink) {
-    valid = validateLink(link, state.graph);
+  if (history) {
+    dispatch('historyPushEntry', mutation);
+  } else {
+    commit(mutation);
   }
-
-  if (valid) {
-    const mutation = {
-      type: 'addLink',
-      link: { ...link },
-    };
-
-    if (history) {
-      dispatch('historyPushEntry', mutation);
-    } else {
-      commit(mutation);
-    }
-  }
-
-  return valid;
 }

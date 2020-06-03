@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["flowchart"] = factory(require("vue"));
+		exports["essential-flowchart"] = factory(require("vue"));
 	else
-		root["flowchart"] = factory(root["Vue"]);
+		root["essential-flowchart"] = factory(root["Vue"]);
 })((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -13549,4 +13549,4 @@ module.exports = NATIVE_SYMBOL
 
 /******/ });
 });
-//# sourceMappingURL=flowchart.umd.js.map
+//# sourceMappingURL=essential-flowchart.umd.js.map

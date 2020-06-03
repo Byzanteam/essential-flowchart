@@ -1,27 +1,45 @@
 import {
-  INode, INodePort, IPosition, FlowchartStore,
+  Id,
+  INode, INodePort, IPosition,
+  ILink,
+  FlowchartStore,
 } from '@/types';
+import runPipeline from '@/pipelines/runPipeline';
 
-function findPortEl (el: HTMLElement): HTMLElement | null {
+function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
   let curr: HTMLElement | null = el;
-  let found = false;
-  while (!found && curr) {
+  let target = null;
+
+  while (!target && curr) {
     const nodeId = curr.getAttribute && curr.getAttribute('data-node-id');
     const portId = curr.getAttribute && curr.getAttribute('data-port-id');
 
-    found = !!(portId && nodeId);
-    if (!found) {
+    if (portId && nodeId) {
+      target = {
+        portId,
+        nodeId,
+      };
+    } else {
       curr = curr.parentElement;
     }
   }
-  return curr;
+
+  return target;
 }
 
 export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
-    const linkId = `${Date.now()}`; // TODO: generate id
     const fromNodeId = node.id;
     const fromPortId = port.id;
+
+    // the id isnt set right now, it should be set in pipelines.
+    const newLink = runPipeline({
+      from: {
+        nodeId: fromNodeId,
+        portId: fromPortId,
+      },
+      to: {},
+    } as ILink, store.state);
 
     function mouseMoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
@@ -35,61 +53,49 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     function mouseUpHandler (e: MouseEvent) {
       store.commit('updateMousePosition', null);
 
-      const portEl = findPortEl(e.target as HTMLElement);
+      // remove listeners
+      window.removeEventListener('mouseup', mouseUpHandler, false);
+      window.removeEventListener('mousemove', mouseMoveHandler, false);
 
-      if (portEl) { // complete link
-        const toNodeId = portEl.getAttribute('data-node-id');
-        const toPortId = portEl.getAttribute('data-port-id');
+      // mouseUpHandler added to mouseup event listeners unless a newLink.
+      // if (!newLink) return;
 
-        const link = {
-          id: linkId,
-          from: {
-            nodeId: fromNodeId,
-            portId: fromPortId,
-          },
+      const target = findTarget(e.target as HTMLElement);
+
+      if (target) { // complete link
+        const {
+          nodeId: toNodeId,
+          portId: toPortId,
+        } = target;
+
+        const link = runPipeline({
+          ...newLink as ILink,
           to: {
             nodeId: toNodeId,
             portId: toPortId,
           },
-        };
+        }, store.state);
 
-        // TODO: validate link
-        store.dispatch('addLink', { link })
-          .then(valid => {
-            if (!valid) {
-              store.dispatch('removeLink', { linkId, history: false });
-            }
-          });
-      } else { // cancel link
-        store.dispatch('removeLink', { linkId, history: false });
+        if (link) {
+          store.dispatch('addLink', { link });
+        } else {
+          store.dispatch('removeLink', { linkId: (newLink as ILink).id });
+        }
+      } else { // delete link
+        store.dispatch('removeLink', { linkId: (newLink as ILink).id });
       }
-
-      store.commit('updateMousePosition', null);
-
-      // remove listeners
-      window.removeEventListener('mouseup', mouseUpHandler, false);
-      window.removeEventListener('mousemove', mouseMoveHandler, false);
     }
 
-    // add link when start
-    // TODO: validate link
-    store.dispatch('addLink', {
-      link: {
-        id: linkId,
-        from: {
-          nodeId: fromNodeId,
-          portId: fromPortId,
-        },
-        to: {},
-      },
-      history: false,
-    }).then(valid => {
-      if (valid) {
-        // add listeners
-        window.addEventListener('mousemove', mouseMoveHandler, false);
-        window.addEventListener('mouseup', mouseUpHandler, false);
-      }
-    });
+    if (newLink) {
+      // new link when start
+      store.dispatch('addLink', {
+        link: newLink,
+      });
+
+      // add listeners
+      window.addEventListener('mousemove', mouseMoveHandler, false);
+      window.addEventListener('mouseup', mouseUpHandler, false);
+    }
 
     // prevent text selection
     evt.preventDefault();

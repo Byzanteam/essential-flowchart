@@ -54,9 +54,12 @@ export default defineComponent({
 
     const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
     const endPort = computed(() => {
-      if (props.link.to.nodeId && props.link.to.portId) {
-        const toNode = graph.value.nodes[props.link.to.nodeId];
-        return toNode.ports[props.link.to.portId];
+      const { link } = props;
+
+      // the link can be draft
+      if (link.to && link.to.nodeId && link.to.portId) {
+        const toNode = graph.value.nodes[link.to.nodeId];
+        return toNode.ports[link.to.portId];
       }
       if (store.state.mousePosition) {
         const { scale, offset } = store.state.graph;

@@ -14,6 +14,7 @@ import expandGrid from './expandGird';
 import updateMousePosition from './updateMousePosition';
 import updateScale from './updateScale';
 import updateOffset from './updateOffset';
+import updateConfig from './updateConfig';
 import historyMutations from './history';
 
 export default {
@@ -33,5 +34,6 @@ export default {
   updateMousePosition,
   updateScale,
   updateOffset,
+  updateConfig,
   ...historyMutations,
 };

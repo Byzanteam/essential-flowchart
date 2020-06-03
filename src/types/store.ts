@@ -31,6 +31,8 @@ export type SelectedOrHovered = ISelectedOrHovered | null;
 export interface IConfig {
   nodePadding: number;
   portGap: number;
+  minZoom: number;
+  maxZoom: number;
 }
 
 export type IConfigInput = Partial<IConfig>;

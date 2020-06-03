@@ -16,31 +16,10 @@ import {
 } from '@vue/composition-api';
 import panZoom, { PanZoom } from 'panzoom';
 
-const DEFAULT_OPTIONS = {
-  bounds: true,
-  minZoom: 0.5,
-  maxZoom: 1.5,
-};
-
 export default defineComponent({
   name: 'PanZoom',
 
   props: {
-    // https://github.com/anvaka/panzoom
-    // zoomSpeed: 0.065 // 6.5% per mouse wheel event
-    // pinchSpeed: 2 // zoom two times faster than the distance between fingers
-    // transformOrigin
-    // maxZoom: 1,
-    // minZoom: 0.1
-    // smoothScroll: false
-    // zoomDoubleClickSpeed: 1,
-    // bounds: true,
-    // boundsPadding: 0.1
-    options: {
-      type: Object,
-      default: () => ({}),
-    },
-
     x: {
       type: Number,
       default: 0,
@@ -54,6 +33,16 @@ export default defineComponent({
     zoom: {
       type: Number,
       default: 1,
+    },
+
+    minZoom: {
+      type: Number,
+      default: undefined,
+    },
+
+    maxZoom: {
+      type: Number,
+      default: undefined,
     },
   },
 
@@ -89,12 +78,12 @@ export default defineComponent({
 
     onMounted(() => {
       if (sceneRef.value) {
-        const finalOptions = {
-          ...DEFAULT_OPTIONS,
-          ...props.options,
-        };
-
-        const panZoomInstance: PanZoom = panZoom(sceneRef.value, finalOptions);
+        // https://github.com/anvaka/panzoom
+        const panZoomInstance: PanZoom = panZoom(sceneRef.value, {
+          bounds: true,
+          minZoom: props.minZoom,
+          maxZoom: props.maxZoom,
+        });
         panZoomInstance.zoomAbs(props.x, props.y, props.zoom);
         bindEvents(panZoomInstance);
 

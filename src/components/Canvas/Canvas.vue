@@ -4,6 +4,8 @@
       :x="gridOffset.x"
       :y="gridOffset.y"
       :zoom="scale"
+      :min-zoom="minZoom"
+      :max-zoom="maxZoom"
       @panend="onCanvasPanEnd"
       @zoom="onCanvasZoom"
     >

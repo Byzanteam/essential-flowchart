@@ -35,6 +35,8 @@ export interface ILinkPipelinePhase {
 export interface IConfig {
   nodePadding: number;
   portGap: number;
+  minZoom: number;
+  maxZoom: number;
   linkPipeline: ILinkPipelinePhase[];
 }
 
@@ -57,6 +59,7 @@ export interface IState {
 export interface IStateInput {
   nodes: INodeInput[];
   links: ILink[];
+  scale?: number;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

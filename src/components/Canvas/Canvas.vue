@@ -1,23 +1,43 @@
 <template>
-  <div ref="canvasRef">
-    <div class="canvas__inner" :style="canvasStyleObj">
-      <slot />
-    </div>
+  <div class="canvas">
+    <PanZoom
+      :x="gridOffset.x"
+      :y="gridOffset.y"
+      :zoom="scale"
+      :min-zoom="minZoom"
+      :max-zoom="maxZoom"
+      @panend="onCanvasPanEnd"
+      @zoom="onCanvasZoom"
+    >
+      <div
+        :style="canvasStyleObj"
+        class="canvas__inner"
+      >
+        <slot />
+      </div>
+    </PanZoom>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, computed } from '@vue/composition-api';
-
+import {
+  defineComponent,
+  computed,
+} from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-
 import useSize from './hooks/useSize';
+import usePanZoomCanvas from './hooks/usePanZoomCanvas';
+import PanZoomComponent from './PanZoom.vue';
 
 export default defineComponent({
   name: 'Canvas',
 
+  components: {
+    PanZoom: PanZoomComponent,
+  },
+
   setup () {
-    const { size, canvasRef } = useSize();
+    const { size } = useSize();
     const store = useStore();
 
     const canvasStyleObj = computed(() => ({
@@ -25,19 +45,31 @@ export default defineComponent({
       height: `${store.state.graph.grid.height}px`,
     }));
 
+    const scale = computed(() => store.state.graph.scale);
+
+    const gridOffset = store.state.graph.grid.offset;
+
     return {
-      canvasRef,
       size,
       canvasStyleObj,
+      scale,
+      gridOffset,
+      ...usePanZoomCanvas(store),
     };
   },
 });
 </script>
 
 <style lang="scss">
-.canvas__inner {
+.canvas {
   background-color: purple;
-  cursor: move;
-  position: relative;
+  overflow: hidden;
+  width: 100%;
+
+  &__inner {
+    background-color: rgba(green, 0.5);
+    cursor: move;
+    position: relative;
+  }
 }
 </style>

@@ -17,6 +17,7 @@ const state: IState = {
     entries: [],
   },
   graph: {
+    scale: 1,
     offset: {
       x: 0,
       y: 0,

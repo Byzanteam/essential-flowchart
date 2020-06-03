@@ -6,6 +6,7 @@
     :z="50"
     :resizable="false"
     :grid="[1, 1]"
+    :scale="scale"
     axis="both"
     w="auto"
     h="auto"
@@ -77,6 +78,7 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
     const node = computed(() => props.node);
+    const scale = computed(() => store.state.graph.scale);
 
     const onNodeClick = () => {
       store.dispatch('selectNode', props.node.id);
@@ -84,6 +86,7 @@ export default defineComponent({
 
     return {
       onNodeClick,
+      scale,
       ...useDragNode(store, node),
     };
   },

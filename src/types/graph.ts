@@ -73,5 +73,5 @@ export interface IGraph {
   };
 
   grid: IGrid;
-  scale?: number;
+  scale: number;
 }

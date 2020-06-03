@@ -22,8 +22,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { IStateInput } from '@/types';
-
+import { IStateInput, IConfigInput } from '@/types';
 import useState from './hooks/useState';
 import useSelected from './hooks/useSelected';
 
@@ -47,6 +46,8 @@ interface IFlowchartProps {
    * Custom components
    */
   components?: IFlowchartComponents;
+
+  config?: IConfigInput;
 }
 
 export default defineComponent({
@@ -68,11 +69,17 @@ export default defineComponent({
       type: Object as PropType<IFlowchartComponent>,
       default: () => ({}),
     },
+
+    config: {
+      type: Object as PropType<IConfigInput>,
+      default: () => ({}),
+    },
   },
 
   setup (props: IFlowchartProps) {
     const store = useStore();
     const { nodes, links } = useState(props.rawState, store);
+    store.commit('updateConfig', props.config);
 
     const {
       components: {
@@ -82,6 +89,10 @@ export default defineComponent({
       } = {},
     } = props;
 
+    function zoom (delta: number) {
+      store.dispatch('updateScale', store.state.graph.scale + delta);
+    }
+
     return {
       nodeComponent,
       portComponent,
@@ -89,6 +100,8 @@ export default defineComponent({
       nodes,
       links,
       ...useSelected(store),
+
+      zoom,
     };
   },
 });

@@ -11,6 +11,7 @@
   "dependencies": {
     "@vue/composition-api": "^0.5.0",
     "core-js": "^3.6.4",
+    "panzoom": "^9.2.4",
     "pathfinding": "^0.4.18",
     "vue": "^2.6.11",
     "vue-draggable-resizable": "^2.2.0",

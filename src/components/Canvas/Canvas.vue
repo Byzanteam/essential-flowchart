@@ -62,12 +62,10 @@ export default defineComponent({
 
 <style lang="scss">
 .canvas {
-  background-color: purple;
   overflow: hidden;
   width: 100%;
 
   &__inner {
-    background-color: rgba(green, 0.5);
     cursor: move;
     position: relative;
   }

@@ -127,4 +127,12 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.canvas {
+  background-color: purple;
+
+  &__inner {
+    background-color: rgba(green, 0.5);
+  }
+}
 </style>

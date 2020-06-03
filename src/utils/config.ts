@@ -26,7 +26,7 @@ function validatePortGap (portGap: number) {
 }
 
 function validateZoom (zoom: number) {
-  if (typeof zoom !== 'number' || zoom < 0) {
+  if (typeof zoom !== 'number' || Number.isNaN(zoom) || zoom < 0) {
     throw new Error(`zoom must be a positive number, but got ${JSON.stringify(zoom)}.`);
   }
 }

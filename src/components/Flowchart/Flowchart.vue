@@ -90,7 +90,7 @@ export default defineComponent({
     } = props;
 
     function zoom (delta: number) {
-      store.commit('updateScale', store.state.graph.scale + delta);
+      store.dispatch('updateScale', store.state.graph.scale + delta);
     }
 
     return {

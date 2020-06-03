@@ -10,7 +10,7 @@ import addLink from './addLink';
 import removeLink from './removeLink';
 import selectLink from './selectLink';
 
-
+import updateScale from './updateScale';
 import historyActions from './history';
 
 
@@ -26,4 +26,6 @@ export default {
   addLink,
   removeLink,
   selectLink,
+
+  updateScale,
 };

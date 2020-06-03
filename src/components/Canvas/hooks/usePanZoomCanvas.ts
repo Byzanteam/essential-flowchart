@@ -9,7 +9,10 @@ export default function usePanZoomCanvas (store: FlowchartStore) {
   function onCanvasZoom (panZoom: PanZoom) {
     const transform: Transform = panZoom.getTransform();
     // num.toFixed(2) ?
-    store.commit('updateScale', transform.scale);
+    store.commit({
+      type: 'updateScale',
+      scale: transform.scale,
+    });
     // for zoom, convert x and y to integer
     store.commit('updateOffset', {
       x: Math.ceil(transform.x),

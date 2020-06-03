@@ -1,6 +1,6 @@
 import { createStore } from '../../../helper';
 
-describe.skip('deleteSelected', () => {
+describe('deleteSelected', () => {
   it('delete node', () => {
     const node = {
       id: 'node1',

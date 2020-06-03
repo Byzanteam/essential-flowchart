@@ -4,7 +4,9 @@ export default function selectNode ({ state, commit }: FlowchartContext, nodeId:
   if (state.selected && state.selected.id === nodeId) return;
 
   commit('updateSelected', {
-    type: 'node',
-    id: nodeId,
+    selected: {
+      type: 'node',
+      id: nodeId,
+    },
   });
 }

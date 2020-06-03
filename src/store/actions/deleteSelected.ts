@@ -1,16 +1,24 @@
 import { FlowchartContext } from '@/types';
 
-// TODO
-export default function deleteSelected ({ dispatch, state }: FlowchartContext) {
+export default function deleteSelected (
+  { dispatch, commit, state }: FlowchartContext,
+) {
   const { selected } = state;
 
   if (selected) {
-    if (selected.type === 'link') {
-      dispatch('removeLink', selected.id);
-    } else if (selected.type === 'node') {
-      dispatch('removeNode', selected.id);
-    }
+    const updateSelectedFunc = () => commit('updateSelected', { selected: null });
 
-    dispatch('setSelected', null);
+    // eslint-disable-next-line default-case
+    switch (selected.type) {
+      case 'link':
+        dispatch('removeLink', { linkId: selected.id })
+          .then(updateSelectedFunc);
+        break;
+
+      case 'node':
+        dispatch('removeNode', selected.id)
+          .then(updateSelectedFunc);
+        break;
+    }
   }
 }

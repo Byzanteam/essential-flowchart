@@ -1,7 +1,7 @@
-import { FlowchartStore } from '@/types';
+import { FlowchartContext } from '@/types';
 import { clamp } from '@/utils/shared';
 
-export default function updateScale ({ state, commit }: FlowchartStore, scale: number) {
+export default function updateScale ({ state, commit }: FlowchartContext, scale: number) {
   const { minZoom, maxZoom } = state.config;
 
   commit({

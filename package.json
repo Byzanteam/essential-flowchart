@@ -1,10 +1,10 @@
 {
   "name": "essential-workflow",
   "version": "0.1.0",
-  "private": true,
+  "main": "src/index.ts",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "vue-cli-service build --target lib --name flowchart src/index.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -47,5 +47,6 @@
       "vue-cli-service lint",
       "git add"
     ]
-  }
+  },
+  "typings": "types/index.d.ts"
 }

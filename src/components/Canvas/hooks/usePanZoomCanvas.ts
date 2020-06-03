@@ -14,18 +14,24 @@ export default function usePanZoomCanvas (store: FlowchartStore) {
       scale: transform.scale,
     });
     // for zoom, convert x and y to integer
-    store.commit('updateOffset', {
-      x: Math.ceil(transform.x),
-      y: Math.ceil(transform.y),
+    store.commit({
+      type: 'updateOffset',
+      offset: {
+        x: Math.ceil(transform.x),
+        y: Math.ceil(transform.y),
+      },
     });
   }
 
   function onCanvasPanEnd (panZoom: PanZoom) {
     const transform: Transform = panZoom.getTransform();
     // for pan, x and y are already integer
-    store.commit('updateOffset', {
-      x: transform.x,
-      y: transform.y,
+    store.commit({
+      type: 'updateOffset',
+      offset: {
+        x: transform.x,
+        y: transform.y,
+      },
     });
   }
 

@@ -3,4 +3,10 @@ module.exports = {
   css: {
     extract: false,
   },
+  chainWebpack: config => {
+    config.externals({
+      ...config.externals,
+      vuex: 'Vuex',
+    });
+  },
 };

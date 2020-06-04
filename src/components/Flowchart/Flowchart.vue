@@ -20,7 +20,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from '@vue/composition-api';
+import Vue from 'vue';
+import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { IStateInput, IConfigInput } from '@/types';
 import useState from './hooks/useState';
@@ -32,6 +33,8 @@ import NodeDefault from '../Node/Default.vue';
 import PortDefault from '../Port/Default.vue';
 import LinkWrapperComponent from '../Link/Wrapper.vue';
 import LinkDefault from '../Link/Default.vue';
+
+Vue.use(VueCompositionApi);
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 interface IFlowchartComponents {

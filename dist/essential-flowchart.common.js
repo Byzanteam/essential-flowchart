@@ -8779,12 +8779,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"93441b2e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Flowchart/Flowchart.vue?vue&type=template&id=80236986&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"93441b2e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Flowchart/Flowchart.vue?vue&type=template&id=05661ec4&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('CanvasComponent',[_vm._l((_vm.nodes),function(node){return _c('NodeWrapperComponent',{key:node.id,attrs:{"node":node,"is-selected":_vm.isNodeSelected(node.id),"node-component":_vm.nodeComponent,"port-component":_vm.portComponent}})}),_vm._l((_vm.links),function(link){return _c('LinkWrapperComponent',{key:link.id,attrs:{"link":link,"is-selected":_vm.isLinkSelected(link.id),"link-component":_vm.linkComponent}})})],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Flowchart/Flowchart.vue?vue&type=template&id=80236986&
+// CONCATENATED MODULE: ./src/components/Flowchart/Flowchart.vue?vue&type=template&id=05661ec4&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.link.js
 var es_string_link = __webpack_require__("9911");
@@ -10048,7 +10048,7 @@ function _unsupportedIterableToArray(o, minLen) {
   if (typeof o === "string") return _arrayLikeToArray(o, minLen);
   var n = Object.prototype.toString.call(o).slice(8, -1);
   if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(n);
+  if (n === "Map" || n === "Set") return Array.from(o);
   if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
 }
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/nonIterableRest.js
@@ -10304,7 +10304,7 @@ function updatePorts(node, gridOffset, _ref6) {
       case types["PortDirection"].TOP:
         dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach(function (port, index) {
-          acc[port.id] = _objectSpread2({}, port, {
+          acc[port.id] = _objectSpread2(_objectSpread2({}, port), {}, {
             position: {
               x: dots[index],
               y: y
@@ -10316,7 +10316,7 @@ function updatePorts(node, gridOffset, _ref6) {
       case types["PortDirection"].RIGHT:
         dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach(function (port, index) {
-          acc[port.id] = _objectSpread2({}, port, {
+          acc[port.id] = _objectSpread2(_objectSpread2({}, port), {}, {
             position: {
               x: x + width,
               y: dots[index]
@@ -10328,7 +10328,7 @@ function updatePorts(node, gridOffset, _ref6) {
       case types["PortDirection"].BOTTOM:
         dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach(function (port, index) {
-          acc[port.id] = _objectSpread2({}, port, {
+          acc[port.id] = _objectSpread2(_objectSpread2({}, port), {}, {
             position: {
               x: dots[index],
               y: y + height
@@ -10340,7 +10340,7 @@ function updatePorts(node, gridOffset, _ref6) {
       case types["PortDirection"].LEFT:
         dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach(function (port, index) {
-          acc[port.id] = _objectSpread2({}, port, {
+          acc[port.id] = _objectSpread2(_objectSpread2({}, port), {}, {
             position: {
               x: x,
               y: dots[index]
@@ -10352,7 +10352,7 @@ function updatePorts(node, gridOffset, _ref6) {
 
     return acc;
   }, {});
-  return _objectSpread2({}, node, {
+  return _objectSpread2(_objectSpread2({}, node), {}, {
     ports: updatedPorts
   });
 } //
@@ -10487,7 +10487,7 @@ function addNode(state, _ref) {
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(state.graph.nodes, node.id, updatedNode);
 }
 registerRevertFunc('addNode', function (mutation) {
-  return _objectSpread2({}, mutation, {
+  return _objectSpread2(_objectSpread2({}, mutation), {}, {
     type: 'removeNode'
   });
 });
@@ -10505,7 +10505,7 @@ function removeNode(state, _ref) {
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.delete(state.graph.nodes, node.id);
 }
 registerRevertFunc('removeNode', function (mutation) {
-  return _objectSpread2({}, mutation, {
+  return _objectSpread2(_objectSpread2({}, mutation), {}, {
     type: 'addNode'
   });
 });
@@ -10525,15 +10525,15 @@ function updateNodePosition(state, _ref) {
   if (position.x === node.x && position.y === node.y) {
     external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(nodes, node.id, node);
   } else {
-    var updatedNode = markNodeWalkable(state.graph.grid.pfGrid, state.graph.grid.offset, _objectSpread2({}, node, {}, prevPosition), true, state.config);
-    updatedNode = markNodeWalkable(pfGrid, state.graph.grid.offset, _objectSpread2({}, updatedNode, {}, position), false, state.config);
+    var updatedNode = markNodeWalkable(state.graph.grid.pfGrid, state.graph.grid.offset, _objectSpread2(_objectSpread2({}, node), prevPosition), true, state.config);
+    updatedNode = markNodeWalkable(pfGrid, state.graph.grid.offset, _objectSpread2(_objectSpread2({}, updatedNode), position), false, state.config);
     external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(nodes, updatedNode.id, updatedNode);
   }
 }
 registerRevertFunc('updateNodePosition', function (mutation) {
   var prevPosition = mutation.prevPosition,
       position = mutation.position;
-  return _objectSpread2({}, mutation, {
+  return _objectSpread2(_objectSpread2({}, mutation), {}, {
     prevPosition: _objectSpread2({}, position),
     position: _objectSpread2({}, prevPosition)
   });
@@ -10548,7 +10548,7 @@ function addLink(state, _ref) {
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(state.graph.links, link.id, link);
 }
 registerRevertFunc('addLink', function (mutation) {
-  return _objectSpread2({}, mutation, {
+  return _objectSpread2(_objectSpread2({}, mutation), {}, {
     type: 'removeLink'
   });
 });
@@ -10562,7 +10562,7 @@ registerRevertFunc('addLink', function (mutation) {
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.delete(state.graph.links, link.id);
 });
 registerRevertFunc('removeLink', function (mutation) {
-  return _objectSpread2({}, mutation, {
+  return _objectSpread2(_objectSpread2({}, mutation), {}, {
     type: 'addLink'
   });
 });
@@ -11023,7 +11023,7 @@ function _toConsumableArray(arr) {
 
 
 
-/* harmony default export */ var actions = (_objectSpread2({}, actions_history, {
+/* harmony default export */ var actions = (_objectSpread2(_objectSpread2({}, actions_history), {}, {
   addNode: addNode_addNode,
   removeNode: removeNode_removeNode,
   dragNode: dragNode,
@@ -11704,7 +11704,7 @@ function useMouseDownOnPort(store, node, port) {
         // complete link
         var toNodeId = target.nodeId,
             toPortId = target.portId;
-        var link = runPipeline(_objectSpread2({}, newLink, {
+        var link = runPipeline(_objectSpread2(_objectSpread2({}, newLink), {}, {
           to: {
             nodeId: toNodeId,
             portId: toPortId
@@ -12037,25 +12037,25 @@ function getPaddingPoint(_ref3, config) {
 
   switch (direction) {
     case types["PortDirection"].TOP:
-      return _objectSpread2({}, position, {
+      return _objectSpread2(_objectSpread2({}, position), {}, {
         y: position.y - config.nodePadding
       });
       break;
 
     case types["PortDirection"].RIGHT:
-      return _objectSpread2({}, position, {
+      return _objectSpread2(_objectSpread2({}, position), {}, {
         x: position.x + config.nodePadding
       });
       break;
 
     case types["PortDirection"].BOTTOM:
-      return _objectSpread2({}, position, {
+      return _objectSpread2(_objectSpread2({}, position), {}, {
         y: position.y + config.nodePadding
       });
       break;
 
     case types["PortDirection"].LEFT:
-      return _objectSpread2({}, position, {
+      return _objectSpread2(_objectSpread2({}, position), {}, {
         x: position.x - config.nodePadding
       });
       break;
@@ -12302,6 +12302,8 @@ var Link_Default_component = normalizeComponent(
 
 
 
+
+external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vue_composition_api_module);
 /* harmony default export */ var Flowchartvue_type_script_lang_ts_ = (defineComponent({
   name: 'Flowchart',
   components: {
@@ -12348,13 +12350,13 @@ var Link_Default_component = normalizeComponent(
       store.dispatch('updateScale', store.state.graph.scale + delta);
     }
 
-    return _objectSpread2({
+    return _objectSpread2(_objectSpread2({
       nodeComponent: nodeComponent,
       portComponent: portComponent,
       linkComponent: linkComponent,
       nodes: nodes,
       links: links
-    }, useSelected(store), {
+    }, useSelected(store)), {}, {
       zoom: zoom
     });
   }

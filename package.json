@@ -1,10 +1,10 @@
 {
-  "name": "essential-workflow",
+  "name": "essential-flowchart",
   "version": "0.1.0",
-  "main": "src/index.ts",
+  "main": "dist/essential-flowchart.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name flowchart src/index.ts",
+    "build": "vue-cli-service build --target lib --name essential-flowchart src/index.ts",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },

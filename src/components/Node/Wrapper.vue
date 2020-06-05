@@ -15,6 +15,8 @@
     @dragstop="onNodeDragStop"
     @activated="onNodeClick"
   >
+    <ResizeObserver @notify="onNodeResize" />
+
     <component
       :is="nodeComponent"
       :node="node"
@@ -34,6 +36,8 @@
 <script lang="ts">
 // @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
+// @ts-ignore
+import { ResizeObserver } from 'vue-resize';
 import {
   defineComponent, computed,
   PropType,
@@ -44,7 +48,9 @@ import { INode } from '@/types';
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
-type IFlowchartComponent = ReturnType<typeof defineComponent>;
+import 'vue-resize/dist/vue-resize.css';
+
+type FlowchartComponent = ReturnType<typeof defineComponent>;
 
 export default defineComponent({
   name: 'NodeWrapper',
@@ -52,6 +58,7 @@ export default defineComponent({
   components: {
     VueDraggableResizable,
     PortWrapperComponent,
+    ResizeObserver,
   },
 
   props: {
@@ -66,11 +73,11 @@ export default defineComponent({
     },
 
     nodeComponent: {
-      type: Object as PropType<IFlowchartComponent>,
+      type: Object as PropType<FlowchartComponent>,
       required: true,
     },
     portComponent: {
-      type: Object as PropType<IFlowchartComponent>,
+      type: Object as PropType<FlowchartComponent>,
       required: true,
     },
   },
@@ -84,8 +91,18 @@ export default defineComponent({
       store.dispatch('selectNode', props.node.id);
     };
 
+    const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
+      store.commit({
+        type: 'updateNodeSize',
+        id: props.node.id,
+        width,
+        height,
+      });
+    };
+
     return {
       onNodeClick,
+      onNodeResize,
       scale,
       ...useDragNode(store, node),
     };

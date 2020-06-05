@@ -1,6 +1,7 @@
 import addNode from './addNode';
 import removeNode from './removeNode';
 import updateNodePosition from './updateNodePosition';
+import updateNodeSize from './updateNodeSize';
 
 import addLink from './addLink';
 import removeLink from './removeLink';
@@ -22,6 +23,7 @@ export default {
   addNode,
   removeNode,
   updateNodePosition,
+  updateNodeSize,
 
   addLink,
   removeLink,

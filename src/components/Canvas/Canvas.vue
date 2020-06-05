@@ -1,5 +1,8 @@
 <template>
-  <div class="canvas">
+  <div
+    ref="canvasRef"
+    class="canvas"
+  >
     <PanZoom
       :x="gridOffset.x"
       :y="gridOffset.y"
@@ -25,7 +28,7 @@ import {
   computed,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import useSize from './hooks/useSize';
+import useCanvasContext from './hooks/useCanvasContext';
 import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
 
@@ -37,7 +40,7 @@ export default defineComponent({
   },
 
   setup () {
-    const { size } = useSize();
+    const { canvasRef } = useCanvasContext();
     const store = useStore();
 
     const canvasStyleObj = computed(() => ({
@@ -50,7 +53,7 @@ export default defineComponent({
     const gridOffset = store.state.graph.grid.offset;
 
     return {
-      size,
+      canvasRef,
       canvasStyleObj,
       scale,
       gridOffset,

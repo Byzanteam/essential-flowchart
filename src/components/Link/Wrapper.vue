@@ -16,12 +16,12 @@
 
 <script lang="ts">
 import {
-  defineComponent, computed, watch, PropType,
+  defineComponent, computed, watch, PropType, inject,
 } from '@vue/composition-api';
 
 import useStore from '@/hooks/useStore';
-import { ILink } from '@/types';
-
+import { ILink, ICanvasContext } from '@/types';
+import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
@@ -48,6 +48,11 @@ export default defineComponent({
 
   setup (props) {
     const store = useStore();
+    const canvasContext: ICanvasContext = inject<ICanvasContext>(CanvasContextSymbol, {
+      offsetX: 0,
+      offsetY: 0,
+    });
+
     const graph = computed(() => store.state.graph);
 
     const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
@@ -66,8 +71,8 @@ export default defineComponent({
 
         return {
           position: {
-            x: (store.state.mousePosition.x - offset.x) / scale,
-            y: (store.state.mousePosition.y - offset.y) / scale,
+            x: (store.state.mousePosition.x - canvasContext.offsetX - offset.x) / scale,
+            y: (store.state.mousePosition.y - canvasContext.offsetY - offset.y) / scale,
           },
         };
       }

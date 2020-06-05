@@ -2,6 +2,11 @@ import Pathfinding from 'pathfinding';
 
 import { Id, IPosition, IOffset } from './generics';
 
+export interface ICanvasContext {
+  offsetX: number;
+  offsetY: number;
+}
+
 export enum PortDirection {
   TOP = 'top',
   RIGHT = 'right',

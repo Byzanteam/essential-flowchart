@@ -6,7 +6,7 @@ module.exports = {
   chainWebpack: config => {
     config.externals({
       ...config.externals,
-      vuex: 'Vuex',
+      vuex: 'vuex',
     });
   },
 };

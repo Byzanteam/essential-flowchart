@@ -22,7 +22,7 @@ export interface INodePortInput {
 }
 
 export type INodePort = INodePortInput & {
-  position: IPosition;
+  position?: IPosition;
 }
 
 // A node of a graph

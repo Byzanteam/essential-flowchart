@@ -2,14 +2,12 @@ import PF from 'pathfinding';
 import {
   Point, IPosition,
   PortDirection, IConfig,
-  IGrid, INodePort,
+  IGrid,
 } from '@/types';
 import { pathFinder } from '@/utils/grid';
 import { SCALE_FACTOR } from '@/utils/config';
 
 import generateRightAnglePath from './generateRightAnglePath';
-
-type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
 function scalePath (path: Point[]): Point[] {
   return path.map(([x, y]) => [x * SCALE_FACTOR, y * SCALE_FACTOR]);
@@ -22,7 +20,9 @@ function scalePosition (position: IPosition): IPosition {
   };
 }
 
-function getPaddingPoint ({ position, direction }: NodePort, config: IConfig): IPosition {
+// TODO:
+function getPaddingPoint (position: IPosition, config: IConfig): IPosition {
+  return position;
   switch (direction) {
     case PortDirection.TOP:
       return { ...position, y: position.y - config.nodePadding };
@@ -45,12 +45,12 @@ function getPaddingPoint ({ position, direction }: NodePort, config: IConfig): I
   }
 }
 
-function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig): Point[] {
-  const scaledStartPos = scalePosition(getPaddingPoint(startPort, config));
-  const scaledEndPos = scalePosition(getPaddingPoint(endPort, config));
+function fallbackPath (startPos: IPosition, endPos: IPosition, config: IConfig): Point[] {
+  const scaledStartPos = scalePosition(getPaddingPoint(startPos, config));
+  const scaledEndPos = scalePosition(getPaddingPoint(endPos, config));
 
-  const originalStartPos = scalePosition(startPort.position);
-  const originalEndPos = scalePosition(endPort.position);
+  const originalStartPos = scalePosition(startPos);
+  const originalEndPos = scalePosition(endPos);
 
   return scalePath([
     [originalStartPos.x, originalStartPos.y],
@@ -61,15 +61,12 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig):
 
 export default function generatePath (
   grid: IGrid,
-  startPort: NodePort,
-  endPort: NodePort,
+  startPos: IPosition,
+  endPos: IPosition,
   config: IConfig,
   _version?: number,
 ): Point[] {
   const gridOffset = grid.offset;
-
-  const startPos = startPort.position;
-  const endPos = endPort.position;
 
   const scaledStartPos = scalePosition({
     x: startPos.x + gridOffset.x,
@@ -91,10 +88,10 @@ export default function generatePath (
       ),
     ) as Point[];
 
-    if (!path.length) return fallbackPath(startPort, endPort, config);
+    if (!path.length) return fallbackPath(startPos, endPos, config);
 
     return scalePath(path);
   } catch (e) {
-    return fallbackPath(startPort, endPort, config);
+    return fallbackPath(startPos, endPos, config);
   }
 }

@@ -10,7 +10,10 @@ import { PortDirection } from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
 const rawState = {
-  // offset: [0, 0],
+  offset: {
+    x: 100,
+    y: 100,
+  },
   scale: 0.8,
   nodes: {
     node1: {

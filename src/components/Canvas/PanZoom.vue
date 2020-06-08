@@ -84,7 +84,9 @@ export default defineComponent({
           minZoom: props.minZoom,
           maxZoom: props.maxZoom,
         });
-        panZoomInstance.zoomAbs(props.x, props.y, props.zoom);
+
+        panZoomInstance.zoomTo(props.x, props.y, props.zoom);
+        panZoomInstance.moveTo(props.x, props.y);
         bindEvents(panZoomInstance);
 
         watch(() => props.zoom, zoom => {

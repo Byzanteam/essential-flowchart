@@ -4,8 +4,8 @@
     class="canvas"
   >
     <PanZoom
-      :x="gridOffset.x"
-      :y="gridOffset.y"
+      :x="offset.x"
+      :y="offset.y"
       :zoom="scale"
       :min-zoom="minZoom"
       :max-zoom="maxZoom"
@@ -49,14 +49,13 @@ export default defineComponent({
     }));
 
     const scale = computed(() => store.state.graph.scale);
-
-    const gridOffset = store.state.graph.grid.offset;
+    const offset = computed(() => store.state.graph.offset);
 
     return {
       canvasRef,
       canvasStyleObj,
       scale,
-      gridOffset,
+      offset,
       ...usePanZoomCanvas(store),
     };
   },

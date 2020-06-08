@@ -1,22 +1,22 @@
-import { FlowchartStore, IStateInput } from '@/types';
+import { FlowchartStore, IGraph } from '@/types';
 
 // eslint-disable-next-line import/prefer-default-export
-export function buildState (rawState: IStateInput, store: FlowchartStore) {
-  const { nodes, links, scale = 1 } = rawState;
+export function buildGraph (graph: IGraph, store: FlowchartStore) {
+  const { nodes, links } = graph;
 
   store.commit({
     type: 'updateScale',
-    scale,
+    scale: graph.scale,
   });
 
   // TODO: expand grid
-  nodes.forEach(node => {
+  Object.values(nodes).forEach(node => {
     store.commit('addNode', {
       node: { ...node },
     });
   });
 
-  links.forEach(link => {
+  Object.values(links).forEach(link => {
     store.commit('addLink', {
       link: { ...link },
     });

@@ -1,10 +1,10 @@
 import { computed } from '@vue/composition-api';
 
-import { IStateInput, FlowchartStore } from '@/types';
-import { buildState } from '@/utils/graph';
+import { FlowchartStore, IGraph } from '@/types';
+import { buildGraph } from '@/utils/graph';
 
-export default function useState (rawState: IStateInput, store: FlowchartStore) {
-  buildState(rawState, store);
+export default function useGraph (graph: IGraph, store: FlowchartStore) {
+  buildGraph(graph, store);
   const nodes = computed(() => store.state.graph.nodes);
   const links = computed(() => store.state.graph.links);
 

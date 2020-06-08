@@ -1,7 +1,6 @@
 import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
-  INodeInput,
   ILink,
   Point,
 } from './graph';
@@ -54,12 +53,6 @@ export interface IState {
   mousePosition: IPosition | null;
   config: IConfig;
   selected: SelectedOrHovered;
-}
-
-export interface IStateInput {
-  nodes: INodeInput[];
-  links: ILink[];
-  scale?: number;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

@@ -11,15 +11,15 @@ import Flowchart from './components/Flowchart/Flowchart.vue';
 
 const rawState = {
   offset: {
-    x: 100,
-    y: 100,
+    x: 0,
+    y: 0,
   },
   scale: 0.8,
   nodes: {
     node1: {
       id: 'node1',
-      x: 200,
-      y: 200,
+      x: -30,
+      y: 30,
       width: 50,
       height: 50,
       ports: {
@@ -130,10 +130,10 @@ body {
 }
 
 .canvas {
-  background-color: purple;
+  background-color: rgba(green, 0.5);
 
-  &__inner {
-    background-color: rgba(green, 0.5);
+  &__outer {
+    background-color: purple;
   }
 }
 </style>

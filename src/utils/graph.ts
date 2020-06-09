@@ -1,18 +1,16 @@
-import { FlowchartStore, IGraph, IOffset } from '@/types';
+import {
+  FlowchartStore, IGraph, IOffset, IRect, IGrid,
+} from '@/types';
+import { GRID_GAP, DEFAULT_GIRD_WIDTH, DEFAULT_GRID_HEIGHT } from '@/utils/constants';
 import { buildEmptyGrid } from './grid';
 
-const GRID_GAP = 100;
-const DEFAULT_GIRD_WIDTH = 2000;
-const DEFAULT_GRID_HEIGHT = 2000;
-
-// 获取 grid 的最小尺寸
-function getGridRect (graph: IGraph) {
+function getGridRect (graph: IGraph): IRect {
   const { nodes } = graph;
 
-  let minX = 0; // 节点的最小 x
-  let maxX = DEFAULT_GIRD_WIDTH;
-  let minY = 0; // 节点的最小 y
-  let maxY = DEFAULT_GRID_HEIGHT;
+  let minX = 0; // min x of node
+  let maxX = DEFAULT_GIRD_WIDTH; // max x of node
+  let minY = 0; // min y of node
+  let maxY = DEFAULT_GRID_HEIGHT; // max y of node
 
   Object.values(nodes).forEach(node => {
     const { x, y } = node;
@@ -35,25 +33,21 @@ function getGridRect (graph: IGraph) {
   };
 }
 
-// eslint-disable-next-line import/prefer-default-export
-export function buildGraph (graph: IGraph, store: FlowchartStore) {
-  const rect = getGridRect(graph);
-  const gridOffset: IOffset = {
-    x: Math.abs(Math.min(rect.left - GRID_GAP, 0)),
-    y: Math.abs(Math.min(rect.top - GRID_GAP, 0)),
+function getGridOffset (gridRect: IRect): IOffset {
+  return {
+    x: Math.abs(Math.min(gridRect.left - GRID_GAP, 0)),
+    y: Math.abs(Math.min(gridRect.top - GRID_GAP, 0)),
   };
+}
 
-  const grid = buildEmptyGrid(
-    rect.width,
-    rect.height,
-    gridOffset,
-  );
-
+function setGrid (store: FlowchartStore, grid: IGrid) {
   store.commit({
     type: 'updateGrid',
     grid,
   });
+}
 
+function setGraph (store: FlowchartStore, graph: IGraph) {
   const {
     nodes, links, scale, offset,
   } = graph;
@@ -79,4 +73,20 @@ export function buildGraph (graph: IGraph, store: FlowchartStore) {
       link: { ...link },
     });
   });
+}
+
+// eslint-disable-next-line import/prefer-default-export
+export function buildGraph (graph: IGraph, store: FlowchartStore) {
+  const rect = getGridRect(graph);
+  const gridOffset: IOffset = getGridOffset(rect);
+
+  // add gap to grid size
+  const grid = buildEmptyGrid(
+    rect.width + 2 * GRID_GAP,
+    rect.height + 2 * GRID_GAP,
+    gridOffset,
+  );
+
+  setGrid(store, grid);
+  setGraph(store, graph);
 }

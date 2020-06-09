@@ -1,13 +1,10 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { IState, FlowchartStore } from '@/types';
-import { buildEmptyGrid } from '@/utils/grid';
 import { buildConfig } from '@/utils/config';
 import mutations from './mutations';
 import actions from './actions';
 import reactiveLinks from './plugins/reactiveLinks';
-
-const [defaultWidth, defaultHeight]: [number, number] = [1440, 900];
 
 Vue.use(Vuex);
 
@@ -29,7 +26,10 @@ const state: IState = {
         x: 0,
         y: 0,
       },
-      ...buildEmptyGrid(defaultWidth, defaultHeight),
+      width: 2000,
+      height: 2000,
+      // @ts-ignore
+      pfGrid: null,
     },
   },
   linkVersions: {},

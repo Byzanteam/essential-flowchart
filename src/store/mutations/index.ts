@@ -11,6 +11,7 @@ import deleteLinkPath from './deleteLinkPath';
 
 import updateSelected from './updateSelected';
 
+import updateGrid from './updateGrid';
 import expandGrid from './expandGird';
 
 import updateMousePosition from './updateMousePosition';
@@ -33,6 +34,7 @@ export default {
 
   updateSelected,
 
+  updateGrid,
   expandGrid,
 
   updateMousePosition,

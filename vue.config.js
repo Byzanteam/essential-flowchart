@@ -4,9 +4,11 @@ module.exports = {
     extract: false,
   },
   chainWebpack: config => {
-    config.externals({
-      ...config.externals,
-      vuex: 'vuex',
-    });
+    if (process.NODE_ENV === 'production') {
+      config.externals({
+        ...config.externals,
+        vuex: 'vuex',
+      });
+    }
   },
 };

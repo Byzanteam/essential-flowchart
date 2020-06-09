@@ -101,3 +101,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss">
+.pan-zoom {
+  outline: none;
+}
+</style>

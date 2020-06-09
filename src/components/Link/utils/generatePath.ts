@@ -23,26 +23,26 @@ function scalePosition (position: IPosition): IPosition {
 // TODO:
 function getPaddingPoint (position: IPosition, config: IConfig): IPosition {
   return position;
-  switch (direction) {
-    case PortDirection.TOP:
-      return { ...position, y: position.y - config.nodePadding };
-      break;
+  // switch (direction) {
+  //   case PortDirection.TOP:
+  //     return { ...position, y: position.y - config.nodePadding };
+  //     break;
 
-    case PortDirection.RIGHT:
-      return { ...position, x: position.x + config.nodePadding };
-      break;
+  //   case PortDirection.RIGHT:
+  //     return { ...position, x: position.x + config.nodePadding };
+  //     break;
 
-    case PortDirection.BOTTOM:
-      return { ...position, y: position.y + config.nodePadding };
-      break;
+  //   case PortDirection.BOTTOM:
+  //     return { ...position, y: position.y + config.nodePadding };
+  //     break;
 
-    case PortDirection.LEFT:
-      return { ...position, x: position.x - config.nodePadding };
-      break;
+  //   case PortDirection.LEFT:
+  //     return { ...position, x: position.x - config.nodePadding };
+  //     break;
 
-    default:
-      return { ...position };
-  }
+  //   default:
+  //     return { ...position };
+  // }
 }
 
 function fallbackPath (startPos: IPosition, endPos: IPosition, config: IConfig): Point[] {

@@ -1,13 +1,15 @@
 import PF from 'pathfinding';
 import {
   Point, IPosition,
-  IConfig,
-  IGrid,
+  PortDirection, IConfig,
+  IGrid, INodePort,
 } from '@/types';
 import { pathFinder } from '@/utils/grid';
 import { SCALE_FACTOR } from '@/utils/constants';
 
 import generateRightAnglePath from './generateRightAnglePath';
+
+type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
 function scalePath (path: Point[]): Point[] {
   return path.map(([x, y]) => [x * SCALE_FACTOR, y * SCALE_FACTOR]);
@@ -20,37 +22,35 @@ function scalePosition (position: IPosition): IPosition {
   };
 }
 
-// TODO:
-function getPaddingPoint (position: IPosition, _config: IConfig): IPosition {
-  return position;
-  // switch (direction) {
-  //   case PortDirection.TOP:
-  //     return { ...position, y: position.y - config.nodePadding };
-  //     break;
+function getPaddingPoint ({ position, direction }: NodePort, config: IConfig): IPosition {
+  switch (direction) {
+    case PortDirection.TOP:
+      return { ...position, y: position.y - config.nodePadding };
+      break;
 
-  //   case PortDirection.RIGHT:
-  //     return { ...position, x: position.x + config.nodePadding };
-  //     break;
+    case PortDirection.RIGHT:
+      return { ...position, x: position.x + config.nodePadding };
+      break;
 
-  //   case PortDirection.BOTTOM:
-  //     return { ...position, y: position.y + config.nodePadding };
-  //     break;
+    case PortDirection.BOTTOM:
+      return { ...position, y: position.y + config.nodePadding };
+      break;
 
-  //   case PortDirection.LEFT:
-  //     return { ...position, x: position.x - config.nodePadding };
-  //     break;
+    case PortDirection.LEFT:
+      return { ...position, x: position.x - config.nodePadding };
+      break;
 
-  //   default:
-  //     return { ...position };
-  // }
+    default:
+      return { ...position };
+  }
 }
 
-function fallbackPath (startPos: IPosition, endPos: IPosition, config: IConfig): Point[] {
-  const scaledStartPos = scalePosition(getPaddingPoint(startPos, config));
-  const scaledEndPos = scalePosition(getPaddingPoint(endPos, config));
+function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig): Point[] {
+  const scaledStartPos = scalePosition(getPaddingPoint(startPort, config));
+  const scaledEndPos = scalePosition(getPaddingPoint(endPort, config));
 
-  const originalStartPos = scalePosition(startPos);
-  const originalEndPos = scalePosition(endPos);
+  const originalStartPos = scalePosition(startPort.position);
+  const originalEndPos = scalePosition(endPort.position);
 
   return scalePath([
     [originalStartPos.x, originalStartPos.y],
@@ -61,12 +61,15 @@ function fallbackPath (startPos: IPosition, endPos: IPosition, config: IConfig):
 
 export default function generatePath (
   grid: IGrid,
-  startPos: IPosition,
-  endPos: IPosition,
+  startPort: NodePort,
+  endPort: NodePort,
   config: IConfig,
   _version?: number,
 ): Point[] {
   const gridOffset = grid.offset;
+
+  const startPos = startPort.position;
+  const endPos = endPort.position;
 
   const scaledStartPos = scalePosition({
     x: startPos.x + gridOffset.x,
@@ -88,10 +91,10 @@ export default function generatePath (
       ),
     ) as Point[];
 
-    if (!path.length) return fallbackPath(startPos, endPos, config);
+    if (!path.length) return fallbackPath(startPort, endPort, config);
 
     return scalePath(path);
   } catch (e) {
-    return fallbackPath(startPos, endPos, config);
+    return fallbackPath(startPort, endPort, config);
   }
 }

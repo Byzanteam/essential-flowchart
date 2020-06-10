@@ -34,8 +34,8 @@ export default defineComponent({
 
   setup (props) {
     const portStyleObj = computed(() => ({
-      left: `${props.port.position!.x - props.node.x - 6}px`,
-      top: `${props.port.position!.y - props.node.y - 6}px`,
+      left: `${props.port.position.x - props.node.x - 6}px`,
+      top: `${props.port.position.y - props.node.y - 6}px`,
     }));
 
     return {

@@ -13,10 +13,8 @@ export interface IOffset {
 export type Point2D = [number, number];
 
 export interface IRect {
-  left: number;
-  top: number;
-  bottom: number;
-  right: number;
+  x: number;
+  y: number;
   width: number;
   height: number;
 }

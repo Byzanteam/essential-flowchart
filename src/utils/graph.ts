@@ -24,10 +24,8 @@ function getGridRect (graph: IGraph): IRect {
   });
 
   return {
-    left: Math.min(minX, 0),
-    top: Math.min(minY, 0),
-    right: maxX,
-    bottom: maxY,
+    x: Math.min(minX, 0),
+    y: Math.min(minY, 0),
     width: minX > 0 ? maxX : maxX - minX,
     height: minY > 0 ? maxY : maxY - minY,
   };
@@ -35,8 +33,8 @@ function getGridRect (graph: IGraph): IRect {
 
 function getGridOffset (gridRect: IRect): IOffset {
   return {
-    x: Math.abs(Math.min(gridRect.left - GRID_PADDING, 0)),
-    y: Math.abs(Math.min(gridRect.top - GRID_PADDING, 0)),
+    x: Math.abs(Math.min(gridRect.x - GRID_PADDING, 0)),
+    y: Math.abs(Math.min(gridRect.y - GRID_PADDING, 0)),
   };
 }
 

@@ -114,7 +114,6 @@ module.exports = {
       'always',
     ],
     '@typescript-eslint/ban-ts-ignore': ['off'],
-    '@typescript-eslint/no-non-null-assertion': ['off'],
   },
   overrides: [
     {

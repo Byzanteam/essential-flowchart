@@ -9,7 +9,7 @@ import {
   INodePort,
   PortDirection,
 } from '@/types';
-import { GRID_GAP, PER_GRID_EXPANSION, SCALE_FACTOR } from '@/utils/constants';
+import { GRID_PADDING, GRID_EXPANSION_STEP, SCALE_FACTOR } from '@/utils/constants';
 
 type Line = [Point, Point];
 
@@ -180,7 +180,7 @@ function updatePorts (node: INodeInput, { portGap }: { portGap: number }): INode
 // +-------------------------------+ +---+ +-------------------------------+
 // |                               ^ ^   ^ ^                               |
 // |                               | |   | |                               |
-// |         原始(x, y)             | |   | |                               |
+// |   original (x, y)             | |   | |                               |
 // |         ·                     |d|   |d|                     ·         |
 // |                                +     +                                |
 // |                                                                       |
@@ -205,7 +205,7 @@ function updatePorts (node: INodeInput, { portGap }: { portGap: number }): INode
 // +----------------------------------+ +----------------------------------+
 // bottom left                                                           bottom right
 
-// mark node walkable/unwalkable
+// mark node walkable/blocked
 export function markNodeWalkable (
   grid: Pathfinding.Grid,
   gridOffset: IOffset,
@@ -272,22 +272,22 @@ export function autoGridExpansions (grid: IGrid, node: INodeInput): IOffset[] {
   } = grid;
 
   // whether expand to the left
-  const negativeX: boolean = node.x < GRID_GAP - gridOffset.x;
+  const negativeX: boolean = node.x < GRID_PADDING - gridOffset.x;
   // whether expand to the top
-  const negativeY: boolean = node.y < GRID_GAP - gridOffset.y;
+  const negativeY: boolean = node.y < GRID_PADDING - gridOffset.y;
   // whether expand to the right
-  const positiveX: boolean = width - gridOffset.x - GRID_GAP < node.x;
+  const positiveX: boolean = width - gridOffset.x - GRID_PADDING < node.x;
   // whether expand to the bottom
-  const positiveY: boolean = height - gridOffset.y - GRID_GAP < node.y;
+  const positiveY: boolean = height - gridOffset.y - GRID_PADDING < node.y;
 
   return [
     {
-      x: negativeX ? -PER_GRID_EXPANSION : 0,
-      y: negativeY ? -PER_GRID_EXPANSION : 0,
+      x: negativeX ? -GRID_EXPANSION_STEP : 0,
+      y: negativeY ? -GRID_EXPANSION_STEP : 0,
     },
     {
-      x: positiveX ? PER_GRID_EXPANSION : 0,
-      y: positiveY ? PER_GRID_EXPANSION : 0,
+      x: positiveX ? GRID_EXPANSION_STEP : 0,
+      y: positiveY ? GRID_EXPANSION_STEP : 0,
     },
   ];
 }

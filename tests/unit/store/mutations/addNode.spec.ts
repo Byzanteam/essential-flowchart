@@ -1,4 +1,5 @@
 import { PortDirection } from '@/types';
+import { SCALE_FACTOR } from '@/utils/constants';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {
@@ -95,8 +96,7 @@ describe('addNode', () => {
     ];
 
     blockedNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
-      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(false);
+      expect(pfGrid.isWalkableAt(x / SCALE_FACTOR, y / SCALE_FACTOR)).toEqual(false);
     });
 
     const walkableNodes = [
@@ -115,8 +115,7 @@ describe('addNode', () => {
     ];
 
     walkableNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
-      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(true);
+      expect(pfGrid.isWalkableAt(x / SCALE_FACTOR, y / SCALE_FACTOR)).toEqual(true);
     });
   });
 });

@@ -1,8 +1,8 @@
-// if the distance between node and grid edge is smaller than GRID_GAP,
+// if the distance between node and grid edge is smaller than GRID_PADDING,
 // will trigger the grid expansion
-export const GRID_GAP = 500;
-// the distance per expansion
-export const PER_GRID_EXPANSION = 500;
+export const GRID_PADDING = 500;
+// the step of grid expansion
+export const GRID_EXPANSION_STEP = 500;
 // default grid width
 export const DEFAULT_GIRD_WIDTH = 1500;
 // default grid height

@@ -116,7 +116,6 @@ describe('addNode', () => {
     ];
 
     walkableNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
       expect(pfGrid.isWalkableAt(Math.ceil(x / SCALE_FACTOR), Math.ceil(y / SCALE_FACTOR))).toEqual(true);
       expect(pathFinder.findPath(
         0,

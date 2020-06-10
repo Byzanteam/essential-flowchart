@@ -1,7 +1,7 @@
 import {
   FlowchartStore, IGraph, IOffset, IRect, IGrid,
 } from '@/types';
-import { GRID_GAP, DEFAULT_GIRD_WIDTH, DEFAULT_GRID_HEIGHT } from '@/utils/constants';
+import { GRID_PADDING, DEFAULT_GIRD_WIDTH, DEFAULT_GRID_HEIGHT } from '@/utils/constants';
 import { buildEmptyGrid } from './grid';
 
 function getGridRect (graph: IGraph): IRect {
@@ -35,8 +35,8 @@ function getGridRect (graph: IGraph): IRect {
 
 function getGridOffset (gridRect: IRect): IOffset {
   return {
-    x: Math.abs(Math.min(gridRect.left - GRID_GAP, 0)),
-    y: Math.abs(Math.min(gridRect.top - GRID_GAP, 0)),
+    x: Math.abs(Math.min(gridRect.left - GRID_PADDING, 0)),
+    y: Math.abs(Math.min(gridRect.top - GRID_PADDING, 0)),
   };
 }
 
@@ -82,8 +82,8 @@ export function buildGraph (graph: IGraph, store: FlowchartStore) {
 
   // add gap to grid size
   const grid = buildEmptyGrid(
-    rect.width + 2 * GRID_GAP,
-    rect.height + 2 * GRID_GAP,
+    rect.width + 2 * GRID_PADDING,
+    rect.height + 2 * GRID_PADDING,
     gridOffset,
   );
 

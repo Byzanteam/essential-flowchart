@@ -1,7 +1,7 @@
 import PF from 'pathfinding';
 import {
   Point, IPosition,
-  PortDirection, IConfig,
+  IConfig,
   IGrid,
 } from '@/types';
 import { pathFinder } from '@/utils/grid';
@@ -21,7 +21,7 @@ function scalePosition (position: IPosition): IPosition {
 }
 
 // TODO:
-function getPaddingPoint (position: IPosition, config: IConfig): IPosition {
+function getPaddingPoint (position: IPosition, _config: IConfig): IPosition {
   return position;
   // switch (direction) {
   //   case PortDirection.TOP:

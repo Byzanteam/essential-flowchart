@@ -9,7 +9,7 @@ export default function dragNode (
 
   if (!node) return;
 
-  autoGridExpansions(state.graph.grid, node).forEach(expansion => {
+  autoGridExpansions(state.graph.grid, node, state.graph.scale).forEach(expansion => {
     commit('expandGrid', expansion);
   });
 

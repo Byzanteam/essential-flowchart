@@ -266,19 +266,19 @@ export const pathFinder = Pathfinding.JumpPointFinder({
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
 });
 
-export function autoGridExpansions (grid: IGrid, node: INodeInput): IOffset[] {
+export function autoGridExpansions (grid: IGrid, node: INodeInput, scale: number): IOffset[] {
   const {
     offset: gridOffset, width, height,
   } = grid;
 
   // whether expand to the left
-  const negativeX: boolean = node.x < GRID_PADDING - gridOffset.x;
+  const negativeX: boolean = (node.x / scale) < GRID_PADDING - gridOffset.x;
   // whether expand to the top
-  const negativeY: boolean = node.y < GRID_PADDING - gridOffset.y;
+  const negativeY: boolean = (node.y / scale) < GRID_PADDING - gridOffset.y;
   // whether expand to the right
-  const positiveX: boolean = width - gridOffset.x - GRID_PADDING < node.x;
+  const positiveX: boolean = width - gridOffset.x - GRID_PADDING < (node.x / scale);
   // whether expand to the bottom
-  const positiveY: boolean = height - gridOffset.y - GRID_PADDING < node.y;
+  const positiveY: boolean = height - gridOffset.y - GRID_PADDING < (node.y / scale);
 
   return [
     {

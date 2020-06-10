@@ -17,8 +17,8 @@
         :style="{
           width: `${canvasSize.width}px`,
           height: `${canvasSize.height}px`,
-          paddingLeft: `${Math.abs(gridOffset.x * scale)}px`, // left expansion
-          paddingTop: `${Math.abs(gridOffset.y * scale)}px`, // top expansion
+          paddingLeft: `${gridOffset.x * scale}px`, // left expansion
+          paddingTop: `${gridOffset.y * scale}px`, // top expansion
           left: `${-gridOffset.x * scale}px`,
           top: `${-gridOffset.y * scale}px`,
         }"

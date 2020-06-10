@@ -26,20 +26,19 @@ import {
   defineComponent, computed, PropType,
 } from '@vue/composition-api';
 
-import useStore from '@/hooks/useStore';
 import {
-  Point, IPosition, ILink, IGrid,
+  Point, IPosition, ILink,
 } from '@/types';
 
-function generatePathCommands (path: Point[], grid: IGrid): string {
+function generatePathCommands (path: Point[]): string {
   if (!path.length) return '';
 
-  const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
+  // const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
 
   const [first, ...rest] = path;
   return rest.reduce(
-    (acc, [x, y]) => `${acc} L${x - gridOffsetX} ${y - gridOffsetY}`,
-    `M${first[0] - gridOffsetX} ${first[1] - gridOffsetY}`,
+    (acc, [x, y]) => `${acc} L${x} ${y}`,
+    `M${first[0]} ${first[1]}`,
   );
 }
 
@@ -68,10 +67,8 @@ export default defineComponent({
   },
 
   setup (props) {
-    const store = useStore();
     const pathCommands = computed(() => generatePathCommands(
       props.path,
-      store.state.graph.grid,
     ));
 
     return {

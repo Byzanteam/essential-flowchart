@@ -31,7 +31,7 @@ export function buildEmptyGrid (
   };
 }
 
-// mark the line between two points walkable/unwalkable
+// mark the line between two points walkable/blocked
 function markLine (
   grid: Pathfinding.Grid,
   [[startX, startY], [endX, endY]]: Line,
@@ -45,7 +45,7 @@ function markLine (
   });
 }
 
-// mark the port of node walkable/unwalkable
+// mark the port of node walkable/blocked
 function markPort (
   grid: Pathfinding.Grid,
   gridOffset: IOffset,
@@ -180,7 +180,7 @@ function updatePorts (node: INodeInput, { portGap }: { portGap: number }): INode
 // +-------------------------------+ +---+ +-------------------------------+
 // |                               ^ ^   ^ ^                               |
 // |                               | |   | |                               |
-// |   original (x, y)             | |   | |                               |
+// |   origin (x, y)               | |   | |                               |
 // |         ·                     |d|   |d|                     ·         |
 // |                                +     +                                |
 // |                                                                       |

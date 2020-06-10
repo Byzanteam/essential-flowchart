@@ -1,5 +1,6 @@
+// @ts-nocheck
 import { PortDirection } from '@/types';
-import { buildState } from '@/utils/graph';
+import { buildGraph } from '@/utils/graph';
 
 import { createStore } from '../../helper';
 
@@ -7,9 +8,9 @@ describe('buildState', () => {
   it('works', () => {
     const store = createStore({});
 
-    buildState({
-      nodes: [
-        {
+    buildGraph({
+      nodes: {
+        1: {
           id: '1',
           x: 20,
           y: 20,
@@ -26,7 +27,7 @@ describe('buildState', () => {
             },
           },
         },
-        {
+        2: {
           id: '2',
           x: 20,
           y: 20,
@@ -43,9 +44,9 @@ describe('buildState', () => {
             },
           },
         },
-      ],
-      links: [
-        {
+      },
+      links: {
+        1: {
           id: '1',
           from: {
             nodeId: '1',
@@ -56,7 +57,7 @@ describe('buildState', () => {
             portId: '1',
           },
         },
-        {
+        2: {
           id: '2',
           from: {
             nodeId: '1',
@@ -67,7 +68,7 @@ describe('buildState', () => {
             portId: '2',
           },
         },
-      ],
+      },
     }, store);
 
     expect(store.state.history.currentVersion).toEqual(0);

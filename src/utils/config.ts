@@ -1,13 +1,9 @@
 import { IConfigInput, IConfig, ILinkPipelinePhase } from '@/types';
+import {
+  DEFAULT_NODE_PADDING, DEFAULT_PORT_GAP, DEFAULT_MIN_ZOOM, DEFAULT_MAX_ZOOM,
+} from '@/utils/constants';
 import generateLinkId from '@/pipelines/generateLinkId';
 import distinctFromNodeAndToNode from '@/pipelines/distinctFromNodeAndToNode';
-
-export const SCALE_FACTOR = 5;
-
-const DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
-const DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
-const DEFAULT_MIN_ZOOM = 0.5;
-const DEFAULT_MAX_ZOOM = 1.5;
 
 function isNonNegativeInteger (input: number): boolean {
   return Number.isInteger(input) && input > 0;
@@ -35,6 +31,7 @@ function validateLinkPipeline (linkPipeline: ILinkPipelinePhase[]) {
   if (!Array.isArray(linkPipeline)) throw new Error('');
 }
 
+// eslint-disable-next-line import/prefer-default-export
 export function buildConfig (
   {
     nodePadding = DEFAULT_NODE_PADDING,

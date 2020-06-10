@@ -1,6 +1,6 @@
 import { PortDirection } from '@/types';
 import { pathFinder } from '@/utils/grid';
-import { SCALE_FACTOR } from '@/utils/config';
+import { SCALE_FACTOR, DEFAULT_NODE_PADDING, GRID_EXPANSION_STEP } from '@/utils/constants';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {
@@ -116,7 +116,6 @@ describe('addNode', () => {
     ];
 
     walkableNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
       expect(pfGrid.isWalkableAt(Math.ceil(x / SCALE_FACTOR), Math.ceil(y / SCALE_FACTOR))).toEqual(true);
       expect(pathFinder.findPath(
         0,
@@ -130,8 +129,8 @@ describe('addNode', () => {
     expect(pathFinder.findPath(
       0,
       0,
-      Math.ceil(150 / SCALE_FACTOR),
-      Math.ceil(120 / SCALE_FACTOR),
+      Math.ceil((100 + GRID_EXPANSION_STEP - DEFAULT_NODE_PADDING) / SCALE_FACTOR),
+      Math.ceil((100 + GRID_EXPANSION_STEP - DEFAULT_NODE_PADDING) / SCALE_FACTOR),
       pfGrid.clone(),
     ).length === 0).toEqual(true);
   });

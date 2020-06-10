@@ -23,8 +23,8 @@
 import Vue from 'vue';
 import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { IStateInput, IConfigInput } from '@/types';
-import useState from './hooks/useState';
+import { IGraph, IConfigInput } from '@/types';
+import useGraph from './hooks/useState';
 import useSelected from './hooks/useSelected';
 
 import CanvasComponent from '../Canvas/Canvas.vue';
@@ -44,7 +44,7 @@ interface IFlowchartComponents {
 }
 
 interface IFlowchartProps {
-  rawState: IStateInput;
+  state: IGraph;
   /**
    * Custom components
    */
@@ -63,25 +63,25 @@ export default defineComponent({
   },
 
   props: {
-    rawState: {
-      type: Object as PropType<IStateInput>,
+    state: {
+      type: Object as PropType<IFlowchartProps['state']>,
       required: true,
     },
 
     components: {
-      type: Object as PropType<IFlowchartComponent>,
+      type: Object as PropType<IFlowchartProps['components']>,
       default: () => ({}),
     },
 
     config: {
-      type: Object as PropType<IConfigInput>,
+      type: Object as PropType<IFlowchartProps['config']>,
       default: () => ({}),
     },
   },
 
   setup (props: IFlowchartProps) {
     const store = useStore();
-    const { nodes, links } = useState(props.rawState, store);
+    const { nodes, links } = useGraph(props.state, store);
     store.commit('updateConfig', props.config);
 
     const {

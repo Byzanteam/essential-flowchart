@@ -9,11 +9,15 @@ import {
   INodePort,
   PortDirection,
 } from '@/types';
-import { SCALE_FACTOR } from '@/utils/config';
+import { GRID_PADDING, GRID_EXPANSION_STEP, SCALE_FACTOR } from '@/utils/constants';
 
 type Line = [Point, Point];
 
-export function buildEmptyGrid (width: number, height: number): IGrid {
+export function buildEmptyGrid (
+  width: number,
+  height: number,
+  offset: IOffset = { x: 0, y: 0 },
+): IGrid {
   // prevent vuex to observing pfGrid
   const pfGrid: Pathfinding.Grid = Object.freeze(
     new Pathfinding.Grid(width / SCALE_FACTOR, height / SCALE_FACTOR),
@@ -22,15 +26,12 @@ export function buildEmptyGrid (width: number, height: number): IGrid {
   return {
     width,
     height,
-
-    offset: {
-      x: 0,
-      y: 0,
-    },
+    offset,
     pfGrid,
   };
 }
 
+// mark the line between two points walkable/blocked
 function markLine (
   grid: Pathfinding.Grid,
   [[startX, startY], [endX, endY]]: Line,
@@ -44,8 +45,10 @@ function markLine (
   });
 }
 
+// mark the port of node walkable/blocked
 function markPort (
   grid: Pathfinding.Grid,
+  gridOffset: IOffset,
   port: INodePort,
   walkable: boolean,
   { nodePadding }: { nodePadding: number },
@@ -54,8 +57,8 @@ function markPort (
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   let { x, y } = position!;
 
-  x = Math.ceil(x / SCALE_FACTOR);
-  y = Math.ceil(y / SCALE_FACTOR);
+  x = Math.ceil((x + gridOffset.x) / SCALE_FACTOR);
+  y = Math.ceil((y + gridOffset.y) / SCALE_FACTOR);
 
   const scaledNodePadding = nodePadding / SCALE_FACTOR;
 
@@ -91,7 +94,7 @@ function markPort (
   }
 }
 
-function groupBy<Item> (collection: Array<Item>, criteria: (item: Item) => string): Record<string, Item[]> {
+function groupBy<T> (collection: Array<T>, criteria: (item: T) => string): Record<string, T[]> {
   return collection.reduce((obj, item) => {
     const key = criteria(item);
 
@@ -102,7 +105,7 @@ function groupBy<Item> (collection: Array<Item>, criteria: (item: Item) => strin
     }
 
     return obj;
-  }, {} as Record<string, Item[]>);
+  }, {} as Record<string, T[]>);
 }
 
 function nextDots (start: number, length: number, portGap: number): number[] {
@@ -117,12 +120,9 @@ function nextDots (start: number, length: number, portGap: number): number[] {
   return dots;
 }
 
-function updatePorts (node: INodeInput, gridOffset: IOffset, { portGap }: { portGap: number }): INode {
-  const { x: offsetX, y: offsetY } = gridOffset;
-  let { x, y } = node;
-
-  x += offsetX;
-  y += offsetY;
+// calc port position
+function updatePorts (node: INodeInput, { portGap }: { portGap: number }): INode {
+  const { x, y } = node;
 
   const { width, height } = node;
 
@@ -176,12 +176,12 @@ function updatePorts (node: INodeInput, gridOffset: IOffset, { portGap }: { port
   };
 }
 
-//
+// top left                                                            top right
 // +-------------------------------+ +---+ +-------------------------------+
 // |                               ^ ^   ^ ^                               |
 // |                               | |   | |                               |
-// |         (x, y)                | |   | |                               |
-// |         ·                     | |   | |                     ·         |
+// |   origin (x, y)               | |   | |                               |
+// |         ·                     |d|   |d|                     ·         |
 // |                                +     +                                |
 // |                                                                       |
 // |                                                                       |
@@ -189,7 +189,7 @@ function updatePorts (node: INodeInput, gridOffset: IOffset, { portGap }: { port
 // |                                                                       |
 // |                                                                       |
 // |<---------                                                   --------->+
-//            +                                                 +
+//           d+                                                 +d
 // |<---------                                                   --------->+
 // |                                                                       |
 // |                                                                       |
@@ -198,13 +198,14 @@ function updatePorts (node: INodeInput, gridOffset: IOffset, { portGap }: { port
 // |                                                                       |
 // |                                                                       |
 // |                                   +                                   |
-// |         ·                        | |                        ·         |
+// |         ·                        |d|                        ·         |
 // |                                  | |                                  |
 // |                                  | |                                  |
 // |                                  v v                                  |
 // +----------------------------------+ +----------------------------------+
-//
+// bottom left                                                           bottom right
 
+// mark node walkable/blocked
 export function markNodeWalkable (
   grid: Pathfinding.Grid,
   gridOffset: IOffset,
@@ -212,7 +213,7 @@ export function markNodeWalkable (
   walkable: boolean,
   { nodePadding, portGap }: IConfig,
 ): INode {
-  const updatedNode = updatePorts(node, gridOffset, { portGap });
+  const updatedNode = updatePorts(node, { portGap });
 
   const { x: offsetX, y: offsetY } = gridOffset;
 
@@ -223,8 +224,8 @@ export function markNodeWalkable (
     height,
   } = node;
 
-  x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR);
-  y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR);
+  x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR); // grid x
+  y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR); // grid y
   width = Math.ceil((width + nodePadding * 2) / SCALE_FACTOR);
   height = Math.ceil((height + nodePadding * 2) / SCALE_FACTOR);
 
@@ -249,7 +250,7 @@ export function markNodeWalkable (
     () => {
       // mark ports
       Object.values(updatedNode.ports).forEach(
-        port => markPort(grid, port, walkable, { nodePadding }),
+        port => markPort(grid, gridOffset, port, walkable, { nodePadding }),
       );
     },
   ];
@@ -265,25 +266,28 @@ export const pathFinder = Pathfinding.JumpPointFinder({
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
 });
 
-const GRID_PADDING = 100;
-export function autoGridExpansions (grid: IGrid, node: INodeInput): IOffset[] {
+export function autoGridExpansions (grid: IGrid, node: INodeInput, scale: number): IOffset[] {
   const {
     offset: gridOffset, width, height,
   } = grid;
 
-  const negativeX = node.x < gridOffset.x + GRID_PADDING;
-  const negativeY = node.y < gridOffset.y + GRID_PADDING;
-  const positiveX = width + gridOffset.x - GRID_PADDING < node.x;
-  const positiveY = height + gridOffset.y - GRID_PADDING < node.y;
+  // whether expand to the left
+  const negativeX: boolean = (node.x / scale) < GRID_PADDING - gridOffset.x;
+  // whether expand to the top
+  const negativeY: boolean = (node.y / scale) < GRID_PADDING - gridOffset.y;
+  // whether expand to the right
+  const positiveX: boolean = width - gridOffset.x - GRID_PADDING < (node.x / scale);
+  // whether expand to the bottom
+  const positiveY: boolean = height - gridOffset.y - GRID_PADDING < (node.y / scale);
 
   return [
     {
-      x: negativeX ? -500 : 0,
-      y: negativeY ? -500 : 0,
+      x: negativeX ? -GRID_EXPANSION_STEP : 0,
+      y: negativeY ? -GRID_EXPANSION_STEP : 0,
     },
     {
-      x: positiveX ? 500 : 0,
-      y: positiveY ? 500 : 0,
+      x: positiveX ? GRID_EXPANSION_STEP : 0,
+      y: positiveY ? GRID_EXPANSION_STEP : 0,
     },
   ];
 }

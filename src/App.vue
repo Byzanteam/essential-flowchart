@@ -1,24 +1,25 @@
 <template>
   <div id="app">
-    <flowchart :raw-state="rawState">
-
-    </flowchart>
+    <flowchart :state="rawState" />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api';
-import { IStateInput, PortDirection } from '@/types';
+import { PortDirection } from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
-const rawState: IStateInput = {
-  // offset: [0, 0],
-  scale: 0.5,
-  nodes: [
-    {
+const rawState = {
+  offset: {
+    x: 0,
+    y: 0,
+  },
+  scale: 0.8,
+  nodes: {
+    node1: {
       id: 'node1',
-      x: 200,
-      y: 200,
+      x: -30,
+      y: 30,
       width: 50,
       height: 50,
       ports: {
@@ -28,7 +29,7 @@ const rawState: IStateInput = {
         },
       },
     },
-    {
+    node2: {
       id: 'node2',
       x: 150,
       y: 290,
@@ -53,7 +54,7 @@ const rawState: IStateInput = {
         },
       },
     },
-    {
+    node3: {
       id: 'node3',
       x: 300,
       y: 480,
@@ -78,9 +79,9 @@ const rawState: IStateInput = {
         },
       },
     },
-  ],
-  links: [
-    {
+  },
+  links: {
+    link1: {
       id: 'link1',
       from: {
         nodeId: 'node1',
@@ -91,7 +92,7 @@ const rawState: IStateInput = {
         portId: 'port1',
       },
     },
-    {
+    link2: {
       id: 'link2',
       from: {
         nodeId: 'node2',
@@ -102,7 +103,7 @@ const rawState: IStateInput = {
         portId: 'port1',
       },
     },
-  ],
+  },
 };
 
 export default defineComponent({
@@ -129,10 +130,10 @@ body {
 }
 
 .canvas {
-  background-color: purple;
+  background-color: rgba(green, 0.5);
 
-  &__inner {
-    background-color: rgba(green, 0.5);
+  &__outer {
+    background-color: purple;
   }
 }
 </style>

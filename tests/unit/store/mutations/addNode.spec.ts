@@ -1,4 +1,5 @@
 import { PortDirection } from '@/types';
+import { SCALE_FACTOR, DEFAULT_NODE_PADDING } from '@/utils/constants';
 import { createStore } from '../../../helper';
 
 describe('addNode', () => {
@@ -82,21 +83,20 @@ describe('addNode', () => {
     const blockedNodes = [
       // topLeft
       // [100, 100],
-      [90, 90],
+      [100 - DEFAULT_NODE_PADDING, 100 - DEFAULT_NODE_PADDING],
       // topRight
       // [200, 100],
-      [210, 90],
+      [200 + DEFAULT_NODE_PADDING, 100 - DEFAULT_NODE_PADDING],
       // bottomRight
       // [200, 140],
-      [210, 150],
+      [200 + DEFAULT_NODE_PADDING, 140 + DEFAULT_NODE_PADDING],
       // bottomLeft
       // [100, 140],
-      [90, 150],
+      [100 - DEFAULT_NODE_PADDING, 140 + DEFAULT_NODE_PADDING],
     ];
 
     blockedNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
-      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(false);
+      expect(pfGrid.isWalkableAt(x / SCALE_FACTOR, y / SCALE_FACTOR)).toEqual(false);
     });
 
     const walkableNodes = [
@@ -115,8 +115,7 @@ describe('addNode', () => {
     ];
 
     walkableNodes.forEach(([x, y]) => {
-      // TODO: scale_factor
-      expect(pfGrid.isWalkableAt(x / 5, y / 5)).toEqual(true);
+      expect(pfGrid.isWalkableAt(x / SCALE_FACTOR, y / SCALE_FACTOR)).toEqual(true);
     });
   });
 });

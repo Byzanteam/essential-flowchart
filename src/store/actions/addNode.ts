@@ -5,7 +5,7 @@ import {
 import { autoGridExpansions } from '@/utils/grid';
 
 export default function addNode ({ state, commit, dispatch }: FlowchartContext, node: INodeInput) {
-  autoGridExpansions(state.graph.grid, node).forEach(expansion => {
+  autoGridExpansions(state.graph.grid, node, state.graph.scale).forEach(expansion => {
     commit('expandGrid', expansion);
   });
 

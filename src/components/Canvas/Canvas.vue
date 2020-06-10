@@ -1,11 +1,11 @@
 <template>
   <div
     ref="canvasRef"
-    class="canvas"
+    class="canvas__outer"
   >
     <PanZoom
-      :x="gridOffset.x"
-      :y="gridOffset.y"
+      :x="offset.x"
+      :y="offset.y"
       :zoom="scale"
       :min-zoom="minZoom"
       :max-zoom="maxZoom"
@@ -13,10 +13,25 @@
       @zoom="onCanvasZoom"
     >
       <div
-        :style="canvasStyleObj"
-        class="canvas__inner"
+        class="canvas"
+        :style="{
+          width: `${canvasSize.width}px`,
+          height: `${canvasSize.height}px`,
+          paddingLeft: `${gridOffset.x * scale}px`, // left expansion
+          paddingTop: `${gridOffset.y * scale}px`, // top expansion
+          left: `${-gridOffset.x * scale}px`,
+          top: `${-gridOffset.y * scale}px`,
+        }"
       >
-        <slot />
+        <div
+          :style="{
+            width: `${canvasSize.width}px`,
+            height: `${canvasSize.height}px`,
+          }"
+          class="canvas__inner"
+        >
+          <slot />
+        </div>
       </div>
     </PanZoom>
   </div>
@@ -43,19 +58,21 @@ export default defineComponent({
     const { canvasRef } = useCanvasContext();
     const store = useStore();
 
-    const canvasStyleObj = computed(() => ({
-      width: `${store.state.graph.grid.width}px`,
-      height: `${store.state.graph.grid.height}px`,
-    }));
-
+    const gridOffset = computed(() => store.state.graph.grid.offset);
     const scale = computed(() => store.state.graph.scale);
+    const offset = computed(() => store.state.graph.offset);
 
-    const gridOffset = store.state.graph.grid.offset;
+    const canvasSize = computed(() => ({
+      width: store.state.graph.grid.width - gridOffset.value.x,
+      height: store.state.graph.grid.height - gridOffset.value.y,
+    }));
 
     return {
       canvasRef,
-      canvasStyleObj,
+      canvasSize,
+
       scale,
+      offset,
       gridOffset,
       ...usePanZoomCanvas(store),
     };
@@ -65,8 +82,13 @@ export default defineComponent({
 
 <style lang="scss">
 .canvas {
-  overflow: hidden;
-  width: 100%;
+  box-sizing: content-box;
+  position: relative;
+
+  &__outer {
+    overflow: hidden;
+    width: 100%;
+  }
 
   &__inner {
     cursor: move;

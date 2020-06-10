@@ -2,17 +2,20 @@ import PF from 'pathfinding';
 import {
   Point, IPosition,
   PortDirection, IConfig,
-  IGrid, INodePort,
+  IGrid, INodePort, IOffset,
 } from '@/types';
 import { pathFinder } from '@/utils/grid';
-import { SCALE_FACTOR } from '@/utils/config';
+import { SCALE_FACTOR } from '@/utils/constants';
 
 import generateRightAnglePath from './generateRightAnglePath';
 
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
-function scalePath (path: Point[]): Point[] {
-  return path.map(([x, y]) => [x * SCALE_FACTOR, y * SCALE_FACTOR]);
+function scalePath (path: Point[], offset?: IOffset): Point[] {
+  return path.map(([x, y]) => {
+    if (offset) return [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y];
+    return [x * SCALE_FACTOR, y * SCALE_FACTOR];
+  });
 }
 
 function scalePosition (position: IPosition): IPosition {
@@ -93,7 +96,7 @@ export default function generatePath (
 
     if (!path.length) return fallbackPath(startPort, endPort, config);
 
-    return scalePath(path);
+    return scalePath(path, gridOffset);
   } catch (e) {
     return fallbackPath(startPort, endPort, config);
   }

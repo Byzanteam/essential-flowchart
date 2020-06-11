@@ -8,7 +8,7 @@ export const DEFAULT_GIRD_WIDTH = 1500;
 // default grid height
 export const DEFAULT_GRID_HEIGHT = 1500;
 // scale factor, for minimize grid size
-export const SCALE_FACTOR = 10;
+export const SCALE_FACTOR = 5;
 
 export const DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
 

@@ -11308,7 +11308,7 @@ var DEFAULT_GIRD_WIDTH = 1500; // default grid height
 
 var DEFAULT_GRID_HEIGHT = 1500; // scale factor, for minimize grid size
 
-var SCALE_FACTOR = 10;
+var SCALE_FACTOR = 5;
 var DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
 var DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
 var DEFAULT_MIN_ZOOM = 0.5;
@@ -13703,12 +13703,12 @@ var Link_Wrapper_component = normalizeComponent(
 )
 
 /* harmony default export */ var Link_Wrapper = (Link_Wrapper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=template&id=b96d367e&
-var Defaultvue_type_template_id_b96d367e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{staticClass:"link"},[_c('circle',{attrs:{"cx":_vm.startPos.x,"cy":_vm.startPos.y,"r":"4"}}),_c('path',{attrs:{"d":_vm.pathCommands,"stroke":"blue","strokeWidth":"3","fill":"none"}}),_c('circle',{attrs:{"cx":_vm.endPos.x,"cy":_vm.endPos.y,"r":"4"}})])}
-var Defaultvue_type_template_id_b96d367e_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=template&id=4551200f&
+var Defaultvue_type_template_id_4551200f_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{staticClass:"link"},[_c('circle',{attrs:{"cx":_vm.startPos.x,"cy":_vm.startPos.y,"r":"4"}}),_c('path',{attrs:{"d":_vm.pathCommands,"stroke":"blue","strokeWidth":"3","fill":"none"}}),_c('circle',{attrs:{"cx":_vm.endPos.x,"cy":_vm.endPos.y,"r":"4"}})])}
+var Defaultvue_type_template_id_4551200f_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Link/Default.vue?vue&type=template&id=b96d367e&
+// CONCATENATED MODULE: ./src/components/Link/Default.vue?vue&type=template&id=4551200f&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=script&lang=ts&
 
@@ -13719,7 +13719,7 @@ var Defaultvue_type_template_id_b96d367e_staticRenderFns = []
 
 
 function generatePathCommands(path) {
-  if (!path.length) return ''; // const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
+  if (!path.length) return '';
 
   var _path = _toArray(path),
       first = _path[0],
@@ -13779,8 +13779,8 @@ var Link_Defaultvue_type_style_index_0_lang_scss_ = __webpack_require__("e021");
 
 var Link_Default_component = normalizeComponent(
   components_Link_Defaultvue_type_script_lang_ts_,
-  Defaultvue_type_template_id_b96d367e_render,
-  Defaultvue_type_template_id_b96d367e_staticRenderFns,
+  Defaultvue_type_template_id_4551200f_render,
+  Defaultvue_type_template_id_4551200f_staticRenderFns,
   false,
   null,
   null,

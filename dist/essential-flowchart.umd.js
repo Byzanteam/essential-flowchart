@@ -1,13 +1,13 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("vuex"), require("vue"));
+		module.exports = factory(require("vue"));
 	else if(typeof define === 'function' && define.amd)
-		define(["vuex", ], factory);
+		define([], factory);
 	else if(typeof exports === 'object')
-		exports["essential-flowchart"] = factory(require("vuex"), require("vue"));
+		exports["essential-flowchart"] = factory(require("vue"));
 	else
-		root["essential-flowchart"] = factory(root["vuex"], root["Vue"]);
-})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__5880__, __WEBPACK_EXTERNAL_MODULE__8bbf__) {
+		root["essential-flowchart"] = factory(root["Vue"]);
+})((typeof self !== 'undefined' ? self : this), function(__WEBPACK_EXTERNAL_MODULE__8bbf__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -1036,6 +1036,20 @@ for (var COLLECTION_NAME in DOMIterables) {
 
 /***/ }),
 
+/***/ "15bb":
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".resize-observer[data-v-2b830392]{border:none;background-color:transparent;opacity:0}.resize-observer[data-v-2b830392],.resize-observer[data-v-2b830392] object{position:absolute;top:0;left:0;z-index:-1;width:100%;height:100%;pointer-events:none;display:block;overflow:hidden}", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
 /***/ "175a":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1622,6 +1636,260 @@ function toComment(sourceMap) {
 
 /***/ }),
 
+/***/ "252c":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __vue_component__; });
+/* unused harmony export install */
+function getInternetExplorerVersion() {
+  var ua = window.navigator.userAgent;
+  var msie = ua.indexOf('MSIE ');
+
+  if (msie > 0) {
+    // IE 10 or older => return version number
+    return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+  }
+
+  var trident = ua.indexOf('Trident/');
+
+  if (trident > 0) {
+    // IE 11 => return version number
+    var rv = ua.indexOf('rv:');
+    return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+  }
+
+  var edge = ua.indexOf('Edge/');
+
+  if (edge > 0) {
+    // Edge (IE 12+) => return version number
+    return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+  } // other browser
+
+
+  return -1;
+}
+
+//
+var isIE;
+
+function initCompat() {
+  if (!initCompat.init) {
+    initCompat.init = true;
+    isIE = getInternetExplorerVersion() !== -1;
+  }
+}
+
+var script = {
+  name: 'ResizeObserver',
+  mounted: function mounted() {
+    var _this = this;
+
+    initCompat();
+    this.$nextTick(function () {
+      _this._w = _this.$el.offsetWidth;
+      _this._h = _this.$el.offsetHeight;
+    });
+    var object = document.createElement('object');
+    this._resizeObject = object;
+    object.setAttribute('aria-hidden', 'true');
+    object.setAttribute('tabindex', -1);
+    object.onload = this.addResizeHandlers;
+    object.type = 'text/html';
+
+    if (isIE) {
+      this.$el.appendChild(object);
+    }
+
+    object.data = 'about:blank';
+
+    if (!isIE) {
+      this.$el.appendChild(object);
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.removeResizeHandlers();
+  },
+  methods: {
+    compareAndNotify: function compareAndNotify() {
+      if (this._w !== this.$el.offsetWidth || this._h !== this.$el.offsetHeight) {
+        this._w = this.$el.offsetWidth;
+        this._h = this.$el.offsetHeight;
+        this.$emit('notify', {
+          width: this._w,
+          height: this._h
+        });
+      }
+    },
+    addResizeHandlers: function addResizeHandlers() {
+      this._resizeObject.contentDocument.defaultView.addEventListener('resize', this.compareAndNotify);
+
+      this.compareAndNotify();
+    },
+    removeResizeHandlers: function removeResizeHandlers() {
+      if (this._resizeObject && this._resizeObject.onload) {
+        if (!isIE && this._resizeObject.contentDocument) {
+          this._resizeObject.contentDocument.defaultView.removeEventListener('resize', this.compareAndNotify);
+        }
+
+        this.$el.removeChild(this._resizeObject);
+        this._resizeObject.onload = null;
+        this._resizeObject = null;
+      }
+    }
+  }
+};
+
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
+    }
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
+    }
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
+}
+
+/* script */
+const __vue_script__ = script;
+/* template */
+var __vue_render__ = function() {
+  var _vm = this;
+  var _h = _vm.$createElement;
+  var _c = _vm._self._c || _h;
+  return _c("div", {
+    staticClass: "resize-observer",
+    attrs: { tabindex: "-1" }
+  })
+};
+var __vue_staticRenderFns__ = [];
+__vue_render__._withStripped = true;
+
+  /* style */
+  const __vue_inject_styles__ = undefined;
+  /* scoped */
+  const __vue_scope_id__ = "data-v-2b830392";
+  /* module identifier */
+  const __vue_module_identifier__ = undefined;
+  /* functional template */
+  const __vue_is_functional_template__ = false;
+  /* style inject */
+  
+  /* style inject SSR */
+  
+  /* style inject shadow dom */
+  
+
+  
+  const __vue_component__ = normalizeComponent(
+    { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
+    __vue_inject_styles__,
+    __vue_script__,
+    __vue_scope_id__,
+    __vue_is_functional_template__,
+    __vue_module_identifier__,
+    false,
+    undefined,
+    undefined,
+    undefined
+  );
+
+function install(Vue) {
+  Vue.component('resize-observer', __vue_component__);
+  Vue.component('ResizeObserver', __vue_component__);
+}
+
+var plugin = {
+  // eslint-disable-next-line no-undef
+  version: "0.5.0",
+  install: install
+};
+
+var GlobalVue = null;
+
+if (typeof window !== 'undefined') {
+  GlobalVue = window.Vue;
+} else if (typeof global !== 'undefined') {
+  GlobalVue = global.Vue;
+}
+
+if (GlobalVue) {
+  GlobalVue.use(plugin);
+}
+
+/* unused harmony default export */ var _unused_webpack_default_export = (plugin);
+
+//# sourceMappingURL=vue-resize.esm.js.map
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
+
+/***/ }),
+
 /***/ "25ee":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1995,6 +2263,1025 @@ module.exports = version && +version;
 
 /***/ }),
 
+/***/ "2f62":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* unused harmony export Store */
+/* unused harmony export install */
+/* unused harmony export mapState */
+/* unused harmony export mapMutations */
+/* unused harmony export mapGetters */
+/* unused harmony export mapActions */
+/* unused harmony export createNamespacedHelpers */
+/**
+ * vuex v3.3.0
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+function applyMixin (Vue) {
+  var version = Number(Vue.version.split('.')[0]);
+
+  if (version >= 2) {
+    Vue.mixin({ beforeCreate: vuexInit });
+  } else {
+    // override init and inject vuex init procedure
+    // for 1.x backwards compatibility.
+    var _init = Vue.prototype._init;
+    Vue.prototype._init = function (options) {
+      if ( options === void 0 ) options = {};
+
+      options.init = options.init
+        ? [vuexInit].concat(options.init)
+        : vuexInit;
+      _init.call(this, options);
+    };
+  }
+
+  /**
+   * Vuex init hook, injected into each instances init hooks list.
+   */
+
+  function vuexInit () {
+    var options = this.$options;
+    // store injection
+    if (options.store) {
+      this.$store = typeof options.store === 'function'
+        ? options.store()
+        : options.store;
+    } else if (options.parent && options.parent.$store) {
+      this.$store = options.parent.$store;
+    }
+  }
+}
+
+var target = typeof window !== 'undefined'
+  ? window
+  : typeof global !== 'undefined'
+    ? global
+    : {};
+var devtoolHook = target.__VUE_DEVTOOLS_GLOBAL_HOOK__;
+
+function devtoolPlugin (store) {
+  if (!devtoolHook) { return }
+
+  store._devtoolHook = devtoolHook;
+
+  devtoolHook.emit('vuex:init', store);
+
+  devtoolHook.on('vuex:travel-to-state', function (targetState) {
+    store.replaceState(targetState);
+  });
+
+  store.subscribe(function (mutation, state) {
+    devtoolHook.emit('vuex:mutation', mutation, state);
+  }, { prepend: true });
+
+  store.subscribeAction(function (action, state) {
+    devtoolHook.emit('vuex:action', action, state);
+  }, { prepend: true });
+}
+
+/**
+ * Get the first item that pass the test
+ * by second argument function
+ *
+ * @param {Array} list
+ * @param {Function} f
+ * @return {*}
+ */
+
+/**
+ * forEach for object
+ */
+function forEachValue (obj, fn) {
+  Object.keys(obj).forEach(function (key) { return fn(obj[key], key); });
+}
+
+function isObject (obj) {
+  return obj !== null && typeof obj === 'object'
+}
+
+function isPromise (val) {
+  return val && typeof val.then === 'function'
+}
+
+function assert (condition, msg) {
+  if (!condition) { throw new Error(("[vuex] " + msg)) }
+}
+
+function partial (fn, arg) {
+  return function () {
+    return fn(arg)
+  }
+}
+
+// Base data struct for store's module, package with some attribute and method
+var Module = function Module (rawModule, runtime) {
+  this.runtime = runtime;
+  // Store some children item
+  this._children = Object.create(null);
+  // Store the origin module object which passed by programmer
+  this._rawModule = rawModule;
+  var rawState = rawModule.state;
+
+  // Store the origin module's state
+  this.state = (typeof rawState === 'function' ? rawState() : rawState) || {};
+};
+
+var prototypeAccessors = { namespaced: { configurable: true } };
+
+prototypeAccessors.namespaced.get = function () {
+  return !!this._rawModule.namespaced
+};
+
+Module.prototype.addChild = function addChild (key, module) {
+  this._children[key] = module;
+};
+
+Module.prototype.removeChild = function removeChild (key) {
+  delete this._children[key];
+};
+
+Module.prototype.getChild = function getChild (key) {
+  return this._children[key]
+};
+
+Module.prototype.hasChild = function hasChild (key) {
+  return key in this._children
+};
+
+Module.prototype.update = function update (rawModule) {
+  this._rawModule.namespaced = rawModule.namespaced;
+  if (rawModule.actions) {
+    this._rawModule.actions = rawModule.actions;
+  }
+  if (rawModule.mutations) {
+    this._rawModule.mutations = rawModule.mutations;
+  }
+  if (rawModule.getters) {
+    this._rawModule.getters = rawModule.getters;
+  }
+};
+
+Module.prototype.forEachChild = function forEachChild (fn) {
+  forEachValue(this._children, fn);
+};
+
+Module.prototype.forEachGetter = function forEachGetter (fn) {
+  if (this._rawModule.getters) {
+    forEachValue(this._rawModule.getters, fn);
+  }
+};
+
+Module.prototype.forEachAction = function forEachAction (fn) {
+  if (this._rawModule.actions) {
+    forEachValue(this._rawModule.actions, fn);
+  }
+};
+
+Module.prototype.forEachMutation = function forEachMutation (fn) {
+  if (this._rawModule.mutations) {
+    forEachValue(this._rawModule.mutations, fn);
+  }
+};
+
+Object.defineProperties( Module.prototype, prototypeAccessors );
+
+var ModuleCollection = function ModuleCollection (rawRootModule) {
+  // register root module (Vuex.Store options)
+  this.register([], rawRootModule, false);
+};
+
+ModuleCollection.prototype.get = function get (path) {
+  return path.reduce(function (module, key) {
+    return module.getChild(key)
+  }, this.root)
+};
+
+ModuleCollection.prototype.getNamespace = function getNamespace (path) {
+  var module = this.root;
+  return path.reduce(function (namespace, key) {
+    module = module.getChild(key);
+    return namespace + (module.namespaced ? key + '/' : '')
+  }, '')
+};
+
+ModuleCollection.prototype.update = function update$1 (rawRootModule) {
+  update([], this.root, rawRootModule);
+};
+
+ModuleCollection.prototype.register = function register (path, rawModule, runtime) {
+    var this$1 = this;
+    if ( runtime === void 0 ) runtime = true;
+
+  if (false) {}
+
+  var newModule = new Module(rawModule, runtime);
+  if (path.length === 0) {
+    this.root = newModule;
+  } else {
+    var parent = this.get(path.slice(0, -1));
+    parent.addChild(path[path.length - 1], newModule);
+  }
+
+  // register nested modules
+  if (rawModule.modules) {
+    forEachValue(rawModule.modules, function (rawChildModule, key) {
+      this$1.register(path.concat(key), rawChildModule, runtime);
+    });
+  }
+};
+
+ModuleCollection.prototype.unregister = function unregister (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+  if (!parent.getChild(key).runtime) { return }
+
+  parent.removeChild(key);
+};
+
+ModuleCollection.prototype.isRegistered = function isRegistered (path) {
+  var parent = this.get(path.slice(0, -1));
+  var key = path[path.length - 1];
+
+  return parent.hasChild(key)
+};
+
+function update (path, targetModule, newModule) {
+  if (false) {}
+
+  // update target module
+  targetModule.update(newModule);
+
+  // update nested modules
+  if (newModule.modules) {
+    for (var key in newModule.modules) {
+      if (!targetModule.getChild(key)) {
+        if (false) {}
+        return
+      }
+      update(
+        path.concat(key),
+        targetModule.getChild(key),
+        newModule.modules[key]
+      );
+    }
+  }
+}
+
+var functionAssert = {
+  assert: function (value) { return typeof value === 'function'; },
+  expected: 'function'
+};
+
+var objectAssert = {
+  assert: function (value) { return typeof value === 'function' ||
+    (typeof value === 'object' && typeof value.handler === 'function'); },
+  expected: 'function or object with "handler" function'
+};
+
+var assertTypes = {
+  getters: functionAssert,
+  mutations: functionAssert,
+  actions: objectAssert
+};
+
+function assertRawModule (path, rawModule) {
+  Object.keys(assertTypes).forEach(function (key) {
+    if (!rawModule[key]) { return }
+
+    var assertOptions = assertTypes[key];
+
+    forEachValue(rawModule[key], function (value, type) {
+      assert(
+        assertOptions.assert(value),
+        makeAssertionMessage(path, key, type, value, assertOptions.expected)
+      );
+    });
+  });
+}
+
+function makeAssertionMessage (path, key, type, value, expected) {
+  var buf = key + " should be " + expected + " but \"" + key + "." + type + "\"";
+  if (path.length > 0) {
+    buf += " in module \"" + (path.join('.')) + "\"";
+  }
+  buf += " is " + (JSON.stringify(value)) + ".";
+  return buf
+}
+
+var Vue; // bind on install
+
+var Store = function Store (options) {
+  var this$1 = this;
+  if ( options === void 0 ) options = {};
+
+  // Auto install if it is not done yet and `window` has `Vue`.
+  // To allow users to avoid auto-installation in some cases,
+  // this code should be placed here. See #731
+  if (!Vue && typeof window !== 'undefined' && window.Vue) {
+    install(window.Vue);
+  }
+
+  if (false) {}
+
+  var plugins = options.plugins; if ( plugins === void 0 ) plugins = [];
+  var strict = options.strict; if ( strict === void 0 ) strict = false;
+
+  // store internal state
+  this._committing = false;
+  this._actions = Object.create(null);
+  this._actionSubscribers = [];
+  this._mutations = Object.create(null);
+  this._wrappedGetters = Object.create(null);
+  this._modules = new ModuleCollection(options);
+  this._modulesNamespaceMap = Object.create(null);
+  this._subscribers = [];
+  this._watcherVM = new Vue();
+  this._makeLocalGettersCache = Object.create(null);
+
+  // bind commit and dispatch to self
+  var store = this;
+  var ref = this;
+  var dispatch = ref.dispatch;
+  var commit = ref.commit;
+  this.dispatch = function boundDispatch (type, payload) {
+    return dispatch.call(store, type, payload)
+  };
+  this.commit = function boundCommit (type, payload, options) {
+    return commit.call(store, type, payload, options)
+  };
+
+  // strict mode
+  this.strict = strict;
+
+  var state = this._modules.root.state;
+
+  // init root module.
+  // this also recursively registers all sub-modules
+  // and collects all module getters inside this._wrappedGetters
+  installModule(this, state, [], this._modules.root);
+
+  // initialize the store vm, which is responsible for the reactivity
+  // (also registers _wrappedGetters as computed properties)
+  resetStoreVM(this, state);
+
+  // apply plugins
+  plugins.forEach(function (plugin) { return plugin(this$1); });
+
+  var useDevtools = options.devtools !== undefined ? options.devtools : Vue.config.devtools;
+  if (useDevtools) {
+    devtoolPlugin(this);
+  }
+};
+
+var prototypeAccessors$1 = { state: { configurable: true } };
+
+prototypeAccessors$1.state.get = function () {
+  return this._vm._data.$$state
+};
+
+prototypeAccessors$1.state.set = function (v) {
+  if (false) {}
+};
+
+Store.prototype.commit = function commit (_type, _payload, _options) {
+    var this$1 = this;
+
+  // check object-style commit
+  var ref = unifyObjectStyle(_type, _payload, _options);
+    var type = ref.type;
+    var payload = ref.payload;
+    var options = ref.options;
+
+  var mutation = { type: type, payload: payload };
+  var entry = this._mutations[type];
+  if (!entry) {
+    if (false) {}
+    return
+  }
+  this._withCommit(function () {
+    entry.forEach(function commitIterator (handler) {
+      handler(payload);
+    });
+  });
+
+  this._subscribers
+    .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+    .forEach(function (sub) { return sub(mutation, this$1.state); });
+
+  if (
+    false
+  ) {}
+};
+
+Store.prototype.dispatch = function dispatch (_type, _payload) {
+    var this$1 = this;
+
+  // check object-style dispatch
+  var ref = unifyObjectStyle(_type, _payload);
+    var type = ref.type;
+    var payload = ref.payload;
+
+  var action = { type: type, payload: payload };
+  var entry = this._actions[type];
+  if (!entry) {
+    if (false) {}
+    return
+  }
+
+  try {
+    this._actionSubscribers
+      .slice() // shallow copy to prevent iterator invalidation if subscriber synchronously calls unsubscribe
+      .filter(function (sub) { return sub.before; })
+      .forEach(function (sub) { return sub.before(action, this$1.state); });
+  } catch (e) {
+    if (false) {}
+  }
+
+  var result = entry.length > 1
+    ? Promise.all(entry.map(function (handler) { return handler(payload); }))
+    : entry[0](payload);
+
+  return result.then(function (res) {
+    try {
+      this$1._actionSubscribers
+        .filter(function (sub) { return sub.after; })
+        .forEach(function (sub) { return sub.after(action, this$1.state); });
+    } catch (e) {
+      if (false) {}
+    }
+    return res
+  })
+};
+
+Store.prototype.subscribe = function subscribe (fn, options) {
+  return genericSubscribe(fn, this._subscribers, options)
+};
+
+Store.prototype.subscribeAction = function subscribeAction (fn, options) {
+  var subs = typeof fn === 'function' ? { before: fn } : fn;
+  return genericSubscribe(subs, this._actionSubscribers, options)
+};
+
+Store.prototype.watch = function watch (getter, cb, options) {
+    var this$1 = this;
+
+  if (false) {}
+  return this._watcherVM.$watch(function () { return getter(this$1.state, this$1.getters); }, cb, options)
+};
+
+Store.prototype.replaceState = function replaceState (state) {
+    var this$1 = this;
+
+  this._withCommit(function () {
+    this$1._vm._data.$$state = state;
+  });
+};
+
+Store.prototype.registerModule = function registerModule (path, rawModule, options) {
+    if ( options === void 0 ) options = {};
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {}
+
+  this._modules.register(path, rawModule);
+  installModule(this, this.state, path, this._modules.get(path), options.preserveState);
+  // reset store to update getters...
+  resetStoreVM(this, this.state);
+};
+
+Store.prototype.unregisterModule = function unregisterModule (path) {
+    var this$1 = this;
+
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {}
+
+  this._modules.unregister(path);
+  this._withCommit(function () {
+    var parentState = getNestedState(this$1.state, path.slice(0, -1));
+    Vue.delete(parentState, path[path.length - 1]);
+  });
+  resetStore(this);
+};
+
+Store.prototype.hasModule = function hasModule (path) {
+  if (typeof path === 'string') { path = [path]; }
+
+  if (false) {}
+
+  return this._modules.isRegistered(path)
+};
+
+Store.prototype.hotUpdate = function hotUpdate (newOptions) {
+  this._modules.update(newOptions);
+  resetStore(this, true);
+};
+
+Store.prototype._withCommit = function _withCommit (fn) {
+  var committing = this._committing;
+  this._committing = true;
+  fn();
+  this._committing = committing;
+};
+
+Object.defineProperties( Store.prototype, prototypeAccessors$1 );
+
+function genericSubscribe (fn, subs, options) {
+  if (subs.indexOf(fn) < 0) {
+    options && options.prepend
+      ? subs.unshift(fn)
+      : subs.push(fn);
+  }
+  return function () {
+    var i = subs.indexOf(fn);
+    if (i > -1) {
+      subs.splice(i, 1);
+    }
+  }
+}
+
+function resetStore (store, hot) {
+  store._actions = Object.create(null);
+  store._mutations = Object.create(null);
+  store._wrappedGetters = Object.create(null);
+  store._modulesNamespaceMap = Object.create(null);
+  var state = store.state;
+  // init all modules
+  installModule(store, state, [], store._modules.root, true);
+  // reset vm
+  resetStoreVM(store, state, hot);
+}
+
+function resetStoreVM (store, state, hot) {
+  var oldVm = store._vm;
+
+  // bind store public getters
+  store.getters = {};
+  // reset local getters cache
+  store._makeLocalGettersCache = Object.create(null);
+  var wrappedGetters = store._wrappedGetters;
+  var computed = {};
+  forEachValue(wrappedGetters, function (fn, key) {
+    // use computed to leverage its lazy-caching mechanism
+    // direct inline function use will lead to closure preserving oldVm.
+    // using partial to return function with only arguments preserved in closure environment.
+    computed[key] = partial(fn, store);
+    Object.defineProperty(store.getters, key, {
+      get: function () { return store._vm[key]; },
+      enumerable: true // for local getters
+    });
+  });
+
+  // use a Vue instance to store the state tree
+  // suppress warnings just in case the user has added
+  // some funky global mixins
+  var silent = Vue.config.silent;
+  Vue.config.silent = true;
+  store._vm = new Vue({
+    data: {
+      $$state: state
+    },
+    computed: computed
+  });
+  Vue.config.silent = silent;
+
+  // enable strict mode for new vm
+  if (store.strict) {
+    enableStrictMode(store);
+  }
+
+  if (oldVm) {
+    if (hot) {
+      // dispatch changes in all subscribed watchers
+      // to force getter re-evaluation for hot reloading.
+      store._withCommit(function () {
+        oldVm._data.$$state = null;
+      });
+    }
+    Vue.nextTick(function () { return oldVm.$destroy(); });
+  }
+}
+
+function installModule (store, rootState, path, module, hot) {
+  var isRoot = !path.length;
+  var namespace = store._modules.getNamespace(path);
+
+  // register in namespace map
+  if (module.namespaced) {
+    if (store._modulesNamespaceMap[namespace] && "production" !== 'production') {
+      console.error(("[vuex] duplicate namespace " + namespace + " for the namespaced module " + (path.join('/'))));
+    }
+    store._modulesNamespaceMap[namespace] = module;
+  }
+
+  // set state
+  if (!isRoot && !hot) {
+    var parentState = getNestedState(rootState, path.slice(0, -1));
+    var moduleName = path[path.length - 1];
+    store._withCommit(function () {
+      if (false) {}
+      Vue.set(parentState, moduleName, module.state);
+    });
+  }
+
+  var local = module.context = makeLocalContext(store, namespace, path);
+
+  module.forEachMutation(function (mutation, key) {
+    var namespacedType = namespace + key;
+    registerMutation(store, namespacedType, mutation, local);
+  });
+
+  module.forEachAction(function (action, key) {
+    var type = action.root ? key : namespace + key;
+    var handler = action.handler || action;
+    registerAction(store, type, handler, local);
+  });
+
+  module.forEachGetter(function (getter, key) {
+    var namespacedType = namespace + key;
+    registerGetter(store, namespacedType, getter, local);
+  });
+
+  module.forEachChild(function (child, key) {
+    installModule(store, rootState, path.concat(key), child, hot);
+  });
+}
+
+/**
+ * make localized dispatch, commit, getters and state
+ * if there is no namespace, just use root ones
+ */
+function makeLocalContext (store, namespace, path) {
+  var noNamespace = namespace === '';
+
+  var local = {
+    dispatch: noNamespace ? store.dispatch : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {}
+      }
+
+      return store.dispatch(type, payload)
+    },
+
+    commit: noNamespace ? store.commit : function (_type, _payload, _options) {
+      var args = unifyObjectStyle(_type, _payload, _options);
+      var payload = args.payload;
+      var options = args.options;
+      var type = args.type;
+
+      if (!options || !options.root) {
+        type = namespace + type;
+        if (false) {}
+      }
+
+      store.commit(type, payload, options);
+    }
+  };
+
+  // getters and state object must be gotten lazily
+  // because they will be changed by vm update
+  Object.defineProperties(local, {
+    getters: {
+      get: noNamespace
+        ? function () { return store.getters; }
+        : function () { return makeLocalGetters(store, namespace); }
+    },
+    state: {
+      get: function () { return getNestedState(store.state, path); }
+    }
+  });
+
+  return local
+}
+
+function makeLocalGetters (store, namespace) {
+  if (!store._makeLocalGettersCache[namespace]) {
+    var gettersProxy = {};
+    var splitPos = namespace.length;
+    Object.keys(store.getters).forEach(function (type) {
+      // skip if the target getter is not match this namespace
+      if (type.slice(0, splitPos) !== namespace) { return }
+
+      // extract local getter type
+      var localType = type.slice(splitPos);
+
+      // Add a port to the getters proxy.
+      // Define as getter property because
+      // we do not want to evaluate the getters in this time.
+      Object.defineProperty(gettersProxy, localType, {
+        get: function () { return store.getters[type]; },
+        enumerable: true
+      });
+    });
+    store._makeLocalGettersCache[namespace] = gettersProxy;
+  }
+
+  return store._makeLocalGettersCache[namespace]
+}
+
+function registerMutation (store, type, handler, local) {
+  var entry = store._mutations[type] || (store._mutations[type] = []);
+  entry.push(function wrappedMutationHandler (payload) {
+    handler.call(store, local.state, payload);
+  });
+}
+
+function registerAction (store, type, handler, local) {
+  var entry = store._actions[type] || (store._actions[type] = []);
+  entry.push(function wrappedActionHandler (payload) {
+    var res = handler.call(store, {
+      dispatch: local.dispatch,
+      commit: local.commit,
+      getters: local.getters,
+      state: local.state,
+      rootGetters: store.getters,
+      rootState: store.state
+    }, payload);
+    if (!isPromise(res)) {
+      res = Promise.resolve(res);
+    }
+    if (store._devtoolHook) {
+      return res.catch(function (err) {
+        store._devtoolHook.emit('vuex:error', err);
+        throw err
+      })
+    } else {
+      return res
+    }
+  });
+}
+
+function registerGetter (store, type, rawGetter, local) {
+  if (store._wrappedGetters[type]) {
+    if (false) {}
+    return
+  }
+  store._wrappedGetters[type] = function wrappedGetter (store) {
+    return rawGetter(
+      local.state, // local state
+      local.getters, // local getters
+      store.state, // root state
+      store.getters // root getters
+    )
+  };
+}
+
+function enableStrictMode (store) {
+  store._vm.$watch(function () { return this._data.$$state }, function () {
+    if (false) {}
+  }, { deep: true, sync: true });
+}
+
+function getNestedState (state, path) {
+  return path.reduce(function (state, key) { return state[key]; }, state)
+}
+
+function unifyObjectStyle (type, payload, options) {
+  if (isObject(type) && type.type) {
+    options = payload;
+    payload = type;
+    type = type.type;
+  }
+
+  if (false) {}
+
+  return { type: type, payload: payload, options: options }
+}
+
+function install (_Vue) {
+  if (Vue && _Vue === Vue) {
+    if (false) {}
+    return
+  }
+  Vue = _Vue;
+  applyMixin(Vue);
+}
+
+/**
+ * Reduce the code which written in Vue.js for getting the state.
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} states # Object's item can be a function which accept state and getters for param, you can do something for state and getters in it.
+ * @param {Object}
+ */
+var mapState = normalizeNamespace(function (namespace, states) {
+  var res = {};
+  if (false) {}
+  normalizeMap(states).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedState () {
+      var state = this.$store.state;
+      var getters = this.$store.getters;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapState', namespace);
+        if (!module) {
+          return
+        }
+        state = module.context.state;
+        getters = module.context.getters;
+      }
+      return typeof val === 'function'
+        ? val.call(this, state, getters)
+        : state[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for committing the mutation
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} mutations # Object's item can be a function which accept `commit` function as the first param, it can accept anthor params. You can commit mutation and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapMutations = normalizeNamespace(function (namespace, mutations) {
+  var res = {};
+  if (false) {}
+  normalizeMap(mutations).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedMutation () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // Get the commit method from store
+      var commit = this.$store.commit;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapMutations', namespace);
+        if (!module) {
+          return
+        }
+        commit = module.context.commit;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [commit].concat(args))
+        : commit.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for getting the getters
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} getters
+ * @return {Object}
+ */
+var mapGetters = normalizeNamespace(function (namespace, getters) {
+  var res = {};
+  if (false) {}
+  normalizeMap(getters).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    // The namespace has been mutated by normalizeNamespace
+    val = namespace + val;
+    res[key] = function mappedGetter () {
+      if (namespace && !getModuleByNamespace(this.$store, 'mapGetters', namespace)) {
+        return
+      }
+      if (false) {}
+      return this.$store.getters[val]
+    };
+    // mark vuex getter for devtools
+    res[key].vuex = true;
+  });
+  return res
+});
+
+/**
+ * Reduce the code which written in Vue.js for dispatch the action
+ * @param {String} [namespace] - Module's namespace
+ * @param {Object|Array} actions # Object's item can be a function which accept `dispatch` function as the first param, it can accept anthor params. You can dispatch action and do any other things in this function. specially, You need to pass anthor params from the mapped function.
+ * @return {Object}
+ */
+var mapActions = normalizeNamespace(function (namespace, actions) {
+  var res = {};
+  if (false) {}
+  normalizeMap(actions).forEach(function (ref) {
+    var key = ref.key;
+    var val = ref.val;
+
+    res[key] = function mappedAction () {
+      var args = [], len = arguments.length;
+      while ( len-- ) args[ len ] = arguments[ len ];
+
+      // get dispatch function from store
+      var dispatch = this.$store.dispatch;
+      if (namespace) {
+        var module = getModuleByNamespace(this.$store, 'mapActions', namespace);
+        if (!module) {
+          return
+        }
+        dispatch = module.context.dispatch;
+      }
+      return typeof val === 'function'
+        ? val.apply(this, [dispatch].concat(args))
+        : dispatch.apply(this.$store, [val].concat(args))
+    };
+  });
+  return res
+});
+
+/**
+ * Rebinding namespace param for mapXXX function in special scoped, and return them by simple object
+ * @param {String} namespace
+ * @return {Object}
+ */
+var createNamespacedHelpers = function (namespace) { return ({
+  mapState: mapState.bind(null, namespace),
+  mapGetters: mapGetters.bind(null, namespace),
+  mapMutations: mapMutations.bind(null, namespace),
+  mapActions: mapActions.bind(null, namespace)
+}); };
+
+/**
+ * Normalize the map
+ * normalizeMap([1, 2, 3]) => [ { key: 1, val: 1 }, { key: 2, val: 2 }, { key: 3, val: 3 } ]
+ * normalizeMap({a: 1, b: 2, c: 3}) => [ { key: 'a', val: 1 }, { key: 'b', val: 2 }, { key: 'c', val: 3 } ]
+ * @param {Array|Object} map
+ * @return {Object}
+ */
+function normalizeMap (map) {
+  if (!isValidMap(map)) {
+    return []
+  }
+  return Array.isArray(map)
+    ? map.map(function (key) { return ({ key: key, val: key }); })
+    : Object.keys(map).map(function (key) { return ({ key: key, val: map[key] }); })
+}
+
+/**
+ * Validate whether given map is valid or not
+ * @param {*} map
+ * @return {Boolean}
+ */
+function isValidMap (map) {
+  return Array.isArray(map) || isObject(map)
+}
+
+/**
+ * Return a function expect two param contains namespace and map. it will normalize the namespace and then the param's function will handle the new namespace and the map.
+ * @param {Function} fn
+ * @return {Function}
+ */
+function normalizeNamespace (fn) {
+  return function (namespace, map) {
+    if (typeof namespace !== 'string') {
+      map = namespace;
+      namespace = '';
+    } else if (namespace.charAt(namespace.length - 1) !== '/') {
+      namespace += '/';
+    }
+    return fn(namespace, map)
+  }
+}
+
+/**
+ * Search a special module from store by namespace. if module not exist, print error message.
+ * @param {Object} store
+ * @param {String} helper
+ * @param {String} namespace
+ * @return {Object}
+ */
+function getModuleByNamespace (store, helper, namespace) {
+  var module = store._modulesNamespaceMap[namespace];
+  if (false) {}
+  return module
+}
+
+var index_esm = {
+  Store: Store,
+  install: install,
+  version: '3.3.0',
+  mapState: mapState,
+  mapMutations: mapMutations,
+  mapGetters: mapGetters,
+  mapActions: mapActions,
+  createNamespacedHelpers: createNamespacedHelpers
+};
+
+/* harmony default export */ __webpack_exports__["a"] = (index_esm);
+
+
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__("c8ba")))
+
+/***/ }),
+
 /***/ "30ea":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2294,6 +3581,17 @@ module.exports = function (it) {
     || Iterators[classof(it)];
 };
 
+
+/***/ }),
+
+/***/ "3699":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanZoom_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__("bb52");
+/* harmony import */ var _node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanZoom_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanZoom_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0__);
+/* unused harmony reexport * */
+ /* unused harmony default export */ var _unused_webpack_default_export = (_node_modules_vue_style_loader_index_js_ref_8_oneOf_1_0_node_modules_css_loader_dist_cjs_js_ref_8_oneOf_1_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_2_node_modules_postcss_loader_src_index_js_ref_8_oneOf_1_3_node_modules_sass_loader_dist_cjs_js_ref_8_oneOf_1_4_node_modules_cache_loader_dist_cjs_js_ref_0_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PanZoom_vue_vue_type_style_index_0_lang_scss___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -2644,7 +3942,7 @@ module.exports = exports;
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".canvas{overflow:hidden;width:100%}.canvas__inner{cursor:move;position:relative}", ""]);
+exports.push([module.i, ".canvas{box-sizing:content-box;position:relative}.canvas__outer{overflow:hidden;width:100%}.canvas__inner{cursor:move;position:relative}", ""]);
 // Exports
 module.exports = exports;
 
@@ -3231,13 +4529,6 @@ module.exports = getBuiltIn('Reflect', 'ownKeys') || function ownKeys(it) {
 
 /***/ }),
 
-/***/ "5880":
-/***/ (function(module, exports) {
-
-module.exports = __WEBPACK_EXTERNAL_MODULE__5880__;
-
-/***/ }),
-
 /***/ "5899":
 /***/ (function(module, exports) {
 
@@ -3490,6 +4781,21 @@ module.exports = {
 /***/ (function(module, exports) {
 
 
+
+/***/ }),
+
+/***/ "6eb0":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("15bb");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__("499e").default
+var update = add("cafd948c", content, true, {"sourceMap":false,"shadowMode":false});
 
 /***/ }),
 
@@ -6774,6 +8080,20 @@ if (DESCRIPTORS && !(NAME in FunctionPrototype)) {
 
 /***/ }),
 
+/***/ "b0e5":
+/***/ (function(module, exports, __webpack_require__) {
+
+// Imports
+var ___CSS_LOADER_API_IMPORT___ = __webpack_require__("24fb");
+exports = ___CSS_LOADER_API_IMPORT___(false);
+// Module
+exports.push([module.i, ".pan-zoom{outline:none}", ""]);
+// Exports
+module.exports = exports;
+
+
+/***/ }),
+
 /***/ "b622":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6915,6 +8235,21 @@ module.exports = !fails(function () {
   return Object.isExtensible(Object.preventExtensions({}));
 });
 
+
+/***/ }),
+
+/***/ "bb52":
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__("b0e5");
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var add = __webpack_require__("499e").default
+var update = add("5a5b1478", content, true, {"sourceMap":false,"shadowMode":false});
 
 /***/ }),
 
@@ -8788,12 +10123,12 @@ if (typeof window !== 'undefined') {
 // Indicate to webpack that this file can be concatenated
 /* harmony default export */ var setPublicPath = (null);
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Flowchart/Flowchart.vue?vue&type=template&id=05661ec4&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Flowchart/Flowchart.vue?vue&type=template&id=704414cf&
 var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('CanvasComponent',[_vm._l((_vm.nodes),function(node){return _c('NodeWrapperComponent',{key:node.id,attrs:{"node":node,"is-selected":_vm.isNodeSelected(node.id),"node-component":_vm.nodeComponent,"port-component":_vm.portComponent}})}),_vm._l((_vm.links),function(link){return _c('LinkWrapperComponent',{key:link.id,attrs:{"link":link,"is-selected":_vm.isLinkSelected(link.id),"link-component":_vm.linkComponent}})})],2)}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Flowchart/Flowchart.vue?vue&type=template&id=05661ec4&
+// CONCATENATED MODULE: ./src/components/Flowchart/Flowchart.vue?vue&type=template&id=704414cf&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.link.js
 var es_string_link = __webpack_require__("9911");
@@ -9950,10 +11285,121 @@ if (currentVue && typeof window !== 'undefined' && window.Vue) {
 /* harmony default export */ var vue_composition_api_module = (vue_composition_api_module_plugin);
 
 
-// EXTERNAL MODULE: external "vuex"
-var external_vuex_ = __webpack_require__("5880");
-var external_vuex_default = /*#__PURE__*/__webpack_require__.n(external_vuex_);
+// EXTERNAL MODULE: ./node_modules/vuex/dist/vuex.esm.js
+var vuex_esm = __webpack_require__("2f62");
 
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
+var es_number_constructor = __webpack_require__("a9e3");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.is-integer.js
+var es_number_is_integer = __webpack_require__("8ba4");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.is-nan.js
+var es_number_is_nan = __webpack_require__("9129");
+
+// CONCATENATED MODULE: ./src/utils/constants.ts
+// if the distance between node and grid edge is smaller than GRID_PADDING,
+// will trigger the grid expansion
+var GRID_PADDING = 500; // the step of grid expansion
+
+var GRID_EXPANSION_STEP = 500; // default grid width
+
+var DEFAULT_GIRD_WIDTH = 1500; // default grid height
+
+var DEFAULT_GRID_HEIGHT = 1500; // scale factor, for minimize grid size
+
+var SCALE_FACTOR = 10;
+var DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
+var DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
+var DEFAULT_MIN_ZOOM = 0.5;
+var DEFAULT_MAX_ZOOM = 1.5;
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
+var es_object_to_string = __webpack_require__("d3b7");
+
+// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
+var es_regexp_to_string = __webpack_require__("25f0");
+
+// CONCATENATED MODULE: ./src/pipelines/generateLinkId.ts
+
+
+
+// https://gist.github.com/6174/6062387
+function generateUuid() {
+  return Math.random().toString(36).substring(2, 15);
+}
+
+function generateLinkId(link) {
+  var id = link.id;
+  if (!id) link.id = generateUuid();
+  return link;
+}
+// CONCATENATED MODULE: ./src/pipelines/distinctFromNodeAndToNode.ts
+function distinctFromNodeAndToNode(link) {
+  var from = link.from,
+      to = link.to;
+  if (from.nodeId === to.nodeId) return null;
+  return link;
+}
+// CONCATENATED MODULE: ./src/utils/config.ts
+
+
+
+
+
+
+
+function isNonNegativeInteger(input) {
+  return Number.isInteger(input) && input > 0;
+}
+
+function validateNodePadding(nodePadding) {
+  if (!isNonNegativeInteger(nodePadding)) {
+    throw new Error("nodePadding must be a positive integer, but got ".concat(JSON.stringify(nodePadding), "."));
+  }
+}
+
+function validatePortGap(portGap) {
+  if (!isNonNegativeInteger(portGap)) {
+    throw new Error("portGap must be a positive integer, but got ".concat(JSON.stringify(portGap), "."));
+  }
+}
+
+function validateZoom(zoom) {
+  if (typeof zoom !== 'number' || Number.isNaN(zoom) || zoom < 0) {
+    throw new Error("zoom must be a positive number, but got ".concat(JSON.stringify(zoom), "."));
+  }
+}
+
+function validateLinkPipeline(linkPipeline) {
+  if (!Array.isArray(linkPipeline)) throw new Error('');
+} // eslint-disable-next-line import/prefer-default-export
+
+
+function buildConfig(_ref) {
+  var _ref$nodePadding = _ref.nodePadding,
+      nodePadding = _ref$nodePadding === void 0 ? DEFAULT_NODE_PADDING : _ref$nodePadding,
+      _ref$portGap = _ref.portGap,
+      portGap = _ref$portGap === void 0 ? DEFAULT_PORT_GAP : _ref$portGap,
+      _ref$minZoom = _ref.minZoom,
+      minZoom = _ref$minZoom === void 0 ? DEFAULT_MIN_ZOOM : _ref$minZoom,
+      _ref$maxZoom = _ref.maxZoom,
+      maxZoom = _ref$maxZoom === void 0 ? DEFAULT_MAX_ZOOM : _ref$maxZoom,
+      _ref$linkPipeline = _ref.linkPipeline,
+      linkPipeline = _ref$linkPipeline === void 0 ? [generateLinkId, distinctFromNodeAndToNode] : _ref$linkPipeline;
+  // OPTIMIZE: skip validate default value
+  validateNodePadding(nodePadding);
+  validatePortGap(portGap);
+  validateZoom(minZoom);
+  validateZoom(maxZoom);
+  validateLinkPipeline(linkPipeline);
+  return {
+    nodePadding: nodePadding,
+    portGap: portGap,
+    minZoom: minZoom,
+    maxZoom: maxZoom,
+    linkPipeline: linkPipeline
+  };
+}
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.reduce.js
 var es_array_reduce = __webpack_require__("13d5");
 
@@ -9978,9 +11424,6 @@ var es_symbol_iterator = __webpack_require__("d28b");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.iterator.js
 var es_array_iterator = __webpack_require__("e260");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.object.to-string.js
-var es_object_to_string = __webpack_require__("d3b7");
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.string.iterator.js
 var es_string_iterator = __webpack_require__("3ca3");
@@ -10031,9 +11474,6 @@ var es_array_slice = __webpack_require__("fb6a");
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.function.name.js
 var es_function_name = __webpack_require__("b0c0");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.regexp.to-string.js
-var es_regexp_to_string = __webpack_require__("25f0");
-
 // CONCATENATED MODULE: ./node_modules/@babel/runtime/helpers/esm/arrayLikeToArray.js
 function _arrayLikeToArray(arr, len) {
   if (len == null || len > arr.length) len = arr.length;
@@ -10079,99 +11519,6 @@ var pathfinding_default = /*#__PURE__*/__webpack_require__.n(pathfinding);
 // EXTERNAL MODULE: ./src/types/index.ts
 var types = __webpack_require__("ebe2");
 
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.constructor.js
-var es_number_constructor = __webpack_require__("a9e3");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.is-integer.js
-var es_number_is_integer = __webpack_require__("8ba4");
-
-// EXTERNAL MODULE: ./node_modules/core-js/modules/es.number.is-nan.js
-var es_number_is_nan = __webpack_require__("9129");
-
-// CONCATENATED MODULE: ./src/pipelines/generateLinkId.ts
-
-
-
-// https://gist.github.com/6174/6062387
-function generateUuid() {
-  return Math.random().toString(36).substring(2, 15);
-}
-
-function generateLinkId(link) {
-  var id = link.id;
-  if (!id) link.id = generateUuid();
-  return link;
-}
-// CONCATENATED MODULE: ./src/pipelines/distinctFromNodeAndToNode.ts
-function distinctFromNodeAndToNode(link) {
-  var from = link.from,
-      to = link.to;
-  if (from.nodeId === to.nodeId) return null;
-  return link;
-}
-// CONCATENATED MODULE: ./src/utils/config.ts
-
-
-
-
-
-var SCALE_FACTOR = 5;
-var DEFAULT_NODE_PADDING = SCALE_FACTOR * 2;
-var DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
-var DEFAULT_MIN_ZOOM = 0.5;
-var DEFAULT_MAX_ZOOM = 1.5;
-
-function isNonNegativeInteger(input) {
-  return Number.isInteger(input) && input > 0;
-}
-
-function validateNodePadding(nodePadding) {
-  if (!isNonNegativeInteger(nodePadding)) {
-    throw new Error("nodePadding must be a positive integer, but got ".concat(JSON.stringify(nodePadding), "."));
-  }
-}
-
-function validatePortGap(portGap) {
-  if (!isNonNegativeInteger(portGap)) {
-    throw new Error("portGap must be a positive integer, but got ".concat(JSON.stringify(portGap), "."));
-  }
-}
-
-function validateZoom(zoom) {
-  if (typeof zoom !== 'number' || Number.isNaN(zoom) || zoom < 0) {
-    throw new Error("zoom must be a positive number, but got ".concat(JSON.stringify(zoom), "."));
-  }
-}
-
-function validateLinkPipeline(linkPipeline) {
-  if (!Array.isArray(linkPipeline)) throw new Error('');
-}
-
-function buildConfig(_ref) {
-  var _ref$nodePadding = _ref.nodePadding,
-      nodePadding = _ref$nodePadding === void 0 ? DEFAULT_NODE_PADDING : _ref$nodePadding,
-      _ref$portGap = _ref.portGap,
-      portGap = _ref$portGap === void 0 ? DEFAULT_PORT_GAP : _ref$portGap,
-      _ref$minZoom = _ref.minZoom,
-      minZoom = _ref$minZoom === void 0 ? DEFAULT_MIN_ZOOM : _ref$minZoom,
-      _ref$maxZoom = _ref.maxZoom,
-      maxZoom = _ref$maxZoom === void 0 ? DEFAULT_MAX_ZOOM : _ref$maxZoom,
-      _ref$linkPipeline = _ref.linkPipeline,
-      linkPipeline = _ref$linkPipeline === void 0 ? [generateLinkId, distinctFromNodeAndToNode] : _ref$linkPipeline;
-  // OPTIMIZE: skip validate default value
-  validateNodePadding(nodePadding);
-  validatePortGap(portGap);
-  validateZoom(minZoom);
-  validateZoom(maxZoom);
-  validateLinkPipeline(linkPipeline);
-  return {
-    nodePadding: nodePadding,
-    portGap: portGap,
-    minZoom: minZoom,
-    maxZoom: maxZoom,
-    linkPipeline: linkPipeline
-  };
-}
 // CONCATENATED MODULE: ./src/utils/grid.ts
 
 
@@ -10186,18 +11533,19 @@ function buildConfig(_ref) {
 
 
 function buildEmptyGrid(width, height) {
+  var offset = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+    x: 0,
+    y: 0
+  };
   // prevent vuex to observing pfGrid
   var pfGrid = Object.freeze(new pathfinding["Grid"](width / SCALE_FACTOR, height / SCALE_FACTOR));
   return {
     width: width,
     height: height,
-    offset: {
-      x: 0,
-      y: 0
-    },
+    offset: offset,
     pfGrid: pfGrid
   };
-}
+} // mark the line between two points walkable/blocked
 
 function markLine(grid, _ref, walkable) {
   var _ref2 = _slicedToArray(_ref, 2),
@@ -10217,17 +11565,18 @@ function markLine(grid, _ref, walkable) {
 
     grid.setWalkableAt(x, y, walkable);
   });
-}
+} // mark the port of node walkable/blocked
 
-function markPort(grid, port, walkable, _ref5) {
+
+function markPort(grid, gridOffset, port, walkable, _ref5) {
   var nodePadding = _ref5.nodePadding;
   var direction = port.direction,
       position = port.position; // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 
   var x = position.x,
       y = position.y;
-  x = Math.ceil(x / SCALE_FACTOR);
-  y = Math.ceil(y / SCALE_FACTOR);
+  x = Math.ceil((x + gridOffset.x) / SCALE_FACTOR);
+  y = Math.ceil((y + gridOffset.y) / SCALE_FACTOR);
   var scaledNodePadding = nodePadding / SCALE_FACTOR; // eslint-disable-next-line default-case
 
   switch (direction) {
@@ -10285,16 +11634,13 @@ function nextDots(start, length, portGap) {
   }
 
   return dots;
-}
+} // calc port position
 
-function updatePorts(node, gridOffset, _ref6) {
+
+function updatePorts(node, _ref6) {
   var portGap = _ref6.portGap;
-  var offsetX = gridOffset.x,
-      offsetY = gridOffset.y;
   var x = node.x,
       y = node.y;
-  x += offsetX;
-  y += offsetY;
   var width = node.width,
       height = node.height;
   var groupedPorts = groupBy(Object.values(node.ports), function (port) {
@@ -10364,12 +11710,12 @@ function updatePorts(node, gridOffset, _ref6) {
   return _objectSpread2(_objectSpread2({}, node), {}, {
     ports: updatedPorts
   });
-} //
+} // top left                                                            top right
 // +-------------------------------+ +---+ +-------------------------------+
 // |                               ^ ^   ^ ^                               |
 // |                               | |   | |                               |
-// |         (x, y)                | |   | |                               |
-// |         ·                     | |   | |                     ·         |
+// |   origin (x, y)               | |   | |                               |
+// |         ·                     |d|   |d|                     ·         |
 // |                                +     +                                |
 // |                                                                       |
 // |                                                                       |
@@ -10377,7 +11723,7 @@ function updatePorts(node, gridOffset, _ref6) {
 // |                                                                       |
 // |                                                                       |
 // |<---------                                                   --------->+
-//            +                                                 +
+//           d+                                                 +d
 // |<---------                                                   --------->+
 // |                                                                       |
 // |                                                                       |
@@ -10386,12 +11732,13 @@ function updatePorts(node, gridOffset, _ref6) {
 // |                                                                       |
 // |                                                                       |
 // |                                   +                                   |
-// |         ·                        | |                        ·         |
+// |         ·                        |d|                        ·         |
 // |                                  | |                                  |
 // |                                  | |                                  |
 // |                                  v v                                  |
 // +----------------------------------+ +----------------------------------+
-//
+// bottom left                                                           bottom right
+// mark node walkable/blocked
 
 
 function markNodeWalkable(grid, gridOffset, node, walkable, _ref9) {
@@ -10399,7 +11746,7 @@ function markNodeWalkable(grid, gridOffset, node, walkable, _ref9) {
 
   var nodePadding = _ref9.nodePadding,
       portGap = _ref9.portGap;
-  var updatedNode = updatePorts(node, gridOffset, {
+  var updatedNode = updatePorts(node, {
     portGap: portGap
   });
   var offsetX = gridOffset.x,
@@ -10408,8 +11755,10 @@ function markNodeWalkable(grid, gridOffset, node, walkable, _ref9) {
       y = node.y,
       width = node.width,
       height = node.height;
-  x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR);
-  y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR);
+  x = Math.ceil((x + offsetX - nodePadding) / SCALE_FACTOR); // grid x
+
+  y = Math.ceil((y + offsetY - nodePadding) / SCALE_FACTOR); // grid y
+
   width = Math.ceil((width + nodePadding * 2) / SCALE_FACTOR);
   height = Math.ceil((height + nodePadding * 2) / SCALE_FACTOR);
   var topLeft = [x, y];
@@ -10425,7 +11774,7 @@ function markNodeWalkable(grid, gridOffset, node, walkable, _ref9) {
   }, function () {
     // mark ports
     Object.values(updatedNode.ports).forEach(function (port) {
-      return markPort(grid, port, walkable, {
+      return markPort(grid, gridOffset, port, walkable, {
         nodePadding: nodePadding
       });
     });
@@ -10440,21 +11789,24 @@ var pathFinder = pathfinding["JumpPointFinder"]({
   heuristic: pathfinding["Heuristic"].manhattan,
   diagonalMovement: pathfinding["DiagonalMovement"].Never
 });
-var GRID_PADDING = 100;
-function autoGridExpansions(grid, node) {
+function autoGridExpansions(grid, node, scale) {
   var gridOffset = grid.offset,
       width = grid.width,
-      height = grid.height;
-  var negativeX = node.x < gridOffset.x + GRID_PADDING;
-  var negativeY = node.y < gridOffset.y + GRID_PADDING;
-  var positiveX = width + gridOffset.x - GRID_PADDING < node.x;
-  var positiveY = height + gridOffset.y - GRID_PADDING < node.y;
+      height = grid.height; // whether expand to the left
+
+  var negativeX = node.x / scale < GRID_PADDING - gridOffset.x; // whether expand to the top
+
+  var negativeY = node.y / scale < GRID_PADDING - gridOffset.y; // whether expand to the right
+
+  var positiveX = width - gridOffset.x - GRID_PADDING < node.x / scale; // whether expand to the bottom
+
+  var positiveY = height - gridOffset.y - GRID_PADDING < node.y / scale;
   return [{
-    x: negativeX ? -500 : 0,
-    y: negativeY ? -500 : 0
+    x: negativeX ? -GRID_EXPANSION_STEP : 0,
+    y: negativeY ? -GRID_EXPANSION_STEP : 0
   }, {
-    x: positiveX ? 500 : 0,
-    y: positiveY ? 500 : 0
+    x: positiveX ? GRID_EXPANSION_STEP : 0,
+    y: positiveY ? GRID_EXPANSION_STEP : 0
   }];
 }
 // CONCATENATED MODULE: ./src/utils/history.ts
@@ -10547,6 +11899,31 @@ registerRevertFunc('updateNodePosition', function (mutation) {
     position: _objectSpread2({}, prevPosition)
   });
 });
+// CONCATENATED MODULE: ./src/store/mutations/updateNodeSize.ts
+
+
+ // TODO: optimize with updateNodePosition
+
+function updateNodeSize(state, _ref) {
+  var id = _ref.id,
+      width = _ref.width,
+      height = _ref.height;
+  var nodes = state.graph.nodes;
+  var node = nodes[id];
+
+  if (node) {
+    var prevSize = {
+      width: node.width,
+      height: node.height
+    };
+    var updatedNode = markNodeWalkable(state.graph.grid.pfGrid, state.graph.grid.offset, _objectSpread2(_objectSpread2({}, node), prevSize), true, state.config);
+    updatedNode = markNodeWalkable(state.graph.grid.pfGrid, state.graph.grid.offset, _objectSpread2(_objectSpread2({}, updatedNode), {}, {
+      width: width,
+      height: height
+    }), false, state.config);
+    external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(nodes, id, updatedNode);
+  }
+}
 // CONCATENATED MODULE: ./src/store/mutations/addLink.ts
 
 
@@ -10600,6 +11977,11 @@ function updateSelected(state, _ref) {
   var selected = _ref.selected;
   external_commonjs_vue_commonjs2_vue_root_Vue_default.a.set(state, 'selected', selected);
 }
+// CONCATENATED MODULE: ./src/store/mutations/updateGrid.ts
+function updateGrid(state, _ref) {
+  var grid = _ref.grid;
+  state.graph.grid = grid;
+}
 // CONCATENATED MODULE: ./src/store/mutations/expandGird.ts
 
 
@@ -10615,22 +11997,17 @@ function expandGrid(state, expansion) {
   var negativeY = expansion.y < 0;
   width += Math.abs(expansion.x);
   height += Math.abs(expansion.y);
-
-  var _buildEmptyGrid = buildEmptyGrid(width, height),
-      pfGrid = _buildEmptyGrid.pfGrid;
-
   var offset = {
     x: negativeX ? prevOffset.x + Math.abs(expansion.x) : prevOffset.x,
     y: negativeY ? prevOffset.y + Math.abs(expansion.y) : prevOffset.y
   };
-  state.graph.grid = {
-    width: width,
-    height: height,
-    pfGrid: pfGrid,
-    offset: offset
-  };
+  var newGrid = buildEmptyGrid(width, height, offset);
+  this.commit({
+    type: 'updateGrid',
+    grid: newGrid
+  });
   Object.values(state.graph.nodes).forEach(function (node) {
-    markNodeWalkable(pfGrid, offset, node, false, state.config);
+    markNodeWalkable(newGrid.pfGrid, offset, node, false, state.config);
   });
 }
 // CONCATENATED MODULE: ./src/store/mutations/updateMousePosition.ts
@@ -10702,16 +12079,20 @@ var es_array_splice = __webpack_require__("a434");
 
 
 
+
+
 /* harmony default export */ var store_mutations = (_objectSpread2({
   addNode: addNode,
   removeNode: removeNode,
   updateNodePosition: updateNodePosition,
+  updateNodeSize: updateNodeSize,
   addLink: addLink,
   removeLink: removeLink,
   touchLink: touchLink,
   updateLinkPath: updateLinkPath,
   deleteLinkPath: deleteLinkPath,
   updateSelected: updateSelected,
+  updateGrid: updateGrid,
   expandGrid: expandGrid,
   updateMousePosition: updateMousePosition,
   updateScale: updateScale,
@@ -10727,7 +12108,7 @@ function addNode_addNode(_ref, node) {
   var state = _ref.state,
       commit = _ref.commit,
       dispatch = _ref.dispatch;
-  autoGridExpansions(state.graph.grid, node).forEach(function (expansion) {
+  autoGridExpansions(state.graph.grid, node, state.graph.scale).forEach(function (expansion) {
     commit('expandGrid', expansion);
   });
   var mutations = [{
@@ -10775,7 +12156,7 @@ function dragNode(_ref, _ref2) {
       prevPosition = _ref2.prevPosition;
   var node = state.graph.nodes[id];
   if (!node) return;
-  autoGridExpansions(state.graph.grid, node).forEach(function (expansion) {
+  autoGridExpansions(state.graph.grid, node, state.graph.scale).forEach(function (expansion) {
     commit('expandGrid', expansion);
   });
   commit('updateNodePosition', {
@@ -11136,11 +12517,7 @@ function reactiveLinks(store) {
 
 
 
-
-
-var defaultWidth = 1440,
-    defaultHeight = 900;
-external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(external_vuex_default.a);
+external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vuex_esm["a" /* default */]);
 var store_state = {
   history: {
     currentVersion: 0,
@@ -11154,12 +12531,16 @@ var store_state = {
     },
     nodes: {},
     links: {},
-    grid: _objectSpread2({
+    grid: {
       offset: {
         x: 0,
         y: 0
-      }
-    }, buildEmptyGrid(defaultWidth, defaultHeight))
+      },
+      width: 2000,
+      height: 2000,
+      // @ts-ignore
+      pfGrid: null
+    }
   },
   linkVersions: {},
   linkPath: {},
@@ -11167,7 +12548,7 @@ var store_state = {
   mousePosition: null,
   config: buildConfig({})
 };
-var store_store = new external_vuex_default.a.Store({
+var store_store = new vuex_esm["a" /* default */].Store({
   state: store_state,
   mutations: store_mutations,
   actions: actions,
@@ -11183,33 +12564,90 @@ function useStore() {
 
 
 
-// eslint-disable-next-line import/prefer-default-export
-function buildState(rawState, store) {
-  var nodes = rawState.nodes,
-      links = rawState.links,
-      _rawState$scale = rawState.scale,
-      scale = _rawState$scale === void 0 ? 1 : _rawState$scale;
+
+
+
+
+function getGridRect(graph) {
+  var nodes = graph.nodes;
+  var minX = 0; // min x of node
+
+  var maxX = DEFAULT_GIRD_WIDTH; // max x of node
+
+  var minY = 0; // min y of node
+
+  var maxY = DEFAULT_GRID_HEIGHT; // max y of node
+
+  Object.values(nodes).forEach(function (node) {
+    var x = node.x,
+        y = node.y; // calc grid rect
+
+    minX = Math.min(minX, x);
+    maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y);
+    maxY = Math.max(maxY, y);
+  });
+  return {
+    x: Math.min(minX, 0),
+    y: Math.min(minY, 0),
+    width: minX > 0 ? maxX : maxX - minX,
+    height: minY > 0 ? maxY : maxY - minY
+  };
+}
+
+function getGridOffset(gridRect) {
+  return {
+    x: Math.abs(Math.min(gridRect.x - GRID_PADDING, 0)),
+    y: Math.abs(Math.min(gridRect.y - GRID_PADDING, 0))
+  };
+}
+
+function setGrid(store, grid) {
+  store.commit({
+    type: 'updateGrid',
+    grid: grid
+  });
+}
+
+function setGraph(store, graph) {
+  var nodes = graph.nodes,
+      links = graph.links,
+      scale = graph.scale,
+      offset = graph.offset;
   store.commit({
     type: 'updateScale',
     scale: scale
-  }); // TODO: expand grid
-
-  nodes.forEach(function (node) {
+  });
+  store.commit({
+    type: 'updateOffset',
+    offset: offset
+  });
+  Object.values(nodes).forEach(function (node) {
     store.commit('addNode', {
       node: _objectSpread2({}, node)
     });
   });
-  links.forEach(function (link) {
+  Object.values(links).forEach(function (link) {
     store.commit('addLink', {
       link: _objectSpread2({}, link)
     });
   });
+} // eslint-disable-next-line import/prefer-default-export
+
+
+function buildGraph(graph, store) {
+  var rect = getGridRect(graph);
+  var gridOffset = getGridOffset(rect); // add gap to grid size
+
+  var grid = buildEmptyGrid(rect.width + 2 * GRID_PADDING, rect.height + 2 * GRID_PADDING, gridOffset);
+  setGrid(store, grid);
+  setGraph(store, graph);
 }
 // CONCATENATED MODULE: ./src/components/Flowchart/hooks/useState.ts
 
 
-function useState(rawState, store) {
-  buildState(rawState, store);
+function useGraph(graph, store) {
+  buildGraph(graph, store);
   var nodes = computed(function () {
     return store.state.graph.nodes;
   });
@@ -11241,26 +12679,45 @@ function useSelected(store) {
     isLinkSelected: isLinkSelected
   };
 }
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Canvas/Canvas.vue?vue&type=template&id=5ab2cce9&
-var Canvasvue_type_template_id_5ab2cce9_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"canvas"},[_c('PanZoom',{attrs:{"x":_vm.gridOffset.x,"y":_vm.gridOffset.y,"zoom":_vm.scale,"min-zoom":_vm.minZoom,"max-zoom":_vm.maxZoom},on:{"panend":_vm.onCanvasPanEnd,"zoom":_vm.onCanvasZoom}},[_c('div',{staticClass:"canvas__inner",style:(_vm.canvasStyleObj)},[_vm._t("default")],2)])],1)}
-var Canvasvue_type_template_id_5ab2cce9_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Canvas/Canvas.vue?vue&type=template&id=f217d13a&
+var Canvasvue_type_template_id_f217d13a_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{ref:"canvasRef",staticClass:"canvas__outer"},[_c('PanZoom',{attrs:{"x":_vm.offset.x,"y":_vm.offset.y,"zoom":_vm.scale,"min-zoom":_vm.minZoom,"max-zoom":_vm.maxZoom},on:{"panend":_vm.onCanvasPanEnd,"zoom":_vm.onCanvasZoom}},[_c('div',{staticClass:"canvas",style:({
+        width: ((_vm.canvasSize.width) + "px"),
+        height: ((_vm.canvasSize.height) + "px"),
+        paddingLeft: ((_vm.gridOffset.x * _vm.scale) + "px"), // left expansion
+        paddingTop: ((_vm.gridOffset.y * _vm.scale) + "px"), // top expansion
+        left: ((-_vm.gridOffset.x * _vm.scale) + "px"),
+        top: ((-_vm.gridOffset.y * _vm.scale) + "px"),
+      })},[_c('div',{staticClass:"canvas__inner",style:({
+          width: ((_vm.canvasSize.width) + "px"),
+          height: ((_vm.canvasSize.height) + "px"),
+        })},[_vm._t("default")],2)])])],1)}
+var Canvasvue_type_template_id_f217d13a_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Canvas/Canvas.vue?vue&type=template&id=5ab2cce9&
+// CONCATENATED MODULE: ./src/components/Canvas/Canvas.vue?vue&type=template&id=f217d13a&
 
-// CONCATENATED MODULE: ./src/components/Canvas/hooks/useSize.ts
+// CONCATENATED MODULE: ./src/components/Canvas/hooks/useCanvasContext.ts
 
-function useSize() {
+
+
+
+var CanvasContextSymbol = Symbol('canvasContext');
+function useCanvasContext() {
   var canvasRef = ref(null);
-  var size = reactive({
-    width: 0,
-    height: 0,
+  var context = reactive({
     offsetX: 0,
     offsetY: 0
   });
+  onMounted(function () {
+    if (canvasRef.value) {
+      var rect = canvasRef.value.getBoundingClientRect();
+      context.offsetX = rect.left;
+      context.offsetY = rect.top;
+    }
+  });
+  provide(CanvasContextSymbol, context);
   return {
-    canvasRef: canvasRef,
-    size: size
+    canvasRef: canvasRef
   };
 }
 // CONCATENATED MODULE: ./src/components/Canvas/hooks/usePanZoomCanvas.ts
@@ -11309,12 +12766,12 @@ function usePanZoomCanvas(store) {
     onCanvasPanEnd: onCanvasPanEnd
   };
 }
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Canvas/PanZoom.vue?vue&type=template&id=8377002c&
-var PanZoomvue_type_template_id_8377002c_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"pan-zoom"},[_c('div',{ref:"sceneRef",staticClass:"pan-zoom__scene"},[_vm._t("default")],2)])}
-var PanZoomvue_type_template_id_8377002c_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Canvas/PanZoom.vue?vue&type=template&id=afb95f62&
+var PanZoomvue_type_template_id_afb95f62_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"pan-zoom"},[_c('div',{ref:"sceneRef",staticClass:"pan-zoom__scene"},[_vm._t("default")],2)])}
+var PanZoomvue_type_template_id_afb95f62_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Canvas/PanZoom.vue?vue&type=template&id=8377002c&
+// CONCATENATED MODULE: ./src/components/Canvas/PanZoom.vue?vue&type=template&id=afb95f62&
 
 // EXTERNAL MODULE: ./node_modules/panzoom/index.js
 var panzoom = __webpack_require__("7d05");
@@ -11382,7 +12839,8 @@ var panzoom_default = /*#__PURE__*/__webpack_require__.n(panzoom);
           minZoom: props.minZoom,
           maxZoom: props.maxZoom
         });
-        panZoomInstance.zoomAbs(props.x, props.y, props.zoom);
+        panZoomInstance.zoomTo(props.x, props.y, props.zoom);
+        panZoomInstance.moveTo(props.x, props.y);
         bindEvents(panZoomInstance);
         watch(function () {
           return props.zoom;
@@ -11400,6 +12858,9 @@ var panzoom_default = /*#__PURE__*/__webpack_require__.n(panzoom);
 }));
 // CONCATENATED MODULE: ./src/components/Canvas/PanZoom.vue?vue&type=script&lang=ts&
  /* harmony default export */ var Canvas_PanZoomvue_type_script_lang_ts_ = (PanZoomvue_type_script_lang_ts_); 
+// EXTERNAL MODULE: ./src/components/Canvas/PanZoom.vue?vue&type=style&index=0&lang=scss&
+var PanZoomvue_type_style_index_0_lang_scss_ = __webpack_require__("3699");
+
 // CONCATENATED MODULE: ./node_modules/vue-loader/lib/runtime/componentNormalizer.js
 /* globals __VUE_SSR_CONTEXT__ */
 
@@ -11501,12 +12962,13 @@ function normalizeComponent (
 
 
 
+
 /* normalize component */
 
 var component = normalizeComponent(
   Canvas_PanZoomvue_type_script_lang_ts_,
-  PanZoomvue_type_template_id_8377002c_render,
-  PanZoomvue_type_template_id_8377002c_staticRenderFns,
+  PanZoomvue_type_template_id_afb95f62_render,
+  PanZoomvue_type_template_id_afb95f62_staticRenderFns,
   false,
   null,
   null,
@@ -11528,24 +12990,30 @@ var component = normalizeComponent(
     PanZoom: PanZoom
   },
   setup: function setup() {
-    var _useSize = useSize(),
-        size = _useSize.size;
+    var _useCanvasContext = useCanvasContext(),
+        canvasRef = _useCanvasContext.canvasRef;
 
     var store = useStore();
-    var canvasStyleObj = computed(function () {
-      return {
-        width: "".concat(store.state.graph.grid.width, "px"),
-        height: "".concat(store.state.graph.grid.height, "px")
-      };
+    var gridOffset = computed(function () {
+      return store.state.graph.grid.offset;
     });
     var scale = computed(function () {
       return store.state.graph.scale;
     });
-    var gridOffset = store.state.graph.grid.offset;
+    var offset = computed(function () {
+      return store.state.graph.offset;
+    });
+    var canvasSize = computed(function () {
+      return {
+        width: store.state.graph.grid.width - gridOffset.value.x,
+        height: store.state.graph.grid.height - gridOffset.value.y
+      };
+    });
     return _objectSpread2({
-      size: size,
-      canvasStyleObj: canvasStyleObj,
+      canvasRef: canvasRef,
+      canvasSize: canvasSize,
       scale: scale,
+      offset: offset,
       gridOffset: gridOffset
     }, usePanZoomCanvas(store));
   }
@@ -11566,8 +13034,8 @@ var Canvasvue_type_style_index_0_lang_scss_ = __webpack_require__("30ea");
 
 var Canvas_component = normalizeComponent(
   Canvas_Canvasvue_type_script_lang_ts_,
-  Canvasvue_type_template_id_5ab2cce9_render,
-  Canvasvue_type_template_id_5ab2cce9_staticRenderFns,
+  Canvasvue_type_template_id_f217d13a_render,
+  Canvasvue_type_template_id_f217d13a_staticRenderFns,
   false,
   null,
   null,
@@ -11576,16 +13044,19 @@ var Canvas_component = normalizeComponent(
 )
 
 /* harmony default export */ var Canvas = (Canvas_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Node/Wrapper.vue?vue&type=template&id=10360a84&
-var Wrappervue_type_template_id_10360a84_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('vue-draggable-resizable',{staticClass:"node-wrapper",attrs:{"onDragStart":_vm.onDragStart,"x":_vm.node.x,"y":_vm.node.y,"z":50,"resizable":false,"grid":[1, 1],"scale":_vm.scale,"axis":"both","w":"auto","h":"auto"},on:{"dragging":_vm.onNodeDragging,"dragstop":_vm.onNodeDragStop,"activated":_vm.onNodeClick}},[_c(_vm.nodeComponent,{tag:"component",attrs:{"node":_vm.node,"is-selected":_vm.isSelected}}),_vm._l((_vm.node.ports),function(port,id){return _c('PortWrapperComponent',{key:id,attrs:{"node":_vm.node,"port":port,"port-component":_vm.portComponent}})})],2)}
-var Wrappervue_type_template_id_10360a84_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Node/Wrapper.vue?vue&type=template&id=a0cb8a26&
+var Wrappervue_type_template_id_a0cb8a26_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('vue-draggable-resizable',{staticClass:"node-wrapper",attrs:{"onDragStart":_vm.onDragStart,"x":_vm.node.x,"y":_vm.node.y,"z":50,"resizable":false,"grid":[1, 1],"scale":_vm.scale,"axis":"both","w":"auto","h":"auto"},on:{"dragging":_vm.onNodeDragging,"dragstop":_vm.onNodeDragStop,"activated":_vm.onNodeClick}},[_c('ResizeObserver',{on:{"notify":_vm.onNodeResize}}),_c(_vm.nodeComponent,{tag:"component",attrs:{"node":_vm.node,"is-selected":_vm.isSelected}}),_vm._l((_vm.node.ports),function(port,id){return _c('PortWrapperComponent',{key:id,attrs:{"node":_vm.node,"port":port,"port-component":_vm.portComponent}})})],2)}
+var Wrappervue_type_template_id_a0cb8a26_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Node/Wrapper.vue?vue&type=template&id=10360a84&
+// CONCATENATED MODULE: ./src/components/Node/Wrapper.vue?vue&type=template&id=a0cb8a26&
 
 // EXTERNAL MODULE: ./node_modules/vue-draggable-resizable/dist/VueDraggableResizable.umd.min.js
 var VueDraggableResizable_umd_min = __webpack_require__("fb19");
 var VueDraggableResizable_umd_min_default = /*#__PURE__*/__webpack_require__.n(VueDraggableResizable_umd_min);
+
+// EXTERNAL MODULE: ./node_modules/vue-resize/dist/vue-resize.esm.js
+var vue_resize_esm = __webpack_require__("252c");
 
 // CONCATENATED MODULE: ./src/components/Node/hooks/useDragNode.ts
 
@@ -11633,7 +13104,7 @@ function useDragNode(store, node) {
     onNodeDragStop: onNodeDragStop
   };
 }
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Port/Wrapper.vue?vue&type=template&id=6acf101d&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Port/Wrapper.vue?vue&type=template&id=6acf101d&
 var Wrappervue_type_template_id_6acf101d_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{attrs:{"data-port-id":_vm.port.id,"data-node-id":_vm.node.id},on:{"mousedown":_vm.onMouseDown}},[_c(_vm.portComponent,{tag:"component",attrs:{"node":_vm.node,"port":_vm.port}})],1)}
 var Wrappervue_type_template_id_6acf101d_staticRenderFns = []
 
@@ -11810,9 +13281,15 @@ var Wrapper_component = normalizeComponent(
 )
 
 /* harmony default export */ var Wrapper = (Wrapper_component.exports);
+// EXTERNAL MODULE: ./node_modules/vue-resize/dist/vue-resize.css
+var vue_resize = __webpack_require__("6eb0");
+
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Node/Wrapper.vue?vue&type=script&lang=ts&
 
 // @ts-ignore
+ // @ts-ignore
+
+
 
 
 
@@ -11822,7 +13299,8 @@ var Wrapper_component = normalizeComponent(
   name: 'NodeWrapper',
   components: {
     VueDraggableResizable: VueDraggableResizable_umd_min_default.a,
-    PortWrapperComponent: Wrapper
+    PortWrapperComponent: Wrapper,
+    ResizeObserver: vue_resize_esm["a" /* ResizeObserver */]
   },
   props: {
     node: {
@@ -11855,8 +13333,20 @@ var Wrapper_component = normalizeComponent(
       store.dispatch('selectNode', props.node.id);
     };
 
+    var onNodeResize = function onNodeResize(_ref) {
+      var width = _ref.width,
+          height = _ref.height;
+      store.commit({
+        type: 'updateNodeSize',
+        id: props.node.id,
+        width: width,
+        height: height
+      });
+    };
+
     return _objectSpread2({
       onNodeClick: onNodeClick,
+      onNodeResize: onNodeResize,
       scale: scale
     }, useDragNode(store, node));
   }
@@ -11877,8 +13367,8 @@ var Wrappervue_type_style_index_0_lang_scss_ = __webpack_require__("2d23");
 
 var Node_Wrapper_component = normalizeComponent(
   components_Node_Wrappervue_type_script_lang_ts_,
-  Wrappervue_type_template_id_10360a84_render,
-  Wrappervue_type_template_id_10360a84_staticRenderFns,
+  Wrappervue_type_template_id_a0cb8a26_render,
+  Wrappervue_type_template_id_a0cb8a26_staticRenderFns,
   false,
   null,
   null,
@@ -11887,7 +13377,7 @@ var Node_Wrapper_component = normalizeComponent(
 )
 
 /* harmony default export */ var Node_Wrapper = (Node_Wrapper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Node/Default.vue?vue&type=template&id=5978a3f6&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Node/Default.vue?vue&type=template&id=5978a3f6&
 var Defaultvue_type_template_id_5978a3f6_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"node__default",style:({ width: _vm.node.width + 'px', height: _vm.node.height + 'px'})},[_vm._v(" "+_vm._s(_vm.node.id)+" ")])}
 var Defaultvue_type_template_id_5978a3f6_staticRenderFns = []
 
@@ -11931,7 +13421,7 @@ var Default_component = normalizeComponent(
 )
 
 /* harmony default export */ var Default = (Default_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Port/Default.vue?vue&type=template&id=23a5be42&
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Port/Default.vue?vue&type=template&id=23a5be42&
 var Defaultvue_type_template_id_23a5be42_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"port",style:(_vm.portStyleObj)},[_c('div',{ref:"inner",staticClass:"port__inner"})])}
 var Defaultvue_type_template_id_23a5be42_staticRenderFns = []
 
@@ -11990,12 +13480,12 @@ var Port_Default_component = normalizeComponent(
 )
 
 /* harmony default export */ var Port_Default = (Port_Default_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Wrapper.vue?vue&type=template&id=2f7e3acc&
-var Wrappervue_type_template_id_2f7e3acc_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.endPort)?_c('span',{on:{"click":_vm.onLinkClick}},[_c(_vm.linkComponent,{tag:"component",attrs:{"link":_vm.link,"start-pos":_vm.startPort.position,"end-pos":_vm.endPort.position,"path":_vm.path,"is-selected":_vm.isSelected}})],1):_vm._e()}
-var Wrappervue_type_template_id_2f7e3acc_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Wrapper.vue?vue&type=template&id=2543c190&
+var Wrappervue_type_template_id_2543c190_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return (_vm.endPort)?_c('span',{on:{"click":_vm.onLinkClick}},[_c(_vm.linkComponent,{tag:"component",attrs:{"link":_vm.link,"start-pos":_vm.startPort.position,"end-pos":_vm.endPort.position,"path":_vm.path,"is-selected":_vm.isSelected}})],1):_vm._e()}
+var Wrappervue_type_template_id_2543c190_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Link/Wrapper.vue?vue&type=template&id=2f7e3acc&
+// CONCATENATED MODULE: ./src/components/Link/Wrapper.vue?vue&type=template&id=2543c190&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es.array.concat.js
 var es_array_concat = __webpack_require__("99af");
@@ -12023,12 +13513,13 @@ function generateRightAnglePath(startPos, endPos) {
 
 
 
-function scalePath(path) {
+function scalePath(path, offset) {
   return path.map(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
         x = _ref2[0],
         y = _ref2[1];
 
+    if (offset) return [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y];
     return [x * SCALE_FACTOR, y * SCALE_FACTOR];
   });
 }
@@ -12098,12 +13589,13 @@ function generatePath(grid, startPort, endPort, config, _version) {
   try {
     var path = pathfinding_default.a.Util.compressPath(pathFinder.findPath(scaledStartPos.x, scaledStartPos.y, scaledEndPos.x, scaledEndPos.y, grid.pfGrid.clone()));
     if (!path.length) return fallbackPath(startPort, endPort, config);
-    return scalePath(path);
+    return scalePath(path, gridOffset);
   } catch (e) {
     return fallbackPath(startPort, endPort, config);
   }
 }
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Wrapper.vue?vue&type=script&lang=ts&
+
 
 
 
@@ -12127,6 +13619,10 @@ function generatePath(grid, startPort, endPort, config, _version) {
   },
   setup: function setup(props) {
     var store = useStore();
+    var canvasContext = inject(CanvasContextSymbol, {
+      offsetX: 0,
+      offsetY: 0
+    });
     var graph = computed(function () {
       return store.state.graph;
     });
@@ -12150,8 +13646,8 @@ function generatePath(grid, startPort, endPort, config, _version) {
             offset = _store$state$graph.offset;
         return {
           position: {
-            x: (store.state.mousePosition.x - offset.x) / scale,
-            y: (store.state.mousePosition.y - offset.y) / scale
+            x: (store.state.mousePosition.x - canvasContext.offsetX - offset.x) / scale,
+            y: (store.state.mousePosition.y - canvasContext.offsetY - offset.y) / scale
           }
         };
       }
@@ -12197,8 +13693,8 @@ function generatePath(grid, startPort, endPort, config, _version) {
 
 var Link_Wrapper_component = normalizeComponent(
   components_Link_Wrappervue_type_script_lang_ts_,
-  Wrappervue_type_template_id_2f7e3acc_render,
-  Wrappervue_type_template_id_2f7e3acc_staticRenderFns,
+  Wrappervue_type_template_id_2543c190_render,
+  Wrappervue_type_template_id_2543c190_staticRenderFns,
   false,
   null,
   null,
@@ -12207,12 +13703,12 @@ var Link_Wrapper_component = normalizeComponent(
 )
 
 /* harmony default export */ var Link_Wrapper = (Link_Wrapper_component.exports);
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0fa60fa4-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=template&id=4fb5c594&
-var Defaultvue_type_template_id_4fb5c594_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{staticClass:"link"},[_c('circle',{attrs:{"cx":_vm.startPos.x,"cy":_vm.startPos.y,"r":"4"}}),_c('path',{attrs:{"d":_vm.pathCommands,"stroke":"blue","strokeWidth":"3","fill":"none"}}),_c('circle',{attrs:{"cx":_vm.endPos.x,"cy":_vm.endPos.y,"r":"4"}})])}
-var Defaultvue_type_template_id_4fb5c594_staticRenderFns = []
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"2b05fb6e-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=template&id=b96d367e&
+var Defaultvue_type_template_id_b96d367e_render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('svg',{staticClass:"link"},[_c('circle',{attrs:{"cx":_vm.startPos.x,"cy":_vm.startPos.y,"r":"4"}}),_c('path',{attrs:{"d":_vm.pathCommands,"stroke":"blue","strokeWidth":"3","fill":"none"}}),_c('circle',{attrs:{"cx":_vm.endPos.x,"cy":_vm.endPos.y,"r":"4"}})])}
+var Defaultvue_type_template_id_b96d367e_staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/components/Link/Default.vue?vue&type=template&id=4fb5c594&
+// CONCATENATED MODULE: ./src/components/Link/Default.vue?vue&type=template&id=b96d367e&
 
 // CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js??ref--13-0!./node_modules/thread-loader/dist/cjs.js!./node_modules/babel-loader/lib!./node_modules/ts-loader??ref--13-3!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Link/Default.vue?vue&type=script&lang=ts&
 
@@ -12222,12 +13718,8 @@ var Defaultvue_type_template_id_4fb5c594_staticRenderFns = []
 
 
 
-
-function generatePathCommands(path, grid) {
-  if (!path.length) return '';
-  var _grid$offset = grid.offset,
-      gridOffsetX = _grid$offset.x,
-      gridOffsetY = _grid$offset.y;
+function generatePathCommands(path) {
+  if (!path.length) return ''; // const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
 
   var _path = _toArray(path),
       first = _path[0],
@@ -12238,8 +13730,8 @@ function generatePathCommands(path, grid) {
         x = _ref2[0],
         y = _ref2[1];
 
-    return "".concat(acc, " L").concat(x - gridOffsetX, " ").concat(y - gridOffsetY);
-  }, "M".concat(first[0] - gridOffsetX, " ").concat(first[1] - gridOffsetY));
+    return "".concat(acc, " L").concat(x, " ").concat(y);
+  }, "M".concat(first[0], " ").concat(first[1]));
 }
 
 /* harmony default export */ var Link_Defaultvue_type_script_lang_ts_ = (defineComponent({
@@ -12263,9 +13755,8 @@ function generatePathCommands(path, grid) {
     }
   },
   setup: function setup(props) {
-    var store = useStore();
     var pathCommands = computed(function () {
-      return generatePathCommands(props.path, store.state.graph.grid);
+      return generatePathCommands(props.path);
     });
     return {
       pathCommands: pathCommands
@@ -12288,8 +13779,8 @@ var Link_Defaultvue_type_style_index_0_lang_scss_ = __webpack_require__("e021");
 
 var Link_Default_component = normalizeComponent(
   components_Link_Defaultvue_type_script_lang_ts_,
-  Defaultvue_type_template_id_4fb5c594_render,
-  Defaultvue_type_template_id_4fb5c594_staticRenderFns,
+  Defaultvue_type_template_id_b96d367e_render,
+  Defaultvue_type_template_id_b96d367e_staticRenderFns,
   false,
   null,
   null,
@@ -12321,7 +13812,7 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vue_composition_api_m
     LinkWrapperComponent: Link_Wrapper
   },
   props: {
-    rawState: {
+    state: {
       type: Object,
       required: true
     },
@@ -12341,9 +13832,9 @@ external_commonjs_vue_commonjs2_vue_root_Vue_default.a.use(vue_composition_api_m
   setup: function setup(props) {
     var store = useStore();
 
-    var _useState = useState(props.rawState, store),
-        nodes = _useState.nodes,
-        links = _useState.links;
+    var _useGraph = useGraph(props.state, store),
+        nodes = _useGraph.nodes,
+        links = _useGraph.links;
 
     store.commit('updateConfig', props.config);
     var _props$components = props.components;

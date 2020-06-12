@@ -12,10 +12,19 @@ import generateRightAnglePath from './generateRightAnglePath';
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
 function scalePath (path: Point[], offset?: IOffset): Point[] {
-  return path.map(([x, y]) => {
-    if (offset) return [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y];
-    return [x * SCALE_FACTOR, y * SCALE_FACTOR];
-  });
+  return path.reduce((acc, point, index, arr) => {
+    const [x, y] = point;
+    const prev = arr[index - 1];
+    // 存在前一个点，并且前一个点和现在的点相同
+    if (index !== 0 && (prev[0] === x && prev[1] === y)) {
+      return acc;
+    }
+    const scalePoint: Point = offset
+      ? [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y]
+      : [x * SCALE_FACTOR, y * SCALE_FACTOR];
+    acc.push(scalePoint);
+    return acc;
+  }, [] as Point[]);
 }
 
 function scalePosition (position: IPosition): IPosition {

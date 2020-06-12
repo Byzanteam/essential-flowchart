@@ -38,19 +38,15 @@ function getPaddingPoint ({ position, direction }: NodePort, config: IConfig): I
   switch (direction) {
     case PortDirection.TOP:
       return { ...position, y: position.y - config.nodePadding };
-      break;
 
     case PortDirection.RIGHT:
       return { ...position, x: position.x + config.nodePadding };
-      break;
 
     case PortDirection.BOTTOM:
       return { ...position, y: position.y + config.nodePadding };
-      break;
 
     case PortDirection.LEFT:
       return { ...position, x: position.x - config.nodePadding };
-      break;
 
     default:
       return { ...position };

@@ -57,7 +57,7 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig):
 
   return scalePath([
     [originalStartPos.x, originalStartPos.y],
-    ...generateRightAnglePath(scaledStartPos, scaledEndPos),
+    ...generateRightAnglePath(scaledStartPos, scaledEndPos, originalStartPos, originalEndPos),
     [originalEndPos.x, originalEndPos.y],
   ]);
 }

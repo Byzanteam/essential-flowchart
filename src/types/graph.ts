@@ -80,3 +80,5 @@ export interface IGraph {
   grid: IGrid;
   scale: number;
 }
+
+export type IVector = [number, number]

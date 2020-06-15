@@ -11,9 +11,41 @@ import generateRightAnglePath from './generateRightAnglePath';
 
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
-function scalePath (path: Point[], offset?: IOffset): Point[] {
+function tweakPath (path: Point[], startPort: NodePort, endPort: NodePort): Point[] {
+  const { x: sx, y: sy } = startPort.position,
+        { x: ex, y: ey } = endPort.position,
+        [first, second] = path.slice(0, 2),
+        [lastSecond, last] = path.slice(-2),
+        rest = path.length > 4 ? path.slice(2, path.length - 2) : [],
+        tweakStart = second.slice(0) as Point,
+        // if path.length is 3, then tweakEnd = tweakStart
+        tweakEnd = path.length > 3 ? lastSecond.slice(0) as Point : tweakStart;
+  // directly connected end to end
+  if (path.length < 3) {
+    return path;
+  }
+  // tweak start segment by startPort
+  // vertical direction
+  if (second[0] === first[0]) {
+    tweakStart[0] = sx;
+  } else {
+    tweakStart[1] = sy;
+  }
+  // tweak end segment by endPort
+  if (lastSecond[0] === last[0]) {
+    tweakEnd[0] = ex;
+  } else {
+    tweakEnd[1] = ey;
+  }
+  if (path.length === 3) {
+    return [[sx, sy], tweakStart, [ex, ey]];
+  }
+  return [[sx, sy], tweakStart, ...rest, tweakEnd, [ex, ey]];
+}
+
+function scalePath (path: Point[], startPort: NodePort, endPort: NodePort, offset?: IOffset): Point[] {
   // reduce continuous same point
-  return path.reduce((acc, point, index, arr) => {
+  const scaledPath = path.reduce((acc, point, index, arr) => {
     const [x, y] = point;
     const prev = arr[index - 1];
     // current point is same to prev point
@@ -26,6 +58,7 @@ function scalePath (path: Point[], offset?: IOffset): Point[] {
     acc.push(scalePoint);
     return acc;
   }, [] as Point[]);
+  return tweakPath(scaledPath, startPort, endPort);
 }
 
 function scalePosition (position: IPosition): IPosition {
@@ -65,7 +98,7 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig):
     [originalStartPos.x, originalStartPos.y],
     ...generateRightAnglePath(scaledStartPos, scaledEndPos, originalStartPos, originalEndPos),
     [originalEndPos.x, originalEndPos.y],
-  ]);
+  ], startPort, endPort);
 }
 
 export default function generatePath (
@@ -102,7 +135,7 @@ export default function generatePath (
 
     if (!path.length) return fallbackPath(startPort, endPort, config);
 
-    return scalePath(path, gridOffset);
+    return scalePath(path, startPort, endPort, gridOffset);
   } catch (e) {
     return fallbackPath(startPort, endPort, config);
   }

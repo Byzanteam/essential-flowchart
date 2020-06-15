@@ -24,13 +24,24 @@ describe('clean walkable', () => {
     };
 
     markNodeWalkable(grid.pfGrid, grid.offset, node, false, buildConfig({}));
+
+    // @ts-ignore
+    const hasWall = grid.pfGrid.nodes.some(row => row.some(item => (typeof item.walkable === 'boolean'
+      ? false
+      : item.walkable > 0)));
+    expect(hasWall).toEqual(true);
+
     markNodeWalkable(grid.pfGrid, grid.offset, node, true, buildConfig({}));
 
     // @ts-ignore
     grid.pfGrid.nodes.forEach(row => {
       // @ts-ignore
       row.forEach(item => {
-        expect(item.walkable).toEqual(true);
+        if (typeof item.walkable === 'boolean') {
+          expect(item.walkable).toEqual(true);
+        } else {
+          expect(item.walkable).toEqual(0);
+        }
       });
     });
   });

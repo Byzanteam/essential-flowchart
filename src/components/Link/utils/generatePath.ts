@@ -12,10 +12,11 @@ import generateRightAnglePath from './generateRightAnglePath';
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
 function scalePath (path: Point[], offset?: IOffset): Point[] {
+  // reduce continuous same point
   return path.reduce((acc, point, index, arr) => {
     const [x, y] = point;
     const prev = arr[index - 1];
-    // 存在前一个点，并且前一个点和现在的点相同
+    // current point is same to prev point
     if (index !== 0 && (prev[0] === x && prev[1] === y)) {
       return acc;
     }

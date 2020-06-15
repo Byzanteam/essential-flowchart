@@ -44,21 +44,14 @@ function tweakPath (path: Point[], startPort: NodePort, endPort: NodePort): Poin
 }
 
 function scalePath (path: Point[], startPort: NodePort, endPort: NodePort, offset?: IOffset): Point[] {
-  // reduce continuous same point
-  const scaledPath = path.reduce((acc, point, index, arr) => {
+  const scaledPath = path.map(point => {
     const [x, y] = point;
-    const prev = arr[index - 1];
-    // current point is same to prev point
-    if (index !== 0 && (prev[0] === x && prev[1] === y)) {
-      return acc;
-    }
     const scalePoint: Point = offset
       ? [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y]
       : [x * SCALE_FACTOR, y * SCALE_FACTOR];
-    acc.push(scalePoint);
-    return acc;
-  }, [] as Point[]);
-  return tweakPath(scaledPath, startPort, endPort);
+    return scalePoint;
+  });
+  return tweakPath(PF.Util.compressPath(scaledPath) as Point[], startPort, endPort);
 }
 
 function scalePosition (position: IPosition): IPosition {

@@ -107,6 +107,7 @@ export default function generateRightAnglePath (
   } else if (isReverseDirection(PB_E, vectorE)) {
     allowedPoints = allowedPoints.filter(point => [PA, PED].includes(point));
   }
+  // if next point has multiple choices, choose first choice
   const path: IPosition | [IPosition, IPosition] = allowedPoints[0];
   const pathPoints: Point2D[] = Array.isArray(path)
     ? path.map(position => [position.x, position.y])

@@ -25,13 +25,13 @@ import { IPosition, Point2D, IVector } from '@/types';
  */
 
 // convert two point to a vector
-const Vector = (p1: IPosition, p2: IPosition): IVector => [p2.x - p1.x, p2.y - p1.y];
+export const Vector = (p1: IPosition, p2: IPosition): IVector => [p2.x - p1.x, p2.y - p1.y];
 // get vector magnitude(length)
 const VectorMagnitude = (vector: IVector): number => Math.sqrt((vector[0] ** 2) + (vector[1] ** 2));
 // is vector1 and vector2 parallel
 const isParallel = (v1: IVector, v2: IVector): boolean => v1[0] * v2[1] === v1[1] * v2[0];
 // is vector1 and vector2 with reverse direction
-const isReverseDirection = (v1: IVector, v2: IVector): boolean => isParallel(v1, v2)
+export const isReverseDirection = (v1: IVector, v2: IVector): boolean => isParallel(v1, v2)
     && VectorMagnitude(v1) > 0
     && VectorMagnitude(v2) > 0
     && v1[0] * v2[0] + v1[1] * v2[1] < 0;

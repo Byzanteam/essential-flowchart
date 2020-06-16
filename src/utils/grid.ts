@@ -10,6 +10,7 @@ import {
   PortDirection,
 } from '@/types';
 import { GRID_PADDING, GRID_EXPANSION_STEP, SCALE_FACTOR } from '@/utils/constants';
+import CustomGrid from '@/utils/customGrid';
 
 type Line = [Point, Point];
 
@@ -20,7 +21,7 @@ export function buildEmptyGrid (
 ): IGrid {
   // prevent vuex to observing pfGrid
   const pfGrid: Pathfinding.Grid = Object.freeze(
-    new Pathfinding.Grid(width / SCALE_FACTOR, height / SCALE_FACTOR),
+    new CustomGrid(width / SCALE_FACTOR, height / SCALE_FACTOR),
   );
 
   return {

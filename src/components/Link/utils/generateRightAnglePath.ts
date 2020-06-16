@@ -54,7 +54,7 @@ import { IPosition, Point2D, IVector } from '@/types';
  **************************************
  */
 
-const VectorModulus = (vector: IVector): number => Math.sqrt((vector[0] ** 2) + (vector[1] ** 2));
+const VectorMagnitude = (vector: IVector): number => Math.sqrt((vector[0] ** 2) + (vector[1] ** 2));
 
 const Vector = (p1: IPosition, p2: IPosition): IVector => [p2.x - p1.x, p2.y - p1.y];
 
@@ -63,8 +63,8 @@ const isParallel = (v1: IVector, v2: IVector): boolean => v1[0] * v2[1] === v1[1
 
 // is vector1 and vector2 with reverse direction
 const isReverseDirection = (v1: IVector, v2: IVector): boolean => isParallel(v1, v2)
-    && VectorModulus(v1) > 0
-    && VectorModulus(v2) > 0
+    && VectorMagnitude(v1) > 0
+    && VectorMagnitude(v2) > 0
     && v1[0] * v2[0] + v1[1] * v2[1] < 0;
 
 export default function generateRightAnglePath (

@@ -10,7 +10,7 @@ import {
   PortDirection,
 } from '@/types';
 import { GRID_PADDING, GRID_EXPANSION_STEP, SCALE_FACTOR } from '@/utils/constants';
-import { CustomGrid } from '@/utils/customGrid';
+import CustomGrid from '@/utils/customGrid';
 
 type Line = [Point, Point];
 

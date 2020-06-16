@@ -5,7 +5,7 @@ interface ICustomGrid extends Pathfinding.Grid {
   getWallHeight(x: number, y: number): number;
 }
 
-class CustomGrid extends Pathfinding.Grid implements ICustomGrid {
+export default class CustomGrid extends Pathfinding.Grid implements ICustomGrid {
   nodes: Array<Array<Pathfinding.Node>>
 
   constructor (width: number, height: number) {
@@ -46,7 +46,3 @@ class CustomGrid extends Pathfinding.Grid implements ICustomGrid {
     return newGrid;
   }
 }
-export {
-  CustomGrid as default,
-  CustomGrid,
-};

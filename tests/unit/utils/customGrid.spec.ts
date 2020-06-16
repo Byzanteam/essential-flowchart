@@ -1,5 +1,5 @@
 import { PortDirection } from '@/types';
-import { CustomGrid } from '@/utils/customGrid';
+import CustomGrid from '@/utils/customGrid';
 import { markNodeWalkable } from '@/utils/grid';
 import { buildConfig } from '@/utils/config';
 

@@ -23,7 +23,8 @@
 import Vue from 'vue';
 import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { IGraph, IConfigInput, IPosition } from '@/types';
+import { IGraph, IConfigInput } from '@/types';
+import useApi from './hooks/useApi';
 import useGraph from './hooks/useState';
 import useSelected from './hooks/useSelected';
 import useFlowchartContext from './hooks/useFlowchartContext';
@@ -94,25 +95,6 @@ export default defineComponent({
       } = {},
     } = props;
 
-    function zoom (delta: number) {
-      store.dispatch('updateScale', store.state.graph.scale + delta);
-    }
-
-    function zoomIn () {
-      zoom(0.2);
-    }
-
-    function zoomOut () {
-      zoom(-0.2);
-    }
-
-    function getPosition (clientX: number, clientY: number): IPosition | null {
-      if (canvasRef.value) {
-        return canvasRef.value.getPosition(clientX, clientY);
-      }
-      return null;
-    }
-
     return {
       canvasRef,
 
@@ -123,10 +105,7 @@ export default defineComponent({
       links,
       ...useSelected(store),
 
-      zoom,
-      zoomIn,
-      zoomOut,
-      getPosition,
+      ...useApi(store, { canvasRef }),
     };
   },
 });

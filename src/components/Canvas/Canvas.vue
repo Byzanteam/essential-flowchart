@@ -24,6 +24,7 @@
         }"
       >
         <div
+          ref="canvasInnerRef"
           :style="{
             width: `${canvasSize.width}px`,
             height: `${canvasSize.height}px`,
@@ -43,6 +44,7 @@ import {
   computed,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
+import { IPosition } from '@/types';
 import useCanvasContext from './hooks/useCanvasContext';
 import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
@@ -55,7 +57,7 @@ export default defineComponent({
   },
 
   setup () {
-    const { canvasRef } = useCanvasContext();
+    const { canvasInnerRef, canvasRef } = useCanvasContext();
     const store = useStore();
 
     const gridOffset = computed(() => store.state.graph.grid.offset);
@@ -67,7 +69,19 @@ export default defineComponent({
       height: store.state.graph.grid.height - gridOffset.value.y,
     }));
 
+    function getPosition (clientX: number, clientY: number): IPosition | null {
+      if (canvasInnerRef.value) {
+        const canvasRect = canvasInnerRef.value.getBoundingClientRect();
+        return {
+          x: Math.round((clientX - canvasRect.left) / scale.value),
+          y: Math.round((clientY - canvasRect.top) / scale.value),
+        };
+      }
+      return null;
+    }
+
     return {
+      canvasInnerRef,
       canvasRef,
       canvasSize,
 
@@ -75,6 +89,8 @@ export default defineComponent({
       offset,
       gridOffset,
       ...usePanZoomCanvas(store),
+
+      getPosition,
     };
   },
 });

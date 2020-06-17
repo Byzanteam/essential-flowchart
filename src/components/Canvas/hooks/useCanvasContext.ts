@@ -7,6 +7,7 @@ export const CanvasContextSymbol = Symbol('canvasContext');
 
 export default function useCanvasContext () {
   const canvasRef: Ref<null | HTMLElement> = ref(null);
+  const canvasInnerRef: Ref<null | HTMLElement> = ref(null);
 
   const context = reactive({
     offsetX: 0,
@@ -25,5 +26,6 @@ export default function useCanvasContext () {
 
   return {
     canvasRef,
+    canvasInnerRef,
   };
 }

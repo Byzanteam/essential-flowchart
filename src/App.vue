@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <flowchart :state="rawState" readonly />
+    <flowchart :state="rawState" />
   </div>
 </template>
 

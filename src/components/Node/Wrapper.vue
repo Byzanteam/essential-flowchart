@@ -4,6 +4,7 @@
     :x="node.x"
     :y="node.y"
     :z="50"
+    :draggable="!readonly"
     :resizable="false"
     :grid="[1, 1]"
     :scale="scale"
@@ -29,6 +30,7 @@
       :node="node"
       :port="port"
       :port-component="portComponent"
+      :readonly="readonly"
     />
   </vue-draggable-resizable>
 </template>
@@ -80,6 +82,10 @@ export default defineComponent({
       type: Object as PropType<FlowchartComponent>,
       required: true,
     },
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup (props) {
@@ -100,11 +106,23 @@ export default defineComponent({
       });
     };
 
+    const nodeDragActions = props.readonly
+      ? {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onDragStart () {},
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onNodeDragging () {},
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        onNodeDragStop () {},
+      }
+      : useDragNode(store, node);
+
     return {
       onNodeClick,
       onNodeResize,
       scale,
-      ...useDragNode(store, node),
+
+      ...nodeDragActions,
     };
   },
 });

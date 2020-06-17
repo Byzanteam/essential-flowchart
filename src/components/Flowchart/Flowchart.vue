@@ -2,6 +2,7 @@
   <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
       v-for="node in nodes"
+      :readonly="readonly"
       :key="node.id"
       :node="node"
       :is-selected="isNodeSelected(node.id)"
@@ -11,6 +12,7 @@
 
     <LinkWrapperComponent
       v-for="link in links"
+      :readonly="readonly"
       :key="link.id"
       :link="link"
       :is-selected="isLinkSelected(link.id)"
@@ -53,6 +55,8 @@ interface IFlowchartProps {
   components?: IFlowchartComponents;
 
   config?: IConfigInput;
+
+  readonly?: boolean;
 }
 
 export default defineComponent({
@@ -78,6 +82,11 @@ export default defineComponent({
     config: {
       type: Object as PropType<IFlowchartProps['config']>,
       default: () => ({}),
+    },
+
+    readonly: {
+      type: Boolean as PropType<IFlowchartProps['readonly']>,
+      default: false,
     },
   },
 

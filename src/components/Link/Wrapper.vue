@@ -44,6 +44,11 @@ export default defineComponent({
       type: Object as PropType<IFlowchartComponent>,
       required: true,
     },
+
+    readonly: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   setup (props) {

@@ -43,23 +43,9 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   setup (props) {
-    if (props.readonly) {
-      return {
-        onMouseDown (evt: MouseEvent) {
-          // disable node move
-          evt.stopPropagation();
-          // disable content select
-          evt.preventDefault();
-        },
-      };
-    }
     const store = useStore();
 
     const { onMouseDown } = useMouseDownOnPort(store, props.node, props.port);

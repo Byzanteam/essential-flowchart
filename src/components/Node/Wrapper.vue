@@ -30,7 +30,6 @@
       :node="node"
       :port="port"
       :port-component="portComponent"
-      :readonly="readonly"
     />
   </vue-draggable-resizable>
 </template>
@@ -82,16 +81,13 @@ export default defineComponent({
       type: Object as PropType<FlowchartComponent>,
       required: true,
     },
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   setup (props) {
     const store = useStore();
     const node = computed(() => props.node);
     const scale = computed(() => store.state.graph.scale);
+    const readonly = computed(() => store.state.readonly);
 
     const onNodeClick = () => {
       store.dispatch('selectNode', props.node.id);
@@ -106,23 +102,13 @@ export default defineComponent({
       });
     };
 
-    const nodeDragActions = props.readonly
-      ? {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onDragStart () {},
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onNodeDragging () {},
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        onNodeDragStop () {},
-      }
-      : useDragNode(store, node);
-
     return {
       onNodeClick,
       onNodeResize,
       scale,
+      readonly,
 
-      ...nodeDragActions,
+      ...useDragNode(store, node),
     };
   },
 });

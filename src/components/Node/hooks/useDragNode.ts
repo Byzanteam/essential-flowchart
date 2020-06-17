@@ -6,6 +6,7 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   let draggingNodePosition: IPosition | null = null;
 
   function onDragStart (e: MouseEvent) {
+    if (store.state.readonly) return;
     e.stopPropagation(); // prevent canvas move
 
     draggingNodePosition = {
@@ -15,6 +16,7 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   }
 
   function onNodeDragging (left: number, top: number) {
+    if (store.state.readonly) return;
     store.dispatch('dragNode', {
       id: node.value.id,
       position: {
@@ -29,6 +31,7 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   }
 
   function onNodeDragStop (left: number, top: number) {
+    if (store.state.readonly) return;
     store.dispatch('dragNodeStop', {
       id: node.value.id,
       position: {

@@ -2,7 +2,6 @@
   <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
       v-for="node in nodes"
-      :readonly="readonly"
       :key="node.id"
       :node="node"
       :is-selected="isNodeSelected(node.id)"
@@ -12,7 +11,6 @@
 
     <LinkWrapperComponent
       v-for="link in links"
-      :readonly="readonly"
       :key="link.id"
       :link="link"
       :is-selected="isLinkSelected(link.id)"
@@ -95,6 +93,7 @@ export default defineComponent({
     const { nodes, links } = useGraph(props.state, store);
     const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);
+    store.commit('updateReadonly', props.readonly);
 
     const {
       components: {

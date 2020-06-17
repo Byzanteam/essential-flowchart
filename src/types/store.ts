@@ -53,6 +53,7 @@ export interface IState {
   mousePosition: IPosition | null;
   config: IConfig;
   selected: SelectedOrHovered;
+  readonly: boolean;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

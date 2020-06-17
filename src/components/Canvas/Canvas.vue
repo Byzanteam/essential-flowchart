@@ -69,7 +69,7 @@ export default defineComponent({
       height: store.state.graph.grid.height - gridOffset.value.y,
     }));
 
-    function getPosition (clientX: number, clientY: number): IPosition {
+    function getPosition (clientX: number, clientY: number): IPosition | null {
       if (canvasInnerRef.value) {
         const canvasRect = canvasInnerRef.value.getBoundingClientRect();
         return {
@@ -77,10 +77,7 @@ export default defineComponent({
           y: Math.round((clientY - canvasRect.top) / scale.value),
         };
       }
-      return {
-        x: clientX,
-        y: clientY,
-      };
+      return null;
     }
 
     return {

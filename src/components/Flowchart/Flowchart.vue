@@ -26,7 +26,7 @@ import useStore from '@/hooks/useStore';
 import { IGraph, IConfigInput, IPosition } from '@/types';
 import useGraph from './hooks/useState';
 import useSelected from './hooks/useSelected';
-import useFlowchartContext, { ICanvasComponent } from './hooks/useFlowchartContext';
+import useFlowchartContext from './hooks/useFlowchartContext';
 
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
@@ -106,8 +106,11 @@ export default defineComponent({
       zoom(-0.2);
     }
 
-    function getPosition (clientX: number, clientY: number): IPosition {
-      return (canvasRef.value as ICanvasComponent).getPosition(clientX, clientY);
+    function getPosition (clientX: number, clientY: number): IPosition | null {
+      if (canvasRef.value) {
+        return canvasRef.value.getPosition(clientX, clientY);
+      }
+      return null;
     }
 
     return {

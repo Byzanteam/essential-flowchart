@@ -96,6 +96,14 @@ export default defineComponent({
       store.dispatch('updateScale', store.state.graph.scale + delta);
     }
 
+    function zoomIn () {
+      zoom(0.2);
+    }
+
+    function zoomOut () {
+      zoom(-0.2);
+    }
+
     return {
       nodeComponent,
       portComponent,
@@ -105,6 +113,8 @@ export default defineComponent({
       ...useSelected(store),
 
       zoom,
+      zoomIn,
+      zoomOut,
     };
   },
 });

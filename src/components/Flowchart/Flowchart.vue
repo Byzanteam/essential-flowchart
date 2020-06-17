@@ -1,5 +1,5 @@
 <template>
-  <CanvasComponent>
+  <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
       v-for="node in nodes"
       :key="node.id"
@@ -23,9 +23,10 @@
 import Vue from 'vue';
 import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { IGraph, IConfigInput } from '@/types';
+import { IGraph, IConfigInput, IPosition } from '@/types';
 import useGraph from './hooks/useState';
 import useSelected from './hooks/useSelected';
+import useFlowchartContext, { ICanvasComponent } from './hooks/useFlowchartContext';
 
 import CanvasComponent from '../Canvas/Canvas.vue';
 import NodeWrapperComponent from '../Node/Wrapper.vue';
@@ -82,6 +83,7 @@ export default defineComponent({
   setup (props: IFlowchartProps) {
     const store = useStore();
     const { nodes, links } = useGraph(props.state, store);
+    const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);
 
     const {
@@ -104,7 +106,13 @@ export default defineComponent({
       zoom(-0.2);
     }
 
+    function getPosition (clientX: number, clientY: number): IPosition {
+      return (canvasRef.value as ICanvasComponent).getPosition(clientX, clientY);
+    }
+
     return {
+      canvasRef,
+
       nodeComponent,
       portComponent,
       linkComponent,
@@ -115,6 +123,7 @@ export default defineComponent({
       zoom,
       zoomIn,
       zoomOut,
+      getPosition,
     };
   },
 });

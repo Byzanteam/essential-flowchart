@@ -9,6 +9,7 @@
       :zoom="scale"
       :min-zoom="minZoom"
       :max-zoom="maxZoom"
+      @pan="onCanvasPan"
       @panend="onCanvasPanEnd"
       @zoom="onCanvasZoom"
     >

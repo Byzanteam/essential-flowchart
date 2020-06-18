@@ -44,7 +44,7 @@ import {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { INode } from '@/types';
-
+import emitter from '@/emitter';
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
@@ -88,6 +88,8 @@ export default defineComponent({
     const scale = computed(() => store.state.graph.scale);
 
     const onNodeClick = () => {
+      emitter.emit('click-node', props.node);
+
       store.dispatch('selectNode', props.node.id);
     };
 

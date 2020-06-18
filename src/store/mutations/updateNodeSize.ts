@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { IState, INode } from '@/types';
+import emitter from '@/emitter';
 import { markNodeWalkable } from '@/utils/grid';
 
 // TODO: optimize with updateNodePosition
@@ -11,6 +12,11 @@ export default function updateNodeSize (
   const node = nodes[id];
 
   if (node) {
+    const size = {
+      width,
+      height,
+    };
+
     const prevSize = {
       width: node.width,
       height: node.height,
@@ -32,13 +38,18 @@ export default function updateNodeSize (
       state.graph.grid.offset,
       {
         ...updatedNode,
-        width,
-        height,
+        ...size,
       },
       false,
       state.config,
     );
 
     Vue.set(nodes, id, updatedNode);
+
+    emitter.emit('node-size-change', {
+      node: updatedNode,
+      size,
+      prevSize,
+    });
   }
 }

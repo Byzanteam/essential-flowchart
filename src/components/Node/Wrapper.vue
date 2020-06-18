@@ -102,7 +102,19 @@ export default defineComponent({
       });
     };
 
-    const dragActions = computed(() => useDragNode(store, node));
+    const editDragActions = useDragNode(store, node);
+    const readonlyDragActions = {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onDragStart () {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onNodeDragging () {},
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onNodeDragStop () {},
+    };
+
+    const dragActions = computed(() => (
+      store.state.config.readonly ? readonlyDragActions : editDragActions
+    ));
 
     return {
       onNodeClick,

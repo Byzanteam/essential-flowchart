@@ -2,7 +2,7 @@
   <div
     :data-port-id="port.id"
     :data-node-id="node.id"
-    @mousedown="onMouseDown"
+    @mousedown="onMousedown"
   >
     <component
       :is="portComponent"
@@ -21,7 +21,7 @@ import {
 } from '@/types';
 import useStore from '@/hooks/useStore';
 
-import useMouseDownOnPort from './hooks/useMouseDownOnPort';
+import useMousedownOnPort from './hooks/useMousedownOnPort';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
@@ -48,10 +48,19 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
 
-    const onMouseDown = computed(() => useMouseDownOnPort(store, props.node, props.port).onMouseDown);
+    const editMousedownAction = useMousedownOnPort(store, props.node, props.port).onMousedown;
+
+    const readonlyMousedownAction = (evt: MouseEvent) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+    };
+
+    const onMousedown = computed(() => (
+      store.state.config.readonly ? readonlyMousedownAction : editMousedownAction
+    ));
 
     return {
-      onMouseDown,
+      onMousedown,
     };
   },
 });

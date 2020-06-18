@@ -27,8 +27,8 @@ function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
   return target;
 }
 
-export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
-  const onMouseDown = (evt: MouseEvent) => {
+export default function useMousedownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
+  const onMousedown = (evt: MouseEvent) => {
     // prevent text selection
     evt.preventDefault();
     // prevent node move
@@ -102,16 +102,8 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
       window.addEventListener('mouseup', mouseUpHandler, false);
     }
   };
-  if (store.state.config.readonly) {
-    return {
-      onMouseDown (evt: MouseEvent) {
-        evt.stopPropagation();
-        evt.preventDefault();
-      },
-    };
-  }
 
   return {
-    onMouseDown,
+    onMousedown,
   };
 }

@@ -41,17 +41,6 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
     draggingNodePosition = null;
   }
 
-  if (store.state.config.readonly) {
-    return {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onDragStart () {},
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onNodeDragging () {},
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onNodeDragStop () {},
-    };
-  }
-
   return {
     onDragStart,
     onNodeDragging,

@@ -58,8 +58,6 @@ interface IFlowchartProps {
   components?: IFlowchartComponents;
 
   config?: IConfigInput;
-
-  readonly?: boolean;
 }
 
 export default defineComponent({
@@ -86,11 +84,6 @@ export default defineComponent({
       type: Object as PropType<IFlowchartProps['config']>,
       default: () => ({}),
     },
-
-    readonly: {
-      type: Boolean,
-      default: false,
-    },
   },
 
   setup (props: IFlowchartProps) {
@@ -98,10 +91,10 @@ export default defineComponent({
     const { nodes, links } = useGraph(props.state, store);
     const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);
-    store.commit('updateReadonly', props.readonly);
 
     onMounted(() => {
-      watch(() => props.readonly, readonly => store.commit('updateReadonly', readonly));
+      // eslint-disable-next-line
+      watch(() => props.config!.readonly, readonly => store.commit('updateReadonly', readonly));
     });
 
     const {

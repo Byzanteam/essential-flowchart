@@ -1,6 +1,6 @@
 <template>
   <vue-draggable-resizable
-    :onDragStart="onDragStart"
+    :onDragStart="dragActions.onDragStart"
     :x="node.x"
     :y="node.y"
     :z="50"
@@ -12,8 +12,8 @@
     w="auto"
     h="auto"
     class="node-wrapper"
-    @dragging="onNodeDragging"
-    @dragstop="onNodeDragStop"
+    @dragging="dragActions.onNodeDragging"
+    @dragstop="dragActions.onNodeDragStop"
     @activated="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
@@ -102,13 +102,15 @@ export default defineComponent({
       });
     };
 
+    const dragActions = computed(() => useDragNode(store, node));
+
     return {
       onNodeClick,
       onNodeResize,
       scale,
       readonly,
 
-      ...useDragNode(store, node),
+      dragActions,
     };
   },
 });

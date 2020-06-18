@@ -21,7 +21,12 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import VueCompositionApi, { defineComponent, PropType } from '@vue/composition-api';
+import VueCompositionApi, {
+  defineComponent,
+  PropType,
+  watch,
+  onMounted,
+} from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { IGraph, IConfigInput } from '@/types';
 import useApi from './hooks/useApi';
@@ -94,6 +99,10 @@ export default defineComponent({
     const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);
     store.commit('updateReadonly', props.readonly);
+
+    onMounted(() => {
+      watch(() => props.readonly, readonly => store.commit('updateReadonly', readonly));
+    });
 
     const {
       components: {

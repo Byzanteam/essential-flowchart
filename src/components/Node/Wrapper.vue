@@ -45,6 +45,7 @@ import {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { INode } from '@/types';
+import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
@@ -102,18 +103,15 @@ export default defineComponent({
       });
     };
 
-    const editDragActions = useDragNode(store, node);
+    const defaultDragActions = useDragNode(store, node);
     const readonlyDragActions = {
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onDragStart () {},
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onNodeDragging () {},
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      onNodeDragStop () {},
+      onDragStart: noop(),
+      onNodeDragging: noop(),
+      onNodeDragStop: noop(),
     };
 
     const dragActions = computed(() => (
-      store.state.config.readonly ? readonlyDragActions : editDragActions
+      store.state.config.readonly ? readonlyDragActions : defaultDragActions
     ));
 
     return {

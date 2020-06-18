@@ -8,3 +8,8 @@ export function clamp (val: number, min: number, max: number): number {
   }
   return val;
 }
+
+export function noop (): () => void {
+  // eslint-disable-next-line
+  return function () {};
+}

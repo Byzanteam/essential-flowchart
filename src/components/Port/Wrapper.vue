@@ -48,7 +48,7 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
 
-    const editMousedownAction = useMousedownOnPort(store, props.node, props.port).onMousedown;
+    const defaultMousedownAction = useMousedownOnPort(store, props.node, props.port).onMousedown;
 
     const readonlyMousedownAction = (evt: MouseEvent) => {
       evt.stopPropagation();
@@ -56,7 +56,7 @@ export default defineComponent({
     };
 
     const onMousedown = computed(() => (
-      store.state.config.readonly ? readonlyMousedownAction : editMousedownAction
+      store.state.config.readonly ? readonlyMousedownAction : defaultMousedownAction
     ));
 
     return {

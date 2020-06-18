@@ -2,6 +2,7 @@
   <div
     ref="canvasRef"
     class="canvas__outer"
+    @click="onCanvasClick"
   >
     <PanZoom
       :x="offset.x"
@@ -46,6 +47,7 @@ import {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { IPosition } from '@/types';
+import emitter from '@/emitter';
 import useCanvasContext from './hooks/useCanvasContext';
 import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
@@ -70,6 +72,10 @@ export default defineComponent({
       height: store.state.graph.grid.height - gridOffset.value.y,
     }));
 
+    const onCanvasClick = (event: MouseEvent) => {
+      emitter.emit('click-canvas', event);
+    };
+
     function getPosition (clientX: number, clientY: number): IPosition | null {
       if (canvasInnerRef.value) {
         const canvasRect = canvasInnerRef.value.getBoundingClientRect();
@@ -90,6 +96,7 @@ export default defineComponent({
       offset,
       gridOffset,
       ...usePanZoomCanvas(store),
+      onCanvasClick,
 
       getPosition,
     };

@@ -99,8 +99,8 @@ export default defineComponent({
       { linkId: props.link.id, path: [...newPath] },
     ));
 
-    const onLinkClick = () => {
-      emitter.emit('click-link', props.link);
+    const onLinkClick = (event: MouseEvent) => {
+      emitter.emit('click-link', { event, link: props.link });
 
       store.dispatch('selectLink', props.link.id);
     };

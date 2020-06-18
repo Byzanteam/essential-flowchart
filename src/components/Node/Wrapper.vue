@@ -13,7 +13,8 @@
     class="node-wrapper"
     @dragging="onNodeDragging"
     @dragstop="onNodeDragStop"
-    @activated="onNodeClick"
+    @activated="onNodeActivated"
+    @click.native="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
 
@@ -87,9 +88,11 @@ export default defineComponent({
     const node = computed(() => props.node);
     const scale = computed(() => store.state.graph.scale);
 
-    const onNodeClick = () => {
-      emitter.emit('click-node', props.node);
+    const onNodeClick = (event: MouseEvent) => {
+      emitter.emit('click-node', { event, node: props.node });
+    };
 
+    const onNodeActivated = () => {
       store.dispatch('selectNode', props.node.id);
     };
 
@@ -104,6 +107,7 @@ export default defineComponent({
 
     return {
       onNodeClick,
+      onNodeActivated,
       onNodeResize,
       scale,
       ...useDragNode(store, node),

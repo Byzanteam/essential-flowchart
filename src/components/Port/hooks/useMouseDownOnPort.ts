@@ -46,7 +46,7 @@ export default function useMousedownOnPort (store: FlowchartStore, node: INode, 
       to: {},
     } as ILink, store.state);
 
-    function mouseMoveHandler (e: MouseEvent) {
+    function mousemoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
         x: e.x,
         y: e.y,
@@ -55,14 +55,14 @@ export default function useMousedownOnPort (store: FlowchartStore, node: INode, 
       store.commit('updateMousePosition', toPosition);
     }
 
-    function mouseUpHandler (e: MouseEvent) {
+    function mouseupHandler (e: MouseEvent) {
       store.commit('updateMousePosition', null);
 
       // remove listeners
-      window.removeEventListener('mouseup', mouseUpHandler, false);
-      window.removeEventListener('mousemove', mouseMoveHandler, false);
+      window.removeEventListener('mouseup', mouseupHandler, false);
+      window.removeEventListener('mousemove', mousemoveHandler, false);
 
-      // mouseUpHandler added to mouseup event listeners unless a newLink.
+      // mouseupHandler added to mouseup event listeners unless a newLink.
       // if (!newLink) return;
 
       const target = findTarget(e.target as HTMLElement);
@@ -98,8 +98,8 @@ export default function useMousedownOnPort (store: FlowchartStore, node: INode, 
       });
 
       // add listeners
-      window.addEventListener('mousemove', mouseMoveHandler, false);
-      window.addEventListener('mouseup', mouseUpHandler, false);
+      window.addEventListener('mousemove', mousemoveHandler, false);
+      window.addEventListener('mouseup', mouseupHandler, false);
     }
   };
 

@@ -46,6 +46,7 @@ import {
 import useStore from '@/hooks/useStore';
 import { INode } from '@/types';
 import emitter from '@/emitter';
+import { CLICK_NODE } from '@/emitter/events';
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
@@ -89,7 +90,7 @@ export default defineComponent({
     const scale = computed(() => store.state.graph.scale);
 
     const onNodeClick = (event: MouseEvent) => {
-      emitter.emit('click-node', { event, node: props.node });
+      emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
     const onNodeActivated = () => {

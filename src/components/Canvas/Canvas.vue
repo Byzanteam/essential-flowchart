@@ -48,6 +48,7 @@ import {
 import useStore from '@/hooks/useStore';
 import { IPosition } from '@/types';
 import emitter from '@/emitter';
+import { CLICK_CANVAS } from '@/emitter/events';
 import useCanvasContext from './hooks/useCanvasContext';
 import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
@@ -73,7 +74,7 @@ export default defineComponent({
     }));
 
     const onCanvasClick = (event: MouseEvent) => {
-      emitter.emit('click-canvas', event);
+      emitter.emit(CLICK_CANVAS, event);
     };
 
     function getPosition (clientX: number, clientY: number): IPosition | null {

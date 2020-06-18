@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import { IState, INode } from '@/types';
 import emitter from '@/emitter';
+import { REMOVE_NODE } from '@/emitter/events';
 import { markNodeWalkable } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
@@ -11,7 +12,7 @@ export default function removeNode (state: IState, { node }: { node: INode }) {
 
   Vue.delete(state.graph.nodes, node.id);
 
-  emitter.emit('remove-node', node);
+  emitter.emit(REMOVE_NODE, node);
 }
 
 registerRevertFunc('removeNode', mutation => ({

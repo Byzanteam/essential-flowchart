@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import { IState, INode } from '@/types';
 import emitter from '@/emitter';
+import { NODE_SIZE_CHANGE } from '@/emitter/events';
 import { markNodeWalkable } from '@/utils/grid';
 
 // TODO: optimize with updateNodePosition
@@ -46,7 +47,7 @@ export default function updateNodeSize (
 
     Vue.set(nodes, id, updatedNode);
 
-    emitter.emit('node-size-change', {
+    emitter.emit(NODE_SIZE_CHANGE, {
       node: updatedNode,
       size,
       prevSize,

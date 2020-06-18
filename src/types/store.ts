@@ -37,6 +37,7 @@ export interface IConfig {
   minZoom: number;
   maxZoom: number;
   linkPipeline: ILinkPipelinePhase[];
+  readonly: boolean;
 }
 
 export type IConfigInput = Partial<IConfig>;

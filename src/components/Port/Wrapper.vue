@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, PropType,
+  defineComponent, PropType, computed,
 } from '@vue/composition-api';
 import {
   INode, INodePort,
@@ -48,7 +48,16 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
 
-    const { onMouseDown } = useMouseDownOnPort(store, props.node, props.port);
+    const defaultMouseDownAction = useMouseDownOnPort(store, props.node, props.port).onMouseDown;
+
+    const readonlyMouseDownAction = (evt: MouseEvent) => {
+      evt.stopPropagation();
+      evt.preventDefault();
+    };
+
+    const onMouseDown = computed(() => (
+      store.state.config.readonly ? readonlyMouseDownAction : defaultMouseDownAction
+    ));
 
     return {
       onMouseDown,

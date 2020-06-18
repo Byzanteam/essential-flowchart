@@ -39,6 +39,7 @@ export function buildConfig (
     minZoom = DEFAULT_MIN_ZOOM,
     maxZoom = DEFAULT_MAX_ZOOM,
     linkPipeline = [generateLinkId, distinctFromNodeAndToNode],
+    readonly = false,
   }: IConfigInput,
 ): IConfig {
   // OPTIMIZE: skip validate default value
@@ -54,5 +55,6 @@ export function buildConfig (
     minZoom,
     maxZoom,
     linkPipeline,
+    readonly,
   };
 }

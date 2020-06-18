@@ -1,9 +1,10 @@
 <template>
   <vue-draggable-resizable
-    :onDragStart="onDragStart"
+    :onDragStart="dragActions.onDragStart"
     :x="node.x"
     :y="node.y"
     :z="50"
+    :draggable="!readonly"
     :resizable="false"
     :grid="[1, 1]"
     :scale="scale"
@@ -11,8 +12,8 @@
     w="auto"
     h="auto"
     class="node-wrapper"
-    @dragging="onNodeDragging"
-    @dragstop="onNodeDragStop"
+    @dragging="dragActions.onNodeDragging"
+    @dragstop="dragActions.onNodeDragStop"
     @activated="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
@@ -44,6 +45,7 @@ import {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { INode } from '@/types';
+import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
@@ -86,6 +88,7 @@ export default defineComponent({
     const store = useStore();
     const node = computed(() => props.node);
     const scale = computed(() => store.state.graph.scale);
+    const readonly = computed(() => store.state.config.readonly);
 
     const onNodeClick = () => {
       store.dispatch('selectNode', props.node.id);
@@ -100,11 +103,24 @@ export default defineComponent({
       });
     };
 
+    const defaultDragActions = useDragNode(store, node);
+    const readonlyDragActions = {
+      onDragStart: noop(),
+      onNodeDragging: noop(),
+      onNodeDragStop: noop(),
+    };
+
+    const dragActions = computed(() => (
+      store.state.config.readonly ? readonlyDragActions : defaultDragActions
+    ));
+
     return {
       onNodeClick,
       onNodeResize,
       scale,
-      ...useDragNode(store, node),
+      readonly,
+
+      dragActions,
     };
   },
 });

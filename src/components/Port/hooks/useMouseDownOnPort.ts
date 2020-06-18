@@ -6,7 +6,7 @@ import {
 } from '@/types';
 import runPipeline from '@/pipelines/runPipeline';
 
-function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
+function findTarget (el: HTMLElement): { nodeId: Id; portId: Id } | null {
   let curr: HTMLElement | null = el;
   let target = null;
 
@@ -29,6 +29,11 @@ function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
 
 export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
   const onMouseDown = (evt: MouseEvent) => {
+    // prevent text selection
+    evt.preventDefault();
+    // prevent node move
+    evt.stopPropagation();
+
     const fromNodeId = node.id;
     const fromPortId = port.id;
 
@@ -96,11 +101,6 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
       window.addEventListener('mousemove', mouseMoveHandler, false);
       window.addEventListener('mouseup', mouseUpHandler, false);
     }
-
-    // prevent text selection
-    evt.preventDefault();
-    // prevent node move
-    evt.stopPropagation();
   };
 
   return {

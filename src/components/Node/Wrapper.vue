@@ -87,7 +87,7 @@ export default defineComponent({
     const store = useStore();
     const node = computed(() => props.node);
     const scale = computed(() => store.state.graph.scale);
-    const readonly = computed(() => store.state.readonly);
+    const readonly = computed(() => store.state.config.readonly);
 
     const onNodeClick = () => {
       store.dispatch('selectNode', props.node.id);

@@ -37,7 +37,6 @@ const state: IState = {
   selected: null,
   mousePosition: null,
   config: buildConfig({}),
-  readonly: false,
 };
 
 const store: FlowchartStore = new Vuex.Store({

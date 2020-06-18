@@ -37,6 +37,7 @@ export interface IConfig {
   minZoom: number;
   maxZoom: number;
   linkPipeline: ILinkPipelinePhase[];
+  readonly: boolean;
 }
 
 export type IConfigInput = Partial<IConfig>;
@@ -53,7 +54,6 @@ export interface IState {
   mousePosition: IPosition | null;
   config: IConfig;
   selected: SelectedOrHovered;
-  readonly: boolean;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

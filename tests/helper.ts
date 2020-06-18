@@ -151,7 +151,6 @@ export function createStore (
       selected: (stateAttrs && stateAttrs.selected) || null,
       mousePosition: null,
       config: buildConfig({}),
-      readonly: false,
     },
     mutations: mutations || allMutations,
     actions: actions || allActions,

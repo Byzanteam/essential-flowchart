@@ -83,7 +83,7 @@ export default defineComponent({
     },
 
     readonly: {
-      type: Boolean as PropType<IFlowchartProps['readonly']>,
+      type: Boolean,
       default: false,
     },
   },

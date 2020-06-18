@@ -34,8 +34,6 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
     // prevent node move
     evt.stopPropagation();
 
-    if (store.state.readonly) return;
-
     const fromNodeId = node.id;
     const fromPortId = port.id;
 
@@ -104,6 +102,15 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
       window.addEventListener('mouseup', mouseUpHandler, false);
     }
   };
+
+  if (store.state.config.readonly) {
+    return {
+      onMouseDown (evt: MouseEvent) {
+        evt.preventDefault();
+        evt.stopPropagation();
+      },
+    };
+  }
 
   return {
     onMouseDown,

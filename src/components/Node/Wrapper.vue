@@ -130,5 +130,6 @@ export default defineComponent({
 .node-wrapper {
   display: inline-block;
   position: absolute;
+  cursor: grab;
 }
 </style>

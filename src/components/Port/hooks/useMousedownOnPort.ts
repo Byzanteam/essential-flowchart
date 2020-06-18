@@ -6,7 +6,7 @@ import {
 } from '@/types';
 import runPipeline from '@/pipelines/runPipeline';
 
-function findTarget (el: HTMLElement): {nodeId: Id; portId: Id} | null {
+function findTarget (el: HTMLElement): { nodeId: Id; portId: Id } | null {
   let curr: HTMLElement | null = el;
   let target = null;
 

@@ -2,7 +2,7 @@ import { FlowchartContext, Id } from '@/types';
 
 export default function removeLink (
   { state, dispatch, commit }: FlowchartContext,
-  { linkId, history = true }: { linkId: Id; history: boolean },
+  linkId: Id,
 ) {
   const link = state.graph.links[linkId];
   if (!link) return;
@@ -14,11 +14,6 @@ export default function removeLink (
     },
   };
 
-  if (history) {
-    dispatch('historyPushEntry', mutation);
-  } else {
-    commit(mutation);
-  }
-
+  dispatch('historyPushEntry', mutation);
   commit('deleteLinkPath', { linkId });
 }

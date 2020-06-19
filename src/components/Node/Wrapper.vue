@@ -134,7 +134,7 @@ export default defineComponent({
   position: absolute;
   cursor: pointer;
 
-  &.dragable {
+  &.draggable {
     cursor: grab;
   }
 }

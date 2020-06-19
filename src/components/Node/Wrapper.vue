@@ -22,7 +22,6 @@
     <component
       :is="nodeComponent"
       :node="node"
-      :is-selected="isSelected"
     />
 
     <template v-if="!readonly">
@@ -72,11 +71,6 @@ export default defineComponent({
     node: {
       type: Object as PropType<INode>,
       required: true,
-    },
-
-    isSelected: {
-      type: Boolean,
-      default: false,
     },
 
     nodeComponent: {

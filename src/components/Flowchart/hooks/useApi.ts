@@ -1,4 +1,6 @@
-import { FlowchartStore, IPosition } from '@/types';
+import {
+  FlowchartStore, IPosition, INodeInput, Id,
+} from '@/types';
 
 export default function useApi (store: FlowchartStore, instance: any) {
   function zoom (delta: number) {
@@ -21,10 +23,27 @@ export default function useApi (store: FlowchartStore, instance: any) {
     return null;
   }
 
+  function addNode (node: INodeInput) {
+    store.dispatch('addNode', node);
+  }
+
+  function removeNode (nodeId: Id) {
+    store.dispatch('removeNode', nodeId);
+  }
+
+  function removeLink (linkId: Id) {
+    store.dispatch('removeLink', linkId);
+  }
+
   return {
     zoom,
     zoomIn,
     zoomOut,
     getPosition,
+
+    addNode,
+    removeNode,
+
+    removeLink,
   };
 }

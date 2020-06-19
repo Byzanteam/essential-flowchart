@@ -20,13 +20,6 @@ export interface IHistory {
   entries: IHistoryEntry[];
 }
 
-export interface ISelectedOrHovered {
-  type: 'node' | 'link';
-  id: string;
-}
-
-export type SelectedOrHovered = ISelectedOrHovered | null;
-
 export interface ILinkPipelinePhase {
   (link: ILink, graph?: IGraph): ILink | null;
 }
@@ -53,7 +46,6 @@ export interface IState {
   };
   mousePosition: IPosition | null;
   config: IConfig;
-  selected: SelectedOrHovered;
 }
 
 export type FlowchartContext = ActionContext<IState, IState>;

@@ -7,7 +7,6 @@ import {
   ILinkPort,
   PortDirection,
   IState,
-  ISelectedOrHovered,
 } from '@/types';
 
 import { buildEmptyGrid } from '@/utils/grid';
@@ -45,8 +44,6 @@ interface IStateInput {
     from: ILinkPort;
     to: ILinkPort;
   }[];
-
-  selected?: ISelectedOrHovered | null;
 }
 
 interface ICreateStoreObject<T> {
@@ -148,7 +145,6 @@ export function createStore (
       },
       linkVersions: {},
       linkPath: {},
-      selected: (stateAttrs && stateAttrs.selected) || null,
       mousePosition: null,
       config: buildConfig({}),
     },

@@ -4,7 +4,6 @@
       v-for="node in nodes"
       :key="node.id"
       :node="node"
-      :is-selected="isNodeSelected(node.id)"
       :node-component="nodeComponent"
       :port-component="portComponent"
     />
@@ -13,7 +12,6 @@
       v-for="link in links"
       :key="link.id"
       :link="link"
-      :is-selected="isLinkSelected(link.id)"
       :link-component="linkComponent"
     />
   </CanvasComponent>
@@ -32,7 +30,6 @@ import useEmitter from '@/hooks/useEmitter';
 import { IGraph, IConfigInput } from '@/types';
 import useApi from './hooks/useApi';
 import useGraph from './hooks/useState';
-import useSelected from './hooks/useSelected';
 import useFlowchartContext from './hooks/useFlowchartContext';
 
 import CanvasComponent from '../Canvas/Canvas.vue';
@@ -115,7 +112,6 @@ export default defineComponent({
       linkComponent,
       nodes,
       links,
-      ...useSelected(store),
 
       ...useApi(store, { canvasRef }),
     };

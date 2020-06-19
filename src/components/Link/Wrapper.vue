@@ -9,7 +9,6 @@
       :start-pos="startPort.position"
       :end-pos="endPort.position"
       :path="path"
-      :is-selected="isSelected"
     />
   </span>
 </template>
@@ -35,11 +34,6 @@ export default defineComponent({
     link: {
       type: Object as PropType<ILink>,
       required: true,
-    },
-
-    isSelected: {
-      type: Boolean,
-      default: false,
     },
 
     linkComponent: {
@@ -102,8 +96,6 @@ export default defineComponent({
 
     const onLinkClick = (event: MouseEvent) => {
       emitter.emit(CLICK_LINK, { event, link: props.link });
-
-      store.dispatch('selectLink', props.link.id);
     };
 
     return {

@@ -24,13 +24,15 @@
       :is-selected="isSelected"
     />
 
-    <PortWrapperComponent
-      v-for="(port, id) in node.ports"
-      :key="id"
-      :node="node"
-      :port="port"
-      :port-component="portComponent"
-    />
+    <template v-if="!readonly">
+      <PortWrapperComponent
+        v-for="(port, id) in node.ports"
+        :key="id"
+        :node="node"
+        :port="port"
+        :port-component="portComponent"
+      />
+    </template>
   </vue-draggable-resizable>
 </template>
 
@@ -130,6 +132,10 @@ export default defineComponent({
 .node-wrapper {
   display: inline-block;
   position: absolute;
-  cursor: grab;
+  cursor: pointer;
+
+  &.dragable {
+    cursor: grab;
+  }
 }
 </style>

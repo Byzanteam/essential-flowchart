@@ -112,9 +112,9 @@ export default defineComponent({
 
     const defaultDragActions = useDragNode(store, node);
     const readonlyDragActions = {
-      onDragStart: noop(),
-      onNodeDragging: noop(),
-      onNodeDragStop: noop(),
+      onDragStart: noop,
+      onNodeDragging: noop,
+      onNodeDragStop: noop,
     };
 
     const dragActions = computed(() => (

@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/prefer-default-export
+/* eslint-disable @typescript-eslint/no-empty-function */
+
 export function clamp (val: number, min: number, max: number): number {
   if (val < min) {
     return min;
@@ -9,7 +10,7 @@ export function clamp (val: number, min: number, max: number): number {
   return val;
 }
 
-export function noop (): () => void {
-  // eslint-disable-next-line
-  return function () {};
-}
+/**
+ * Perform no operation.
+ */
+export function noop () {}

@@ -80,7 +80,7 @@ export default defineComponent({
 
 <style lang="scss">
 .link {
-  cursor: pointer;
+  cursor: inherit;
   left: 0;
   overflow: visible;
   position: absolute;

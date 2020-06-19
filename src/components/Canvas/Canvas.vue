@@ -109,6 +109,7 @@ export default defineComponent({
 .canvas {
   box-sizing: content-box;
   position: relative;
+  cursor: move;
 
   &__outer {
     overflow: hidden;
@@ -116,7 +117,6 @@ export default defineComponent({
   }
 
   &__inner {
-    cursor: move;
     position: relative;
   }
 }

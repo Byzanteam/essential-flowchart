@@ -2,7 +2,8 @@ import Vue from 'vue';
 import {
   IState, INode, IPosition,
 } from '@/types';
-
+import emitter from '@/emitter';
+import { NODE_POSITION_CHANGE } from '@/emitter/events';
 import { markNodeWalkable } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
 
@@ -39,6 +40,12 @@ export default function updateNodePosition (
     );
 
     Vue.set(nodes, updatedNode.id, updatedNode);
+
+    emitter.emit(NODE_POSITION_CHANGE, {
+      node: updatedNode,
+      position,
+      prevPosition,
+    });
   }
 }
 

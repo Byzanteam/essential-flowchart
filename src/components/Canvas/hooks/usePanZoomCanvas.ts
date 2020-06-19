@@ -1,4 +1,6 @@
 import { computed } from '@vue/composition-api';
+import emitter from '@/emitter';
+import { CANVAS_PAN } from '@/emitter/events';
 import { PanZoom, Transform } from 'panzoom';
 import { FlowchartStore } from '@/types';
 
@@ -23,6 +25,15 @@ export default function usePanZoomCanvas (store: FlowchartStore) {
     });
   }
 
+  function onCanvasPan (panZoom: PanZoom) {
+    const transform: Transform = panZoom.getTransform();
+
+    emitter.emit(CANVAS_PAN, {
+      x: transform.x,
+      y: transform.y,
+    });
+  }
+
   function onCanvasPanEnd (panZoom: PanZoom) {
     const transform: Transform = panZoom.getTransform();
     // for pan, x and y are already integer
@@ -40,6 +51,7 @@ export default function usePanZoomCanvas (store: FlowchartStore) {
     maxZoom,
 
     onCanvasZoom,
+    onCanvasPan,
     onCanvasPanEnd,
   };
 }

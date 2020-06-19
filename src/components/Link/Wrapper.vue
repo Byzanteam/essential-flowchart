@@ -21,6 +21,8 @@ import {
 
 import useStore from '@/hooks/useStore';
 import { ILink, ICanvasContext } from '@/types';
+import emitter from '@/emitter';
+import { CLICK_LINK } from '@/emitter/events';
 import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
 
@@ -98,7 +100,9 @@ export default defineComponent({
       { linkId: props.link.id, path: [...newPath] },
     ));
 
-    const onLinkClick = () => {
+    const onLinkClick = (event: MouseEvent) => {
+      emitter.emit(CLICK_LINK, { event, link: props.link });
+
       store.dispatch('selectLink', props.link.id);
     };
 

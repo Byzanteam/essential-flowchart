@@ -28,6 +28,7 @@ import VueCompositionApi, {
   onMounted,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
+import useEmitter from '@/hooks/useEmitter';
 import { IGraph, IConfigInput } from '@/types';
 import useApi from './hooks/useApi';
 import useGraph from './hooks/useState';
@@ -86,8 +87,9 @@ export default defineComponent({
     },
   },
 
-  setup (props: IFlowchartProps) {
+  setup (props: IFlowchartProps, { emit }) {
     const store = useStore();
+    useEmitter(emit);
     const { nodes, links } = useGraph(props.state, store);
     const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);

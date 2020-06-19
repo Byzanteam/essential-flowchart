@@ -14,7 +14,8 @@
     class="node-wrapper"
     @dragging="dragActions.onNodeDragging"
     @dragstop="dragActions.onNodeDragStop"
-    @activated="onNodeClick"
+    @activated="onNodeActivated"
+    @click.native="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
 
@@ -45,6 +46,8 @@ import {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import { INode } from '@/types';
+import emitter from '@/emitter';
+import { CLICK_NODE } from '@/emitter/events';
 import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
@@ -90,7 +93,11 @@ export default defineComponent({
     const scale = computed(() => store.state.graph.scale);
     const readonly = computed(() => store.state.config.readonly);
 
-    const onNodeClick = () => {
+    const onNodeClick = (event: MouseEvent) => {
+      emitter.emit(CLICK_NODE, { event, node: props.node });
+    };
+
+    const onNodeActivated = () => {
       store.dispatch('selectNode', props.node.id);
     };
 
@@ -105,9 +112,9 @@ export default defineComponent({
 
     const defaultDragActions = useDragNode(store, node);
     const readonlyDragActions = {
-      onDragStart: noop(),
-      onNodeDragging: noop(),
-      onNodeDragStop: noop(),
+      onDragStart: noop,
+      onNodeDragging: noop,
+      onNodeDragStop: noop,
     };
 
     const dragActions = computed(() => (
@@ -116,6 +123,7 @@ export default defineComponent({
 
     return {
       onNodeClick,
+      onNodeActivated,
       onNodeResize,
       scale,
       readonly,

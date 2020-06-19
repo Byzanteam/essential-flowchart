@@ -84,10 +84,10 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         if (link) {
           store.dispatch('addLink', { link });
         } else {
-          store.dispatch('removeLink', { linkId: (newLink as ILink).id });
+          store.dispatch('removeLink', (newLink as ILink).id);
         }
       } else { // delete link
-        store.dispatch('removeLink', { linkId: (newLink as ILink).id });
+        store.dispatch('removeLink', (newLink as ILink).id);
       }
     }
 

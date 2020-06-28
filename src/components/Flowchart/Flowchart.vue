@@ -24,7 +24,6 @@ import VueCompositionApi, {
   defineComponent,
   PropType,
   watch,
-  onMounted,
   computed,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
@@ -62,7 +61,7 @@ interface IFlowchartProps {
    */
   components?: IFlowchartComponents;
 
-  config?: IConfigInput;
+  config: IConfigInput;
 }
 
 export default defineComponent({
@@ -98,16 +97,19 @@ export default defineComponent({
   setup (props: IFlowchartProps, { emit }) {
     const store = useStore();
     useEmitter(emit);
+    // TODO: why watch computed(() => [props.nodes, props.links]) not work
     watch([ref(props.nodes), ref(props.links)], ([nodes, links]) => {
       useGraph(nodes as Record<string, INode>, links as Record<string, ILink>, store);
-    });
+    }, { deep: true });
     store.commit('updateConfig', props.config);
+    // TODO: why watch(ref(props.config.readonly), cb) not work?
+    // deep option for update exist props
+    watch(ref(props.config), ({ readonly }, { readonly: oldReadonly }) => {
+      if (readonly === oldReadonly) return;
+      // undefined -> false
+      store.commit('updateReadonly', !!readonly);
+    }, { deep: true });
     const { canvasRef } = useFlowchartContext();
-
-    onMounted(() => {
-      // eslint-disable-next-line
-      watch(() => props.config!.readonly, readonly => store.commit('updateReadonly', readonly));
-    });
 
     const {
       components: {

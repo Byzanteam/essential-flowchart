@@ -14,7 +14,6 @@
     class="node-wrapper"
     @dragging="dragActions.onNodeDragging"
     @dragstop="dragActions.onNodeDragStop"
-    @activated="onNodeActivated"
     @click.native="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
@@ -93,10 +92,6 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const onNodeActivated = () => {
-      store.dispatch('selectNode', props.node.id);
-    };
-
     const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
       store.commit({
         type: 'updateNodeSize',
@@ -119,7 +114,6 @@ export default defineComponent({
 
     return {
       onNodeClick,
-      onNodeActivated,
       onNodeResize,
       scale,
       readonly,

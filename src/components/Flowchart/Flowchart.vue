@@ -20,6 +20,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueCompositionApi, {
+  ref,
   defineComponent,
   PropType,
   watch,
@@ -97,15 +98,11 @@ export default defineComponent({
   setup (props: IFlowchartProps, { emit }) {
     const store = useStore();
     useEmitter(emit);
-    useGraph({
-      nodes: props.nodes,
-      links: props.links,
-      offset: { x: 0, y: 0 },
-      scale: 1,
-      grid: store.state.graph.grid,
-    }, store);
-    const { canvasRef } = useFlowchartContext();
+    watch([ref(props.nodes), ref(props.links)], ([nodes, links]) => {
+      useGraph(nodes as Record<string, INode>, links as Record<string, ILink>, store);
+    });
     store.commit('updateConfig', props.config);
+    const { canvasRef } = useFlowchartContext();
 
     onMounted(() => {
       // eslint-disable-next-line

@@ -27,7 +27,11 @@ import VueCompositionApi, {
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import useEmitter from '@/hooks/useEmitter';
-import { IGraph, IConfigInput } from '@/types';
+import {
+  IConfigInput,
+  INode,
+  ILink,
+} from '@/types';
 import useApi from './hooks/useApi';
 import useGraph from './hooks/useState';
 import useFlowchartContext from './hooks/useFlowchartContext';
@@ -49,7 +53,9 @@ interface IFlowchartComponents {
 }
 
 interface IFlowchartProps {
-  state: IGraph;
+  // state: IGraph;
+  nodes: Record<string, INode>;
+  links: Record<string, ILink>;
   /**
    * Custom components
    */
@@ -68,10 +74,18 @@ export default defineComponent({
   },
 
   props: {
-    state: {
-      type: Object as PropType<IFlowchartProps['state']>,
+    nodes: {
+      type: Object as PropType<IFlowchartProps['nodes']>,
       required: true,
     },
+    links: {
+      type: Object as PropType<IFlowchartProps['links']>,
+      default: () => [],
+    },
+    // state: {
+    //   type: Object as PropType<IFlowchartProps['state']>,
+    //   required: true,
+    // },
 
     components: {
       type: Object as PropType<IFlowchartProps['components']>,
@@ -87,7 +101,13 @@ export default defineComponent({
   setup (props: IFlowchartProps, { emit }) {
     const store = useStore();
     useEmitter(emit);
-    const { nodes, links } = useGraph(props.state, store);
+    useGraph({
+      nodes: props.nodes,
+      links: props.links,
+      offset: { x: 0, y: 0 },
+      scale: 1,
+      grid: store.state.graph.grid,
+    }, store);
     const { canvasRef } = useFlowchartContext();
     store.commit('updateConfig', props.config);
 
@@ -110,8 +130,6 @@ export default defineComponent({
       nodeComponent,
       portComponent,
       linkComponent,
-      nodes,
-      links,
 
       ...useApi(store, { canvasRef }),
     };

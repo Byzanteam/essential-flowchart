@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { IState, INodeInput } from '@/types';
 import { markNodeWalkable } from '@/utils/grid';
 
-export default function setNodes (state: IState, { nodes }: { nodes: Record<string, INodeInput> }) {
+export default function setNodes (state: IState, nodes: Record<string, INodeInput>) {
   const { pfGrid } = state.graph.grid;
 
   Object.entries(nodes).forEach(([key, node]) => {

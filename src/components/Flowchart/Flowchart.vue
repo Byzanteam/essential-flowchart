@@ -1,7 +1,7 @@
 <template>
   <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
-      v-for="node in nodes"
+      v-for="node in structNodes"
       :key="node.id"
       :node="node"
       :node-component="nodeComponent"
@@ -9,7 +9,7 @@
     />
 
     <LinkWrapperComponent
-      v-for="link in links"
+      v-for="link in structLinks"
       :key="link.id"
       :link="link"
       :link-component="linkComponent"
@@ -24,6 +24,7 @@ import VueCompositionApi, {
   PropType,
   watch,
   onMounted,
+  computed,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import useEmitter from '@/hooks/useEmitter';
@@ -53,7 +54,6 @@ interface IFlowchartComponents {
 }
 
 interface IFlowchartProps {
-  // state: IGraph;
   nodes: Record<string, INode>;
   links: Record<string, ILink>;
   /**
@@ -82,10 +82,6 @@ export default defineComponent({
       type: Object as PropType<IFlowchartProps['links']>,
       default: () => [],
     },
-    // state: {
-    //   type: Object as PropType<IFlowchartProps['state']>,
-    //   required: true,
-    // },
 
     components: {
       type: Object as PropType<IFlowchartProps['components']>,
@@ -130,6 +126,9 @@ export default defineComponent({
       nodeComponent,
       portComponent,
       linkComponent,
+
+      structNodes: computed(() => store.state.graph.nodes),
+      structLinks: computed(() => store.state.graph.links),
 
       ...useApi(store, { canvasRef }),
     };

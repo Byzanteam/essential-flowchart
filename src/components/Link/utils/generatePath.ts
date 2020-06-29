@@ -2,7 +2,7 @@ import PF from 'pathfinding';
 import {
   Id, Point, IPosition,
   PortDirection, IConfig,
-  IGrid, INodePort, IOffset, INode, IRect,
+  INodePort, INode, IRect,
 } from '@/types';
 import { pathFinder } from '@/utils/grid';
 import { SCALE_FACTOR } from '@/utils/constants';
@@ -127,7 +127,6 @@ function markLine (
 // mark the port of node walkable/blocked
 function markPort (
   matrix: number[][],
-  gridOffset: IOffset,
   gridRect: IRect,
   port: INodePort,
   walkable: boolean,
@@ -257,7 +256,6 @@ function calcPortPosition (ports: Port[], nodeRect: IRect, portGap: number): {
 // mark node walkable/blocked
 export function markNodeWalkable ({
   matrix,
-  gridOffset,
   nodeRect,
   nodePorts,
   walkable,
@@ -266,7 +264,6 @@ export function markNodeWalkable ({
 }: {
   matrix: number[][];
   gridRect: IRect;
-  gridOffset: IOffset;
   nodeRect: IRect;
   nodePorts: Port[];
   walkable: boolean;
@@ -277,9 +274,6 @@ export function markNodeWalkable ({
   } = nodeRect;
 
   const ports = calcPortPosition(nodePorts, nodeRect, portGap);
-
-  // TODO:
-  // const { x: offsetX, y: offsetY } = gridOffset;
 
   x = Math.ceil((x - nodePadding - gridRect.x) / SCALE_FACTOR); // grid x
   y = Math.ceil((y - nodePadding - gridRect.y) / SCALE_FACTOR); // grid y
@@ -307,7 +301,7 @@ export function markNodeWalkable ({
     () => {
       // mark ports
       Object.values(ports).forEach(
-        port => markPort(matrix, gridOffset, gridRect, port, walkable, { nodePadding }),
+        port => markPort(matrix, gridRect, port, walkable, { nodePadding }),
       );
     },
   ];
@@ -320,7 +314,6 @@ function buildGrid (
   pos1: IPosition,
   pos2: IPosition,
   nodes: INode[],
-  gridOffset: IOffset,
   config: IConfig,
 ) {
   const width = Math.abs(pos1.x - pos2.x) + MATRIX_PADDING * 2,
@@ -355,7 +348,6 @@ function buildGrid (
       markNodeWalkable({
         matrix,
         gridRect,
-        gridOffset,
         nodeRect: {
           x: node.x,
           y: node.y,
@@ -378,15 +370,12 @@ function buildGrid (
 }
 
 export default function generatePath (
-  grid: IGrid,
   startPort: NodePort,
   endPort: NodePort,
   nodes: INode[],
   config: IConfig,
   _version?: number,
 ): Point[] {
-  const gridOffset = grid.offset;
-
   const startPos = startPort.position;
   const endPos = endPort.position;
 
@@ -394,7 +383,6 @@ export default function generatePath (
     startPos,
     endPos,
     nodes,
-    gridOffset,
     config,
   );
 

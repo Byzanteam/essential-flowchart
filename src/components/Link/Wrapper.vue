@@ -78,7 +78,6 @@ export default defineComponent({
     const path = computed(() => {
       if (endPort.value) {
         return generatePath(
-          graph.value.grid,
           startPort.value,
           endPort.value,
           Object.values(graph.value.nodes),

@@ -104,8 +104,8 @@ export default defineComponent({
     store.commit('updateConfig', props.config);
     // TODO: why watch(ref(props.config.readonly), cb) not work?
     // deep option for update exist props
-    watch(ref(props.config), ({ readonly }, { readonly: oldReadonly }) => {
-      if (readonly === oldReadonly) return;
+    watch(ref(props.config), ({ readonly }, oldConfig = {}) => {
+      if (readonly === oldConfig.readonly) return;
       // undefined -> false
       store.commit('updateReadonly', !!readonly);
     }, { deep: true });

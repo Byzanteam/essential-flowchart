@@ -9,7 +9,7 @@ import {
   INodePort,
   PortDirection,
 } from '@/types';
-import { GRID_PADDING, GRID_EXPANSION_STEP, SCALE_FACTOR } from '@/utils/constants';
+import { SCALE_FACTOR } from '@/utils/constants';
 import CustomGrid from '@/utils/customGrid';
 
 type Line = [Point, Point];
@@ -266,29 +266,3 @@ export const pathFinder = Pathfinding.JumpPointFinder({
   heuristic: Pathfinding.Heuristic.manhattan,
   diagonalMovement: Pathfinding.DiagonalMovement.Never,
 });
-
-export function autoGridExpansions (grid: IGrid, node: INodeInput, scale: number): IOffset[] {
-  const {
-    offset: gridOffset, width, height,
-  } = grid;
-
-  // whether expand to the left
-  const negativeX: boolean = (node.x / scale) < GRID_PADDING - gridOffset.x;
-  // whether expand to the top
-  const negativeY: boolean = (node.y / scale) < GRID_PADDING - gridOffset.y;
-  // whether expand to the right
-  const positiveX: boolean = width - gridOffset.x - GRID_PADDING < (node.x / scale);
-  // whether expand to the bottom
-  const positiveY: boolean = height - gridOffset.y - GRID_PADDING < (node.y / scale);
-
-  return [
-    {
-      x: negativeX ? -GRID_EXPANSION_STEP : 0,
-      y: negativeY ? -GRID_EXPANSION_STEP : 0,
-    },
-    {
-      x: positiveX ? GRID_EXPANSION_STEP : 0,
-      y: positiveY ? GRID_EXPANSION_STEP : 0,
-    },
-  ];
-}

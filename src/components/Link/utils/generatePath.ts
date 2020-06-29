@@ -5,13 +5,11 @@ import {
   INodePort, INode, IRect,
 } from '@/types';
 import { pathFinder, markNodeWalkable } from '@/utils/grid';
-import { SCALE_FACTOR } from '@/utils/constants';
+import { SCALE_FACTOR, GRID_PADDING } from '@/utils/constants';
 import { checkIntersect } from '@/utils/shared';
 import generateRightAnglePath from './generateRightAnglePath';
 
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
-
-const MATRIX_PADDING = 50;
 
 function tweakPath (path: Point[], startPos: IPosition, endPos: IPosition): Point[] {
   const { x: sx, y: sy } = startPos,
@@ -103,12 +101,12 @@ function buildGrid (
   nodes: INode[],
   config: IConfig,
 ) {
-  const width = Math.abs(pos1.x - pos2.x) + MATRIX_PADDING * 2,
-        height = Math.abs(pos1.y - pos2.y) + MATRIX_PADDING * 2;
+  const width = Math.abs(pos1.x - pos2.x) + GRID_PADDING * 2,
+        height = Math.abs(pos1.y - pos2.y) + GRID_PADDING * 2;
 
   const gridRect: IRect = {
-    x: Math.min(pos1.x, pos2.x) - MATRIX_PADDING,
-    y: Math.min(pos1.y, pos2.y) - MATRIX_PADDING,
+    x: Math.min(pos1.x, pos2.x) - GRID_PADDING,
+    y: Math.min(pos1.y, pos2.y) - GRID_PADDING,
     width,
     height,
   };

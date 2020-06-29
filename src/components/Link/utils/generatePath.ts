@@ -161,7 +161,6 @@ export default function generatePath (
   endPort: NodePort,
   nodes: INode[],
   config: IConfig,
-  _version?: number,
 ): Point[] {
   const startPos = startPort.position;
   const endPos = endPort.position;

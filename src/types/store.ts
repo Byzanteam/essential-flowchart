@@ -2,7 +2,6 @@ import { Store, ActionContext, Payload } from 'vuex';
 import {
   IGraph,
   ILink,
-  Point,
 } from './graph';
 import { IPosition } from './generics';
 
@@ -38,12 +37,6 @@ export type IConfigInput = Partial<IConfig>;
 export interface IState {
   history: IHistory;
   graph: IGraph;
-  linkVersions: {
-    [linkId: string]: number;
-  };
-  linkPath: {
-    [linkId: string]: Point[];
-  };
   mousePosition: IPosition | null;
   config: IConfig;
 }

@@ -1,5 +1,3 @@
-import Pathfinding from 'pathfinding';
-
 import { Id, IPosition, IOffset } from './generics';
 
 export interface ICanvasContext {
@@ -56,15 +54,6 @@ export interface ILink {
   id: Id;
   from: ILinkPort;
   to: Partial<ILinkPort>;
-}
-
-// grid
-export interface IGrid {
-  width: number;
-  height: number;
-
-  offset: IOffset;
-  pfGrid: Pathfinding.Grid;
 }
 
 export interface IGraph {

@@ -81,6 +81,7 @@ export default defineComponent({
           graph.value.grid,
           startPort.value,
           endPort.value,
+          Object.values(graph.value.nodes),
           store.state.config,
           // track change
           store.state.linkVersions[props.link.id],

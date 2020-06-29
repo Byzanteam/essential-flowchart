@@ -4,45 +4,35 @@ import {
 } from '@/types';
 import emitter from '@/emitter';
 import { NODE_POSITION_CHANGE } from '@/emitter/events';
-import { markNodeWalkable } from '@/utils/grid';
 import { registerRevertFunc } from '@/utils/history';
+import { calcPortPosition } from '@/utils/graph';
 
 export default function updateNodePosition (
   state: IState,
   { node, position, prevPosition }: { node: INode; position: IPosition; prevPosition: IPosition },
 ) {
-  const { nodes, grid: { pfGrid } } = state.graph;
+  const { nodes } = state.graph;
 
   // skip when dragNodeStop
   if (position.x === node.x && position.y === node.y) {
     Vue.set(nodes, node.id, node);
   } else {
-    let updatedNode = markNodeWalkable(
-      state.graph.grid.pfGrid,
-      state.graph.grid.offset,
+    const ports = calcPortPosition(
+      Object.values(node.ports),
       {
-        ...node,
-        ...prevPosition,
+        x: position.x, y: position.y, width: node.width, height: node.height,
       },
-      true,
-      state.config,
+      state.config.portGap,
     );
 
-    updatedNode = markNodeWalkable(
-      pfGrid,
-      state.graph.grid.offset,
-      {
-        ...updatedNode,
-        ...position,
-      },
-      false,
-      state.config,
-    );
-
-    Vue.set(nodes, updatedNode.id, updatedNode);
+    Vue.set(nodes, node.id, {
+      ...node,
+      ...position,
+      ports,
+    });
 
     emitter.emit(NODE_POSITION_CHANGE, {
-      node: updatedNode,
+      node,
       position,
       prevPosition,
     });

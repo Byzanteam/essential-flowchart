@@ -1,8 +1,89 @@
 import {
-  FlowchartStore, IGraph, IOffset, IRect, IGrid,
+  Id, FlowchartStore, IGraph, IOffset, IRect, IGrid, PortDirection, INodePort,
 } from '@/types';
 import { GRID_PADDING, DEFAULT_GIRD_WIDTH, DEFAULT_GRID_HEIGHT } from '@/utils/constants';
 import { buildEmptyGrid } from './grid';
+
+type Port = {
+  id: Id;
+  direction: PortDirection;
+}
+
+function groupBy<T> (collection: Array<T>, criteria: (item: T) => string): Record<string, T[]> {
+  return collection.reduce((obj, item) => {
+    const key = criteria(item);
+
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+      obj[key] = [item];
+    } else {
+      obj[key].push(item);
+    }
+
+    return obj;
+  }, {} as Record<string, T[]>);
+}
+
+function nextDots (start: number, length: number, portGap: number): number[] {
+  let current = Math.ceil(start);
+  const dots = [];
+
+  for (let i = 0; i < length; i += 1) {
+    dots.push(current + 1);
+    current += 2 + portGap;
+  }
+
+  return dots;
+}
+
+export function calcPortPosition (ports: Port[], nodeRect: IRect, portGap: number): {
+  [id: string]: INodePort;
+} {
+  const {
+    x, y, width, height,
+  } = nodeRect;
+
+  const groupedPorts = groupBy(ports, port => port.direction);
+
+  // eslint-disable-next-line no-shadow
+  return Object.entries(groupedPorts).reduce((acc, [direction, ports]) => {
+    const { length } = ports;
+    const portsLength = 3 * length + portGap * (length - 1);
+    let dots: number[];
+
+    // eslint-disable-next-line default-case
+    switch (direction) {
+      case PortDirection.TOP:
+        dots = nextDots(x + (width - portsLength) / 2, length, portGap);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: dots[index], y } };
+        });
+        break;
+
+      case PortDirection.RIGHT:
+        dots = nextDots(y + (height - portsLength) / 2, length, portGap);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: x + width, y: dots[index] } };
+        });
+        break;
+
+      case PortDirection.BOTTOM:
+        dots = nextDots(x + (width - portsLength) / 2, length, portGap);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x: dots[index], y: y + height } };
+        });
+        break;
+
+      case PortDirection.LEFT:
+        dots = nextDots(y + (height - portsLength) / 2, length, portGap);
+        ports.forEach((port, index) => {
+          acc[port.id] = { ...port, position: { x, y: dots[index] } };
+        });
+        break;
+    }
+
+    return acc;
+  }, {} as Record<string, INodePort>);
+}
 
 function getGridRect (graph: IGraph): IRect {
   const { nodes } = graph;

@@ -9,9 +9,6 @@ import touchLink from './touchLink';
 import updateLinkPath from './updateLinkPath';
 import deleteLinkPath from './deleteLinkPath';
 
-import updateGrid from './updateGrid';
-import expandGrid from './expandGird';
-
 import updateMousePosition from './updateMousePosition';
 import updateScale from './updateScale';
 import updateReadonly from './updateReadonly';
@@ -30,9 +27,6 @@ export default {
   touchLink,
   updateLinkPath,
   deleteLinkPath,
-
-  updateGrid,
-  expandGrid,
 
   updateMousePosition,
   updateScale,

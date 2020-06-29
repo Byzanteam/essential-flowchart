@@ -77,7 +77,6 @@ export interface IGraph {
     [id: string]: ILink;
   };
 
-  grid: IGrid;
   scale: number;
 }
 

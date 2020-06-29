@@ -2,9 +2,8 @@ import Vue from 'vue';
 import { IState, INode } from '@/types';
 import emitter from '@/emitter';
 import { NODE_SIZE_CHANGE } from '@/emitter/events';
-import { markNodeWalkable } from '@/utils/grid';
+import { calcPortPosition } from '@/utils/graph';
 
-// TODO: optimize with updateNodePosition
 export default function updateNodeSize (
   state: IState,
   { id, width, height }: Pick<INode, 'id' | 'width' | 'height'>,
@@ -23,32 +22,22 @@ export default function updateNodeSize (
       height: node.height,
     };
 
-    let updatedNode = markNodeWalkable(
-      state.graph.grid.pfGrid,
-      state.graph.grid.offset,
+    const ports = calcPortPosition(
+      Object.values(node.ports),
       {
-        ...node,
-        ...prevSize,
+        x: node.x, y: node.y, width, height,
       },
-      true,
-      state.config,
+      state.config.portGap,
     );
 
-    updatedNode = markNodeWalkable(
-      state.graph.grid.pfGrid,
-      state.graph.grid.offset,
-      {
-        ...updatedNode,
-        ...size,
-      },
-      false,
-      state.config,
-    );
-
-    Vue.set(nodes, id, updatedNode);
+    Vue.set(nodes, id, {
+      ...node,
+      ...size,
+      ports,
+    });
 
     emitter.emit(NODE_SIZE_CHANGE, {
-      node: updatedNode,
+      node: nodes[id],
       size,
       prevSize,
     });

@@ -3,24 +3,27 @@ import Vue from 'vue';
 import { IState, INodeInput } from '@/types';
 import emitter from '@/emitter';
 import { ADD_NODE } from '@/emitter/events';
-import { markNodeWalkable } from '@/utils/grid';
+import { calcPortPosition } from '@/utils/graph';
 
 import { registerRevertFunc } from '@/utils/history';
 
 export default function addNode (state: IState, { node }: { node: INodeInput }) {
-  const { pfGrid } = state.graph.grid;
+  const { nodes } = state.graph;
 
-  const updatedNode = markNodeWalkable(
-    pfGrid,
-    state.graph.grid.offset,
-    node,
-    false,
-    state.config,
+  const ports = calcPortPosition(
+    Object.values(node.ports),
+    {
+      x: node.x, y: node.y, width: node.width, height: node.height,
+    },
+    state.config.portGap,
   );
 
-  Vue.set(state.graph.nodes, node.id, updatedNode);
+  Vue.set(nodes, node.id, {
+    ...node,
+    ports,
+  });
 
-  emitter.emit(ADD_NODE, updatedNode);
+  emitter.emit(ADD_NODE, state.graph.nodes[node.id]);
 }
 
 registerRevertFunc('addNode', mutation => ({

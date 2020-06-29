@@ -21,16 +21,6 @@ const state: IState = {
     },
     nodes: {},
     links: {},
-    grid: {
-      offset: {
-        x: 0,
-        y: 0,
-      },
-      width: 2000,
-      height: 2000,
-      // @ts-ignore
-      pfGrid: null,
-    },
   },
   linkVersions: {},
   linkPath: {},

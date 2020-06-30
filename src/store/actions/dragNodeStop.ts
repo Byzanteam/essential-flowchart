@@ -10,7 +10,7 @@ export default function dragNodeStop (
 
   const mutations = [{
     type: 'updateNodePosition',
-    node,
+    id,
     position,
     prevPosition,
   }];

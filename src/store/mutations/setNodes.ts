@@ -1,18 +1,10 @@
 import Vue from 'vue';
 
 import { IState, INodeInput } from '@/types';
-import { markNodeWalkable } from '@/utils/grid';
 
 export default function setNodes (state: IState, nodes: Record<string, INodeInput>) {
-  const { pfGrid } = state.graph.grid;
-
+  // TODO: remove old nodes
   Object.entries(nodes).forEach(([id, node]) => {
-    Vue.set(state.graph.nodes, id, markNodeWalkable(
-      pfGrid,
-      state.graph.grid.offset,
-      node,
-      false,
-      state.config,
-    ));
+    Vue.set(state.graph.nodes, id, node);
   });
 }

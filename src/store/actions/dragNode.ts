@@ -1,5 +1,4 @@
 import { FlowchartContext, Id, IPosition } from '@/types';
-import { autoGridExpansions } from '@/utils/grid';
 
 export default function dragNode (
   { state, commit }: FlowchartContext,
@@ -9,9 +8,5 @@ export default function dragNode (
 
   if (!node) return;
 
-  autoGridExpansions(state.graph.grid, node, state.graph.scale).forEach(expansion => {
-    commit('expandGrid', expansion);
-  });
-
-  commit('updateNodePosition', { node, position, prevPosition });
+  commit('updateNodePosition', { id, position, prevPosition });
 }

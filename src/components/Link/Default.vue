@@ -33,8 +33,6 @@ import {
 function generatePathCommands (path: Point[]): string {
   if (!path.length) return '';
 
-  // const { x: gridOffsetX, y: gridOffsetY } = grid.offset;
-
   const [first, ...rest] = path;
   return rest.reduce(
     (acc, [x, y]) => `${acc} L${x} ${y}`,

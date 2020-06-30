@@ -14,15 +14,15 @@ import Flowchart from './components/Flowchart/Flowchart.vue';
 
 const rawState = {
   offset: {
-    x: 0,
-    y: 0,
+    x: 100,
+    y: 100,
   },
   scale: 0.8,
   nodes: {
     node1: {
       id: 'node1',
-      x: -30,
-      y: 30,
+      x: -100,
+      y: 50,
       width: 50,
       height: 50,
       ports: {
@@ -34,8 +34,8 @@ const rawState = {
     },
     node2: {
       id: 'node2',
-      x: 150,
-      y: 290,
+      x: 100,
+      y: -100,
       width: 50,
       height: 50,
       ports: {
@@ -60,7 +60,82 @@ const rawState = {
     node3: {
       id: 'node3',
       x: 300,
-      y: 480,
+      y: 100,
+      width: 50,
+      height: 50,
+      ports: {
+        port1: {
+          id: 'port1',
+          direction: PortDirection.TOP,
+        },
+        port2: {
+          id: 'port2',
+          direction: PortDirection.RIGHT,
+        },
+        port3: {
+          id: 'port3',
+          direction: PortDirection.BOTTOM,
+        },
+        port4: {
+          id: 'port4',
+          direction: PortDirection.LEFT,
+        },
+      },
+    },
+    node4: {
+      id: 'node4',
+      x: 500,
+      y: 150,
+      width: 50,
+      height: 50,
+      ports: {
+        port1: {
+          id: 'port1',
+          direction: PortDirection.TOP,
+        },
+        port2: {
+          id: 'port2',
+          direction: PortDirection.RIGHT,
+        },
+        port3: {
+          id: 'port3',
+          direction: PortDirection.BOTTOM,
+        },
+        port4: {
+          id: 'port4',
+          direction: PortDirection.LEFT,
+        },
+      },
+    },
+    node5: {
+      id: 'node5',
+      x: 1000,
+      y: 300,
+      width: 50,
+      height: 50,
+      ports: {
+        port1: {
+          id: 'port1',
+          direction: PortDirection.TOP,
+        },
+        port2: {
+          id: 'port2',
+          direction: PortDirection.RIGHT,
+        },
+        port3: {
+          id: 'port3',
+          direction: PortDirection.BOTTOM,
+        },
+        port4: {
+          id: 'port4',
+          direction: PortDirection.LEFT,
+        },
+      },
+    },
+    node6: {
+      id: 'node6',
+      x: 1000,
+      y: 600,
       width: 50,
       height: 50,
       ports: {
@@ -103,6 +178,39 @@ const rawState = {
       },
       to: {
         nodeId: 'node3',
+        portId: 'port1',
+      },
+    },
+    link3: {
+      id: 'link3',
+      from: {
+        nodeId: 'node3',
+        portId: 'port2',
+      },
+      to: {
+        nodeId: 'node4',
+        portId: 'port4',
+      },
+    },
+    link4: {
+      id: 'link4',
+      from: {
+        nodeId: 'node3',
+        portId: 'port3',
+      },
+      to: {
+        nodeId: 'node5',
+        portId: 'port2',
+      },
+    },
+    link5: {
+      id: 'link5',
+      from: {
+        nodeId: 'node3',
+        portId: 'port4',
+      },
+      to: {
+        nodeId: 'node6',
         portId: 'port1',
       },
     },

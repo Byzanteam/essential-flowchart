@@ -1,6 +1,6 @@
 <template>
   <vue-draggable-resizable
-    :onDragStart="dragActions.onDragStart"
+    :onDragStart="dragActions.onNodeDragStart"
     :x="node.x"
     :y="node.y"
     :z="50"
@@ -14,7 +14,6 @@
     class="node-wrapper"
     @dragging="dragActions.onNodeDragging"
     @dragstop="dragActions.onNodeDragStop"
-    @activated="onNodeActivated"
     @click.native="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
@@ -41,14 +40,16 @@
 import VueDraggableResizable from 'vue-draggable-resizable';
 // @ts-ignore
 import { ResizeObserver } from 'vue-resize';
+import Vue from 'vue';
 import {
-  defineComponent, computed,
+  defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { INode } from '@/types';
+import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_NODE } from '@/emitter/events';
+import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
@@ -93,10 +94,6 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const onNodeActivated = () => {
-      store.dispatch('selectNode', props.node.id);
-    };
-
     const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
       store.commit({
         type: 'updateNodeSize',
@@ -108,7 +105,7 @@ export default defineComponent({
 
     const defaultDragActions = useDragNode(store, node);
     const readonlyDragActions = {
-      onDragStart: noop,
+      onNodeDragStart: noop,
       onNodeDragging: noop,
       onNodeDragStop: noop,
     };
@@ -117,9 +114,26 @@ export default defineComponent({
       store.state.config.readonly ? readonlyDragActions : defaultDragActions
     ));
 
+    const nodeRect = computed<IRect>(() => ({
+      x: node.value.x,
+      y: node.value.y,
+      width: node.value.width,
+      height: node.value.height,
+    }));
+
+    // watch node rect to update node port
+    watch(nodeRect, rect => {
+      const ports = calcPortPosition(
+        Object.values(node.value.ports),
+        rect,
+        store.state.config.portGap,
+      );
+
+      Vue.set(node.value, 'ports', ports);
+    });
+
     return {
       onNodeClick,
-      onNodeActivated,
       onNodeResize,
       scale,
       readonly,

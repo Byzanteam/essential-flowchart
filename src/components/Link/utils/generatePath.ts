@@ -2,18 +2,18 @@ import PF from 'pathfinding';
 import {
   Point, IPosition,
   PortDirection, IConfig,
-  IGrid, INodePort, IOffset,
+  INodePort, INode, IRect,
 } from '@/types';
-import { pathFinder } from '@/utils/grid';
-import { SCALE_FACTOR } from '@/utils/constants';
-
+import { pathFinder, markNodeWalkable } from '@/utils/grid';
+import { SCALE_FACTOR, GRID_PADDING } from '@/utils/constants';
+import { checkIntersect } from '@/utils/shared';
 import generateRightAnglePath from './generateRightAnglePath';
 
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
-function tweakPath (path: Point[], startPort: NodePort, endPort: NodePort): Point[] {
-  const { x: sx, y: sy } = startPort.position,
-        { x: ex, y: ey } = endPort.position,
+function tweakPath (path: Point[], startPos: IPosition, endPos: IPosition): Point[] {
+  const { x: sx, y: sy } = startPos,
+        { x: ex, y: ey } = endPos,
         [first, second] = path.slice(0, 2),
         [lastSecond, last] = path.slice(-2),
         rest = path.length > 4 ? path.slice(2, path.length - 2) : [],
@@ -43,15 +43,16 @@ function tweakPath (path: Point[], startPort: NodePort, endPort: NodePort): Poin
   return [[sx, sy], tweakStart, ...rest, tweakEnd, [ex, ey]];
 }
 
-function scalePath (path: Point[], startPort: NodePort, endPort: NodePort, offset?: IOffset): Point[] {
+function scalePath (path: Point[], startPos: IPosition, endPos: IPosition, gridRect?: IRect): Point[] {
   const scaledPath = path.map(point => {
     const [x, y] = point;
-    const scalePoint: Point = offset
-      ? [x * SCALE_FACTOR - offset.x, y * SCALE_FACTOR - offset.y]
+    const scalePoint: Point = gridRect
+      ? [x * SCALE_FACTOR + gridRect.x, y * SCALE_FACTOR + gridRect.y]
       : [x * SCALE_FACTOR, y * SCALE_FACTOR];
+
     return scalePoint;
   });
-  return tweakPath(PF.Util.compressPath(scaledPath) as Point[], startPort, endPort);
+  return tweakPath(PF.Util.compressPath(scaledPath) as Point[], startPos, endPos);
 }
 
 function scalePosition (position: IPosition): IPosition {
@@ -91,28 +92,98 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig):
     [originalStartPos.x, originalStartPos.y],
     ...generateRightAnglePath(scaledStartPos, scaledEndPos, originalStartPos, originalEndPos),
     [originalEndPos.x, originalEndPos.y],
-  ], startPort, endPort);
+  ], startPort.position, endPort.position);
 }
 
+function buildGrid (
+  pos1: IPosition,
+  pos2: IPosition,
+  nodes: INode[],
+  config: IConfig,
+) {
+  const width = Math.abs(pos1.x - pos2.x) + GRID_PADDING * 2,
+        height = Math.abs(pos1.y - pos2.y) + GRID_PADDING * 2;
+
+  const gridRect: IRect = {
+    x: Math.min(pos1.x, pos2.x) - GRID_PADDING,
+    y: Math.min(pos1.y, pos2.y) - GRID_PADDING,
+    width,
+    height,
+  };
+
+  const matrix: number[][] = [];
+  const adjustedWidth = Math.ceil(width / (SCALE_FACTOR));
+  const adjustedHeight = Math.ceil(height / (SCALE_FACTOR));
+
+  // empty matrix
+  for (let i = 0; i < adjustedHeight; i += 1) {
+    matrix.push(new Array(adjustedWidth).fill(0));
+  }
+
+  // mark intersectant nodes blocked
+  nodes.forEach(node => {
+    const intersectant = checkIntersect(gridRect, {
+      x: node.x,
+      y: node.y,
+      width: node.width,
+      height: node.height,
+    });
+
+    if (intersectant) {
+      markNodeWalkable({
+        matrix,
+        gridRect,
+        nodeRect: {
+          x: node.x,
+          y: node.y,
+          width: node.width,
+          height: node.height,
+        },
+        nodePorts: Object.values(node.ports),
+        walkable: false, // blocked
+        config,
+      });
+    }
+  });
+
+  const pfGrid = new PF.Grid(matrix);
+
+  return {
+    gridRect,
+    pfGrid,
+  };
+}
+
+
+/**
+ * 1. construct a rect by `startPos` and `endPos`, with grid padding
+ * 2. get `gridRect`, build a empty matrix
+ * 3. calculate the nodes that intersect the grid rect, mark this node blocked in matrix
+ * 4. instantiate PF.Grid with matrix and find path
+ */
 export default function generatePath (
-  grid: IGrid,
   startPort: NodePort,
   endPort: NodePort,
+  nodes: INode[],
   config: IConfig,
-  _version?: number,
 ): Point[] {
-  const gridOffset = grid.offset;
-
   const startPos = startPort.position;
   const endPos = endPort.position;
 
+  const { pfGrid, gridRect } = buildGrid(
+    startPos,
+    endPos,
+    nodes,
+    config,
+  );
+
   const scaledStartPos = scalePosition({
-    x: startPos.x + gridOffset.x,
-    y: startPos.y + gridOffset.y,
+    x: startPos.x - gridRect.x,
+    y: startPos.y - gridRect.y,
   });
   const scaledEndPos = scalePosition({
-    x: endPos.x + gridOffset.x,
-    y: endPos.y + gridOffset.y,
+    x: endPos.x - gridRect.x,
+    y: endPos.y - gridRect.y,
   });
 
   try {
@@ -122,13 +193,13 @@ export default function generatePath (
         scaledStartPos.y,
         scaledEndPos.x,
         scaledEndPos.y,
-        grid.pfGrid.clone(),
+        pfGrid,
       ),
     ) as Point[];
 
     if (!path.length) return fallbackPath(startPort, endPort, config);
 
-    return scalePath(path, startPort, endPort, gridOffset);
+    return scalePath(path, startPos, endPos, gridRect);
   } catch (e) {
     return fallbackPath(startPort, endPort, config);
   }

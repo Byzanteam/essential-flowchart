@@ -11,7 +11,6 @@ export default function useGraph (
     links,
     offset: store.state.graph.offset,
     scale: store.state.graph.scale,
-    grid: store.state.graph.grid,
   }, store);
   store.commit('setNodes', nodes);
   store.commit('setLinks', links);

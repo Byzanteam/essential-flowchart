@@ -9,12 +9,10 @@ import {
   IState,
 } from '@/types';
 
-import { buildEmptyGrid } from '@/utils/grid';
 import { buildConfig } from '@/utils/config';
 
 type NodeRect = [number, number, number, number];
 
-const defaultGridDimension: [number, number] = [1440, 900];
 const defaultNodeRect: NodeRect = [200, 100, 100, 40];
 const defaultPorts = [
   {
@@ -115,10 +113,6 @@ export function createStore (
     actions,
   }: ICreateStoreObject<IState>,
 ): Store<IState> {
-  const [width, height] = (
-    stateAttrs && stateAttrs.gridDimension
-  ) || defaultGridDimension;
-
   const store: Store<IState> = new Vuex.Store({
     state: {
       history: {
@@ -134,14 +128,6 @@ export function createStore (
 
         nodes: {},
         links: {},
-
-        grid: {
-          offset: {
-            x: 0,
-            y: 0,
-          },
-          ...buildEmptyGrid(width, height),
-        },
       },
       linkVersions: {},
       linkPath: {},

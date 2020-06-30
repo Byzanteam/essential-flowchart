@@ -7,12 +7,6 @@ import updateNodeSize from './updateNodeSize';
 
 import addLink from './addLink';
 import removeLink from './removeLink';
-import touchLink from './touchLink';
-import updateLinkPath from './updateLinkPath';
-import deleteLinkPath from './deleteLinkPath';
-
-import updateGrid from './updateGrid';
-import expandGrid from './expandGird';
 
 import updateMousePosition from './updateMousePosition';
 import updateScale from './updateScale';
@@ -31,12 +25,6 @@ export default {
 
   addLink,
   removeLink,
-  touchLink,
-  updateLinkPath,
-  deleteLinkPath,
-
-  updateGrid,
-  expandGrid,
 
   updateMousePosition,
   updateScale,

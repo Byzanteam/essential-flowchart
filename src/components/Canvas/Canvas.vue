@@ -16,25 +16,8 @@
     >
       <div
         class="canvas"
-        :style="{
-          width: `${canvasSize.width}px`,
-          height: `${canvasSize.height}px`,
-          paddingLeft: `${gridOffset.x * scale}px`, // left expansion
-          paddingTop: `${gridOffset.y * scale}px`, // top expansion
-          left: `${-gridOffset.x * scale}px`,
-          top: `${-gridOffset.y * scale}px`,
-        }"
       >
-        <div
-          ref="canvasInnerRef"
-          :style="{
-            width: `${canvasSize.width}px`,
-            height: `${canvasSize.height}px`,
-          }"
-          class="canvas__inner"
-        >
-          <slot />
-        </div>
+        <slot />
       </div>
     </PanZoom>
   </div>
@@ -64,14 +47,8 @@ export default defineComponent({
     const { canvasInnerRef, canvasRef } = useCanvasContext();
     const store = useStore();
 
-    const gridOffset = computed(() => store.state.graph.grid.offset);
     const scale = computed(() => store.state.graph.scale);
     const offset = computed(() => store.state.graph.offset);
-
-    const canvasSize = computed(() => ({
-      width: store.state.graph.grid.width - gridOffset.value.x,
-      height: store.state.graph.grid.height - gridOffset.value.y,
-    }));
 
     const onCanvasClick = (event: MouseEvent) => {
       emitter.emit(CLICK_CANVAS, event);
@@ -91,11 +68,9 @@ export default defineComponent({
     return {
       canvasInnerRef,
       canvasRef,
-      canvasSize,
 
       scale,
       offset,
-      gridOffset,
       ...usePanZoomCanvas(store),
       onCanvasClick,
 
@@ -110,14 +85,12 @@ export default defineComponent({
   box-sizing: content-box;
   position: relative;
   cursor: move;
+  width: 2000px;
+  height: 2000px;
 
   &__outer {
     overflow: hidden;
     width: 100%;
-  }
-
-  &__inner {
-    position: relative;
   }
 }
 </style>

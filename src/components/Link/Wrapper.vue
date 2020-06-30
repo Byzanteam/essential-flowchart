@@ -15,7 +15,7 @@
 
 <script lang="ts">
 import {
-  defineComponent, computed, watch, PropType, inject,
+  defineComponent, computed, PropType, inject,
 } from '@vue/composition-api';
 
 import useStore from '@/hooks/useStore';
@@ -78,21 +78,14 @@ export default defineComponent({
     const path = computed(() => {
       if (endPort.value) {
         return generatePath(
-          graph.value.grid,
           startPort.value,
           endPort.value,
+          Object.values(graph.value.nodes),
           store.state.config,
-          // track change
-          store.state.linkVersions[props.link.id],
         );
       }
       return [];
     });
-
-    watch(path, newPath => store.commit(
-      'updateLinkPath',
-      { linkId: props.link.id, path: [...newPath] },
-    ));
 
     const onLinkClick = (event: MouseEvent) => {
       emitter.emit(CLICK_LINK, { event, link: props.link });

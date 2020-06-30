@@ -5,7 +5,7 @@ import { IPosition, INode, FlowchartStore } from '@/types';
 export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   let draggingNodePosition: IPosition | null = null;
 
-  function onDragStart (e: MouseEvent) {
+  function onNodeDragStart (e: MouseEvent) {
     e.stopPropagation(); // prevent canvas move
 
     draggingNodePosition = {
@@ -42,7 +42,7 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   }
 
   return {
-    onDragStart,
+    onNodeDragStart,
     onNodeDragging,
     onNodeDragStop,
   };

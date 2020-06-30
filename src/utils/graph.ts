@@ -1,5 +1,5 @@
 import {
-  FlowchartStore, IGraph, IRect, PortDirection, INodePort, INodePortInput,
+  IRect, PortDirection, INodePort, INodePortInput,
 } from '@/types';
 import { groupBy } from '@/utils/shared';
 
@@ -65,34 +65,36 @@ export function calcPortPosition (ports: INodePortInput[] | INodePort[], nodeRec
   }, {} as Record<string, INodePort>);
 }
 
-function setGraph (store: FlowchartStore, graph: IGraph) {
-  const {
-    nodes, links, scale, offset,
-  } = graph;
+// function setGraph (graph: IGraph) {
+//   // const {
+//   //   nodes, links, scale, offset,
+//   // } = graph;
 
-  store.commit({
-    type: 'updateScale',
-    scale,
-  });
+//   // store.commit({
+//   //   type: 'updateScale',
+//   //   scale,
+//   // });
 
-  store.commit({
-    type: 'updateOffset',
-    offset,
-  });
+//   // store.commit({
+//   //   type: 'updateOffset',
+//   //   offset,
+//   // });
 
-  Object.values(nodes).forEach(node => {
-    store.commit('addNode', {
-      node: { ...node },
-    });
-  });
+//   // Object.values(nodes).forEach(node => {
+//   //   store.commit('addNode', {
+//   //     node: { ...node },
+//   //   });
+//   // });
 
-  Object.values(links).forEach(link => {
-    store.commit('addLink', {
-      link: { ...link },
-    });
-  });
-}
+//   // Object.values(links).forEach(link => {
+//   //   store.commit('addLink', {
+//   //     link: { ...link },
+//   //   });
+//   // });
+// }
 
-export function buildGraph (graph: IGraph, store: FlowchartStore) {
-  setGraph(store, graph);
-}
+// export function buildGraph (graph: IGraph) {
+//   setGraph(graph);
+// }
+
+export default calcPortPosition;

@@ -19,7 +19,7 @@ import {
 import {
   INode, INodePort,
 } from '@/types';
-import useStore from '@/hooks/useStore';
+// import useStore from '@/hooks/useStore';
 
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
@@ -46,17 +46,18 @@ export default defineComponent({
   },
 
   setup (props) {
-    const store = useStore();
+    // const store = useStore();
 
-    const defaultMouseDownAction = useMouseDownOnPort(store, props.node, props.port).onMouseDown;
+    const defaultMouseDownAction = useMouseDownOnPort(props.node, props.port).onMouseDown;
 
-    const readonlyMouseDownAction = (evt: MouseEvent) => {
-      evt.stopPropagation();
-      evt.preventDefault();
-    };
+    // const readonlyMouseDownAction = (evt: MouseEvent) => {
+    //   evt.stopPropagation();
+    //   evt.preventDefault();
+    // };
 
     const onMouseDown = computed(() => (
-      store.state.config.readonly ? readonlyMouseDownAction : defaultMouseDownAction
+      defaultMouseDownAction
+      // store.state.config.readonly ? readonlyMouseDownAction : defaultMouseDownAction
     ));
 
     return {

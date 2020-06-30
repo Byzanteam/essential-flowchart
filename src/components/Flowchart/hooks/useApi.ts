@@ -1,19 +1,19 @@
 import {
-  FlowchartStore, IPosition, INodeInput, Id,
+  IPosition,
 } from '@/types';
 
-export default function useApi (store: FlowchartStore, instance: any) {
-  function zoom (delta: number) {
-    store.dispatch('updateScale', store.state.graph.scale + delta);
-  }
+export default function useApi (instance: any) {
+  // function zoom (delta: number) {
+  // store.dispatch('updateScale', store.state.graph.scale + delta);
+  // }
 
-  function zoomIn () {
-    zoom(0.2);
-  }
+  // function zoomIn () {
+  //   zoom(0.2);
+  // }
 
-  function zoomOut () {
-    zoom(-0.2);
-  }
+  // function zoomOut () {
+  //   zoom(-0.2);
+  // }
 
   function getPosition (clientX: number, clientY: number): IPosition | null {
     const { canvasRef } = instance;
@@ -23,27 +23,27 @@ export default function useApi (store: FlowchartStore, instance: any) {
     return null;
   }
 
-  function addNode (node: INodeInput) {
-    store.dispatch('addNode', node);
-  }
+  // function addNode (node: INodeInput) {
+  //   store.dispatch('addNode', node);
+  // }
 
-  function removeNode (nodeId: Id) {
-    store.dispatch('removeNode', nodeId);
-  }
+  // function removeNode (nodeId: Id) {
+  //   store.dispatch('removeNode', nodeId);
+  // }
 
-  function removeLink (linkId: Id) {
-    store.dispatch('removeLink', linkId);
-  }
+  // function removeLink (linkId: Id) {
+  //   store.dispatch('removeLink', linkId);
+  // }
 
   return {
-    zoom,
-    zoomIn,
-    zoomOut,
+    // zoom,
+    // zoomIn,
+    // zoomOut,
     getPosition,
 
-    addNode,
-    removeNode,
+    // addNode,
+    // removeNode,
 
-    removeLink,
+    // removeLink,
   };
 }

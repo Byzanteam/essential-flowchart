@@ -45,7 +45,7 @@ import {
   defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
-import useStore from '@/hooks/useStore';
+// import useStore from '@/hooks/useStore';
 import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_NODE } from '@/emitter/events';
@@ -85,25 +85,26 @@ export default defineComponent({
   },
 
   setup (props) {
-    const store = useStore();
+    // const store = useStore();
     const node = computed(() => props.node);
-    const scale = computed(() => store.state.graph.scale);
-    const readonly = computed(() => store.state.config.readonly);
+    const scale = computed(() => 1);
+    const readonly = computed(() => false);
 
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
-      store.commit({
-        type: 'updateNodeSize',
-        id: props.node.id,
-        width,
-        height,
-      });
-    };
+    // const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
+    //   store.commit({
+    //     type: 'updateNodeSize',
+    //     id: props.node.id,
+    //     width,
+    //     height,
+    //   });
+    // };
+    const onNodeResize = () => { window.console.log('a'); };
 
-    const defaultDragActions = useDragNode(store, node);
+    const defaultDragActions = useDragNode(node);
     const readonlyDragActions = {
       onNodeDragStart: noop,
       onNodeDragging: noop,
@@ -111,7 +112,7 @@ export default defineComponent({
     };
 
     const dragActions = computed(() => (
-      store.state.config.readonly ? readonlyDragActions : defaultDragActions
+      readonly.value ? readonlyDragActions : defaultDragActions
     ));
 
     const nodeRect = computed<IRect>(() => ({
@@ -126,7 +127,7 @@ export default defineComponent({
       const ports = calcPortPosition(
         Object.values(node.value.ports),
         rect,
-        store.state.config.portGap,
+        10,
       );
 
       Vue.set(node.value, 'ports', ports);

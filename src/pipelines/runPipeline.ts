@@ -1,10 +1,10 @@
-import { IState, ILink } from '@/types';
+import { IState, ILink, ILinkPipelinePhase } from '@/types';
 
 export default function runPipeline (
   link: ILink,
   state: IState,
+  linkPipeline: ILinkPipelinePhase[],
 ): ILink | null {
-  const { linkPipeline } = state.config;
   let result: ILink | null = link;
 
   let index = 0;

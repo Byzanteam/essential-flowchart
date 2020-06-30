@@ -49,6 +49,7 @@ import useStore from '@/hooks/useStore';
 import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_NODE } from '@/emitter/events';
+import { useConfig } from '@/utils/config';
 import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
@@ -87,8 +88,8 @@ export default defineComponent({
   setup (props) {
     const store = useStore();
     const node = computed(() => props.node);
-    const scale = computed(() => store.state.graph.scale);
-    const readonly = computed(() => store.state.config.readonly);
+
+    const { scale, readonly, portGap } = useConfig();
 
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
@@ -111,7 +112,7 @@ export default defineComponent({
     };
 
     const dragActions = computed(() => (
-      store.state.config.readonly ? readonlyDragActions : defaultDragActions
+      readonly.value ? readonlyDragActions : defaultDragActions
     ));
 
     const nodeRect = computed<IRect>(() => ({
@@ -126,7 +127,7 @@ export default defineComponent({
       const ports = calcPortPosition(
         Object.values(node.value.ports),
         rect,
-        store.state.config.portGap,
+        portGap.value,
       );
 
       Vue.set(node.value, 'ports', ports);

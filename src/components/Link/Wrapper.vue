@@ -22,6 +22,7 @@ import useStore from '@/hooks/useStore';
 import { ILink, ICanvasContext } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
+import { useConfig } from '@/utils/config';
 import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
 
@@ -48,6 +49,8 @@ export default defineComponent({
       offsetX: 0,
       offsetY: 0,
     });
+
+    const { nodePadding } = useConfig();
 
     const graph = computed(() => store.state.graph);
 
@@ -81,7 +84,7 @@ export default defineComponent({
           startPort.value,
           endPort.value,
           Object.values(graph.value.nodes),
-          store.state.config,
+          nodePadding.value,
         );
       }
       return [];

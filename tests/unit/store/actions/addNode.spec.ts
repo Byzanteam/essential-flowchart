@@ -30,10 +30,6 @@ describe('addNode', () => {
         1: {
           id: '1',
           direction: 'top',
-          position: {
-            x: 150,
-            y: 100,
-          },
         },
       },
     });

@@ -1,8 +1,6 @@
-import Vue from 'vue';
 import { IState, INode } from '@/types';
 import emitter from '@/emitter';
 import { NODE_SIZE_CHANGE } from '@/emitter/events';
-import { calcPortPosition } from '@/utils/graph';
 
 export default function updateNodeSize (
   state: IState,
@@ -22,19 +20,8 @@ export default function updateNodeSize (
       height: node.height,
     };
 
-    const ports = calcPortPosition(
-      Object.values(node.ports),
-      {
-        x: node.x, y: node.y, width, height,
-      },
-      state.config.portGap,
-    );
-
-    Vue.set(nodes, id, {
-      ...node,
-      ...size,
-      ports,
-    });
+    node.width = width;
+    node.height = height;
 
     emitter.emit(NODE_SIZE_CHANGE, {
       node: nodes[id],

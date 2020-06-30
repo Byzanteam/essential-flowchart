@@ -40,14 +40,16 @@
 import VueDraggableResizable from 'vue-draggable-resizable';
 // @ts-ignore
 import { ResizeObserver } from 'vue-resize';
+import Vue from 'vue';
 import {
-  defineComponent, computed,
+  defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
-import { INode } from '@/types';
+import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_NODE } from '@/emitter/events';
+import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
@@ -111,6 +113,23 @@ export default defineComponent({
     const dragActions = computed(() => (
       store.state.config.readonly ? readonlyDragActions : defaultDragActions
     ));
+
+    const nodeRect = computed<IRect>(() => ({
+      x: node.value.x,
+      y: node.value.y,
+      width: node.value.width,
+      height: node.value.height,
+    }));
+
+    watch(nodeRect, rect => {
+      const ports = calcPortPosition(
+        Object.values(node.value.ports),
+        rect,
+        store.state.config.portGap,
+      );
+
+      Vue.set(node.value, 'ports', ports);
+    });
 
     return {
       onNodeClick,

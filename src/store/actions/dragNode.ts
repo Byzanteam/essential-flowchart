@@ -8,5 +8,5 @@ export default function dragNode (
 
   if (!node) return;
 
-  commit('updateNodePosition', { node, position, prevPosition });
+  commit('updateNodePosition', { id, position, prevPosition });
 }

@@ -6,8 +6,8 @@ import { markNodeWalkable } from '@/utils/grid';
 export default function setNodes (state: IState, nodes: Record<string, INodeInput>) {
   const { pfGrid } = state.graph.grid;
 
-  Object.entries(nodes).forEach(([key, node]) => {
-    Vue.set(state.graph.nodes, key, markNodeWalkable(
+  Object.entries(nodes).forEach(([id, node]) => {
+    Vue.set(state.graph.nodes, id, markNodeWalkable(
       pfGrid,
       state.graph.grid.offset,
       node,

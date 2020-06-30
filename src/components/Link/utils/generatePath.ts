@@ -193,7 +193,7 @@ export default function generatePath (
         scaledStartPos.y,
         scaledEndPos.x,
         scaledEndPos.y,
-        pfGrid.clone(),
+        pfGrid,
       ),
     ) as Point[];
 

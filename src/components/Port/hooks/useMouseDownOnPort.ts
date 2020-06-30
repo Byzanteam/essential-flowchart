@@ -3,6 +3,7 @@ import {
   INode, INodePort, IPosition,
   ILink,
   FlowchartStore,
+  ILinkPipelinePhase,
 } from '@/types';
 import runPipeline from '@/pipelines/runPipeline';
 
@@ -27,7 +28,7 @@ function findTarget (el: HTMLElement): { nodeId: Id; portId: Id } | null {
   return target;
 }
 
-export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort) {
+export default function useMouseDownOnPort (store: FlowchartStore, node: INode, port: INodePort, linkPipeLine: ILinkPipelinePhase[]) {
   const onMouseDown = (evt: MouseEvent) => {
     // prevent text selection
     evt.preventDefault();
@@ -44,7 +45,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
         portId: fromPortId,
       },
       to: {},
-    } as ILink, store.state);
+    } as ILink, store.state, linkPipeLine);
 
     function mouseMoveHandler (e: MouseEvent) {
       const toPosition: IPosition = {
@@ -79,7 +80,7 @@ export default function useMouseDownOnPort (store: FlowchartStore, node: INode, 
             nodeId: toNodeId,
             portId: toPortId,
           },
-        }, store.state);
+        }, store.state, linkPipeLine);
 
         if (link) {
           store.dispatch('addLink', { link });

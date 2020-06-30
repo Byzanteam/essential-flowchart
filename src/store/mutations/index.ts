@@ -10,7 +10,6 @@ import removeLink from './removeLink';
 
 import updateMousePosition from './updateMousePosition';
 import updateScale from './updateScale';
-import updateReadonly from './updateReadonly';
 import updateOffset from './updateOffset';
 import updateConfig from './updateConfig';
 import historyMutations from './history';
@@ -28,7 +27,6 @@ export default {
 
   updateMousePosition,
   updateScale,
-  updateReadonly,
   updateOffset,
   updateConfig,
   ...historyMutations,

@@ -1,7 +1,7 @@
 import * as Pathfinding from 'pathfinding';
 import {
   Point, IPosition,
-  PortDirection, IConfig,
+  PortDirection,
   INodePort, IRect,
 } from '@/types';
 import { SCALE_FACTOR } from '@/utils/constants';
@@ -119,14 +119,14 @@ export function markNodeWalkable ({
   nodePorts,
   walkable,
   gridRect,
-  config: { nodePadding },
+  nodePadding,
 }: {
   matrix: number[][];
   gridRect: IRect;
   nodeRect: IRect;
   nodePorts: INodePort[];
   walkable: boolean;
-  config: IConfig;
+  nodePadding: number;
 }) {
   let {
     x, y, width, height,

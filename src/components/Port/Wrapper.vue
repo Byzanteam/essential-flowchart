@@ -21,6 +21,7 @@ import {
 } from '@/types';
 import useStore from '@/hooks/useStore';
 
+import { useConfig } from '@/utils/config';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
@@ -47,8 +48,9 @@ export default defineComponent({
 
   setup (props) {
     const store = useStore();
+    const { readonly, linkPipeline } = useConfig();
 
-    const defaultMouseDownAction = useMouseDownOnPort(store, props.node, props.port).onMouseDown;
+    const defaultMouseDownAction = useMouseDownOnPort(store, props.node, props.port, linkPipeline.value).onMouseDown;
 
     const readonlyMouseDownAction = (evt: MouseEvent) => {
       evt.stopPropagation();
@@ -56,7 +58,7 @@ export default defineComponent({
     };
 
     const onMouseDown = computed(() => (
-      store.state.config.readonly ? readonlyMouseDownAction : defaultMouseDownAction
+      readonly.value ? readonlyMouseDownAction : defaultMouseDownAction
     ));
 
     return {

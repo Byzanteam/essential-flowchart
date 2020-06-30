@@ -64,6 +64,7 @@ interface IFlowchartProps {
   config: IConfigInput;
 }
 
+// TODO: offset and scale
 export default defineComponent({
   name: 'Flowchart',
 

@@ -1,3 +1,5 @@
+import setLinks from './setLinks';
+import setNodes from './setNodes';
 import addNode from './addNode';
 import removeNode from './removeNode';
 import updateNodePosition from './updateNodePosition';
@@ -14,6 +16,8 @@ import updateConfig from './updateConfig';
 import historyMutations from './history';
 
 export default {
+  setNodes,
+  setLinks,
   addNode,
   removeNode,
   updateNodePosition,

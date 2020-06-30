@@ -1,0 +1,31 @@
+name: Alpha release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Alpha:
+    name: Alpha
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - id: cache-directory
+        run: echo "::set-output name=cache-directory::$(yarn cache dir)"
+      - uses: actions/cache@master
+        id: load-cache
+        with:
+          path: "${{ steps.cache-directory.outputs.cache-directory  }}\nnode_modules"
+          key: ${{ hashFiles('yarn.lock')  }}
+          restore-keys: ${{ hashFiles('yarn.lock')  }}
+      - if: steps.load-cache.outputs.cache-hit != 'true'
+        run: yarn install
+      - run: npm version --git-tag-version=false $(awk -F '"' '/version/ { print $4 }' package.json)-alpha.$(date +%s)
+      - run: npm publish --access=public --tag=alpha
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}

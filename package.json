@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint",
     "prepare": "yarn run build"
   },
+  "license": "UNLICENSED",
   "dependencies": {
     "@vue/composition-api": "^0.5.0",
     "core-js": "^3.6.4",
@@ -51,8 +52,7 @@
   },
   "lint-staged": {
     "*.{js,jsx,vue,ts,tsx}": [
-      "vue-cli-service lint",
-      "git add"
+      "vue-cli-service lint"
     ]
   },
   "typings": "types/index.d.ts"

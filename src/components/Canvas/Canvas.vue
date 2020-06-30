@@ -47,7 +47,9 @@ export default defineComponent({
     const { canvasInnerRef, canvasRef } = useCanvasContext();
     const store = useStore();
 
-    const { scale, offset } = useConfig();
+    const {
+      scale, offset, minZoom, maxZoom,
+    } = useConfig();
 
     const onCanvasClick = (event: MouseEvent) => {
       emitter.emit(CLICK_CANVAS, event);
@@ -70,6 +72,8 @@ export default defineComponent({
 
       scale,
       offset,
+      minZoom,
+      maxZoom,
       ...usePanZoomCanvas(store),
       onCanvasClick,
 

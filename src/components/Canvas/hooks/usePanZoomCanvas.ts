@@ -1,13 +1,9 @@
-import { computed } from '@vue/composition-api';
 import emitter from '@/emitter';
 import { CANVAS_PAN } from '@/emitter/events';
 import { PanZoom, Transform } from 'panzoom';
 import { FlowchartStore } from '@/types';
 
 export default function usePanZoomCanvas (store: FlowchartStore) {
-  const minZoom = computed(() => store.state.config.minZoom);
-  const maxZoom = computed(() => store.state.config.maxZoom);
-
   function onCanvasZoom (panZoom: PanZoom) {
     const transform: Transform = panZoom.getTransform();
     // num.toFixed(2) ?
@@ -47,9 +43,6 @@ export default function usePanZoomCanvas (store: FlowchartStore) {
   }
 
   return {
-    minZoom,
-    maxZoom,
-
     onCanvasZoom,
     onCanvasPan,
     onCanvasPanEnd,

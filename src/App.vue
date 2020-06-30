@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-    <flowchart :state="rawState" />
+    <flowchart
+      :nodes="rawState.nodes"
+      :links="rawState.links"
+    />
   </div>
 </template>
 

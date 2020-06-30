@@ -1,7 +1,7 @@
 <template>
   <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
-      v-for="node in nodes"
+      v-for="node in structNodes"
       :key="node.id"
       :node="node"
       :node-component="nodeComponent"
@@ -9,7 +9,7 @@
     />
 
     <LinkWrapperComponent
-      v-for="link in links"
+      v-for="link in structLinks"
       :key="link.id"
       :link="link"
       :link-component="linkComponent"
@@ -20,14 +20,19 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueCompositionApi, {
+  ref,
   defineComponent,
   PropType,
   watch,
-  onMounted,
+  computed,
 } from '@vue/composition-api';
 import useStore from '@/hooks/useStore';
 import useEmitter from '@/hooks/useEmitter';
-import { IGraph, IConfigInput } from '@/types';
+import {
+  IConfigInput,
+  INode,
+  ILink,
+} from '@/types';
 import useApi from './hooks/useApi';
 import useGraph from './hooks/useState';
 import useFlowchartContext from './hooks/useFlowchartContext';
@@ -49,13 +54,14 @@ interface IFlowchartComponents {
 }
 
 interface IFlowchartProps {
-  state: IGraph;
+  nodes: Record<string, INode>;
+  links: Record<string, ILink>;
   /**
    * Custom components
    */
   components?: IFlowchartComponents;
 
-  config?: IConfigInput;
+  config: IConfigInput;
 }
 
 export default defineComponent({
@@ -68,9 +74,13 @@ export default defineComponent({
   },
 
   props: {
-    state: {
-      type: Object as PropType<IFlowchartProps['state']>,
+    nodes: {
+      type: Object as PropType<IFlowchartProps['nodes']>,
       required: true,
+    },
+    links: {
+      type: Object as PropType<IFlowchartProps['links']>,
+      default: () => [],
     },
 
     components: {
@@ -87,14 +97,19 @@ export default defineComponent({
   setup (props: IFlowchartProps, { emit }) {
     const store = useStore();
     useEmitter(emit);
-    const { nodes, links } = useGraph(props.state, store);
-    const { canvasRef } = useFlowchartContext();
+    // TODO: why watch computed(() => [props.nodes, props.links]) not work
+    watch([ref(props.nodes), ref(props.links)], ([nodes, links]) => {
+      useGraph(nodes as Record<string, INode>, links as Record<string, ILink>, store);
+    }, { deep: true });
     store.commit('updateConfig', props.config);
-
-    onMounted(() => {
-      // eslint-disable-next-line
-      watch(() => props.config!.readonly, readonly => store.commit('updateReadonly', readonly));
-    });
+    // TODO: why watch(ref(props.config.readonly), cb) not work?
+    // deep option for update exist props
+    watch(ref(props.config), ({ readonly }, oldConfig = {}) => {
+      if (readonly === oldConfig.readonly) return;
+      // undefined -> false
+      store.commit('updateReadonly', !!readonly);
+    }, { deep: true });
+    const { canvasRef } = useFlowchartContext();
 
     const {
       components: {
@@ -110,8 +125,9 @@ export default defineComponent({
       nodeComponent,
       portComponent,
       linkComponent,
-      nodes,
-      links,
+
+      structNodes: computed(() => store.state.graph.nodes),
+      structLinks: computed(() => store.state.graph.links),
 
       ...useApi(store, { canvasRef }),
     };

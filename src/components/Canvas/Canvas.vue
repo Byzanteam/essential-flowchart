@@ -27,7 +27,6 @@
 import {
   defineComponent,
 } from '@vue/composition-api';
-import useStore from '@/hooks/useStore';
 import { IPosition } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_CANVAS } from '@/emitter/events';
@@ -45,7 +44,6 @@ export default defineComponent({
 
   setup () {
     const { canvasInnerRef, canvasRef } = useCanvasContext();
-    const store = useStore();
 
     const {
       scale, offset, minZoom, maxZoom,
@@ -74,7 +72,7 @@ export default defineComponent({
       offset,
       minZoom,
       maxZoom,
-      ...usePanZoomCanvas(store),
+      ...usePanZoomCanvas(scale, offset),
       onCanvasClick,
 
       getPosition,

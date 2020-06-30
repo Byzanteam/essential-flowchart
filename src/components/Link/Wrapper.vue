@@ -50,7 +50,7 @@ export default defineComponent({
       offsetY: 0,
     });
 
-    const { nodePadding } = useConfig();
+    const { nodePadding, offset, scale } = useConfig();
 
     const graph = computed(() => store.state.graph);
 
@@ -66,12 +66,10 @@ export default defineComponent({
         return toNode.ports[link.to.portId];
       }
       if (store.state.mousePosition) {
-        const { scale, offset } = store.state.graph;
-
         return {
           position: {
-            x: (store.state.mousePosition.x - canvasContext.offsetX - offset.x) / scale,
-            y: (store.state.mousePosition.y - canvasContext.offsetY - offset.y) / scale,
+            x: (store.state.mousePosition.x - canvasContext.offsetX - offset.value.x) / scale.value,
+            y: (store.state.mousePosition.y - canvasContext.offsetY - offset.value.y) / scale.value,
           },
         };
       }

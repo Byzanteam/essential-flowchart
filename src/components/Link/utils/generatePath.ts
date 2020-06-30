@@ -154,6 +154,13 @@ function buildGrid (
   };
 }
 
+
+/**
+ * 1. construct a rect by `startPos` and `endPos`, with grid padding
+ * 2. get `gridRect`, build a empty matrix
+ * 3. calculate the nodes that intersect the grid rect, mark this node blocked in matrix
+ * 4. instantiate PF.Grid with matrix and find path
+ */
 export default function generatePath (
   startPort: NodePort,
   endPort: NodePort,

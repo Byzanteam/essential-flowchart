@@ -109,6 +109,7 @@ export default defineComponent({
       height: node.value.height,
     }));
 
+    // watch node rect to update node port
     watch(nodeRect, rect => {
       const ports = calcPortPosition(
         Object.values(node.value.ports),
@@ -119,6 +120,7 @@ export default defineComponent({
       Vue.set(node.value, 'ports', ports);
     });
 
+    // hook for drag node
     const { onNodeDragStart, onNodeDragging, onNodeDragStop } = useDragNode(store, node, readonly);
 
     return {

@@ -12,11 +12,6 @@ export function clamp (val: number, min: number, max: number): number {
   return val;
 }
 
-/**
- * Perform no operation.
- */
-export function noop () {}
-
 export function checkIntersect (rectA: IRect, rectB: IRect): boolean {
   return rectA.x < rectB.x + rectB.width
     && rectA.x + rectA.width > rectB.x

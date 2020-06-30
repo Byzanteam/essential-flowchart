@@ -1,25 +1,7 @@
 import {
-  Id, FlowchartStore, IGraph, IRect, PortDirection, INodePort,
+  FlowchartStore, IGraph, IRect, PortDirection, INodePort, INodePortInput,
 } from '@/types';
-
-type Port = {
-  id: Id;
-  direction: PortDirection;
-}
-
-function groupBy<T> (collection: Array<T>, criteria: (item: T) => string): Record<string, T[]> {
-  return collection.reduce((obj, item) => {
-    const key = criteria(item);
-
-    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
-      obj[key] = [item];
-    } else {
-      obj[key].push(item);
-    }
-
-    return obj;
-  }, {} as Record<string, T[]>);
-}
+import { groupBy } from '@/utils/shared';
 
 function nextDots (start: number, length: number, portGap: number): number[] {
   let current = Math.ceil(start);
@@ -33,7 +15,7 @@ function nextDots (start: number, length: number, portGap: number): number[] {
   return dots;
 }
 
-export function calcPortPosition (ports: Port[], nodeRect: IRect, portGap: number): {
+export function calcPortPosition (ports: INodePortInput[] | INodePort[], nodeRect: IRect, portGap: number): {
   [id: string]: INodePort;
 } {
   const {

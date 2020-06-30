@@ -23,3 +23,17 @@ export function checkIntersect (rectA: IRect, rectB: IRect): boolean {
     && rectA.y < rectB.y + rectB.height
     && rectA.y + rectA.height > rectB.y;
 }
+
+export function groupBy<T> (collection: Array<T>, criteria: (item: T) => string): Record<string, T[]> {
+  return collection.reduce((obj, item) => {
+    const key = criteria(item);
+
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+      obj[key] = [item];
+    } else {
+      obj[key].push(item);
+    }
+
+    return obj;
+  }, {} as Record<string, T[]>);
+}

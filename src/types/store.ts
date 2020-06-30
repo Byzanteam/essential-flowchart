@@ -3,7 +3,7 @@ import {
   IGraph,
   ILink,
 } from './graph';
-import { IPosition } from './generics';
+import { IPosition, IOffset } from './generics';
 
 export interface IMutation extends Payload {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -30,6 +30,8 @@ export interface IConfig {
   maxZoom: number;
   linkPipeline: ILinkPipelinePhase[];
   readonly: boolean;
+  offset: IOffset;
+  scale: number;
 }
 
 export type IConfigInput = Partial<IConfig>;

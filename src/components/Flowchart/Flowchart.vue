@@ -25,7 +25,10 @@ import VueCompositionApi, {
   PropType,
   watch,
   computed,
+  provide,
+  reactive,
 } from '@vue/composition-api';
+import { buildConfig, ConfigSymbol, DEFAULT_CONFIG } from '@/utils/config';
 import useStore from '@/hooks/useStore';
 import useEmitter from '@/hooks/useEmitter';
 import {
@@ -64,7 +67,6 @@ interface IFlowchartProps {
   config: IConfigInput;
 }
 
-// TODO: offset and scale
 export default defineComponent({
   name: 'Flowchart',
 
@@ -79,6 +81,7 @@ export default defineComponent({
       type: Object as PropType<IFlowchartProps['nodes']>,
       required: true,
     },
+
     links: {
       type: Object as PropType<IFlowchartProps['links']>,
       default: () => [],
@@ -102,6 +105,13 @@ export default defineComponent({
     watch([ref(props.nodes), ref(props.links)], ([nodes, links]) => {
       useGraph(nodes as Record<string, INode>, links as Record<string, ILink>, store);
     }, { deep: true });
+
+    const config = reactive(DEFAULT_CONFIG);
+    watch(() => props.config, cfg => {
+      Object.assign(config, buildConfig(cfg));
+    });
+    provide(ConfigSymbol, config);
+
     store.commit('updateConfig', props.config);
     // TODO: why watch(ref(props.config.readonly), cb) not work?
     // deep option for update exist props

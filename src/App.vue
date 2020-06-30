@@ -1,14 +1,18 @@
 <template>
   <div id="app">
     <flowchart
-      :nodes="rawState.nodes"
-      :links="rawState.links"
+      :nodes="state.nodes"
+      :links="state.links"
+      :config="{
+        scale: state.scale,
+        offset: state.offset,
+      }"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api';
+import { defineComponent, reactive } from '@vue/composition-api';
 import { PortDirection } from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
@@ -225,8 +229,10 @@ export default defineComponent({
   },
 
   setup () {
+    const state = reactive(rawState);
+
     return {
-      rawState,
+      state,
     };
   },
 });

@@ -2,15 +2,10 @@ import { Ref } from '@vue/composition-api';
 
 import { IPosition, INode, FlowchartStore } from '@/types';
 
-export default function useDragNode (
-  store: FlowchartStore,
-  node: Ref<INode>,
-  readonly: Ref<boolean>,
-) {
+export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   let draggingNodePosition: IPosition | null = null;
 
   function onNodeDragStart (e: MouseEvent) {
-    if (readonly.value) return;
     e.stopPropagation(); // prevent canvas move
 
     draggingNodePosition = {
@@ -20,7 +15,6 @@ export default function useDragNode (
   }
 
   function onNodeDragging (left: number, top: number) {
-    if (readonly.value) return;
     store.dispatch('dragNode', {
       id: node.value.id,
       position: {
@@ -35,7 +29,6 @@ export default function useDragNode (
   }
 
   function onNodeDragStop (left: number, top: number) {
-    if (readonly.value) return;
     store.dispatch('dragNodeStop', {
       id: node.value.id,
       position: {

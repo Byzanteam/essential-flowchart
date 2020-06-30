@@ -1,6 +1,6 @@
 <template>
   <vue-draggable-resizable
-    :onDragStart="onNodeDragStart"
+    :onDragStart="dragActions.onNodeDragStart"
     :x="node.x"
     :y="node.y"
     :z="50"
@@ -12,8 +12,8 @@
     w="auto"
     h="auto"
     class="node-wrapper"
-    @dragging="onNodeDragging"
-    @dragstop="onNodeDragStop"
+    @dragging="dragActions.onNodeDragging"
+    @dragstop="dragActions.onNodeDragStop"
     @click.native="onNodeClick"
   >
     <ResizeObserver @notify="onNodeResize" />
@@ -50,6 +50,7 @@ import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_NODE } from '@/emitter/events';
 import { calcPortPosition } from '@/utils/graph';
+import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
@@ -102,6 +103,17 @@ export default defineComponent({
       });
     };
 
+    const defaultDragActions = useDragNode(store, node);
+    const readonlyDragActions = {
+      onNodeDragStart: noop,
+      onNodeDragging: noop,
+      onNodeDragStop: noop,
+    };
+
+    const dragActions = computed(() => (
+      store.state.config.readonly ? readonlyDragActions : defaultDragActions
+    ));
+
     const nodeRect = computed<IRect>(() => ({
       x: node.value.x,
       y: node.value.y,
@@ -120,18 +132,13 @@ export default defineComponent({
       Vue.set(node.value, 'ports', ports);
     });
 
-    // hook for drag node
-    const { onNodeDragStart, onNodeDragging, onNodeDragStop } = useDragNode(store, node, readonly);
-
     return {
       onNodeClick,
       onNodeResize,
       scale,
       readonly,
 
-      onNodeDragStart,
-      onNodeDragging,
-      onNodeDragStop,
+      dragActions,
     };
   },
 });

@@ -41,14 +41,17 @@ import VueDraggableResizable from 'vue-draggable-resizable';
 // @ts-ignore
 import { ResizeObserver } from 'vue-resize';
 import Vue from 'vue';
+
 import {
   defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
-// import useStore from '@/hooks/useStore';
 import { INode, IRect } from '@/types';
 import emitter from '@/emitter';
-import { CLICK_NODE } from '@/emitter/events';
+import {
+  CLICK_NODE,
+  NODE_SIZE_CHANGE,
+} from '@/emitter/events';
 import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
@@ -94,15 +97,9 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    // const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
-    //   store.commit({
-    //     type: 'updateNodeSize',
-    //     id: props.node.id,
-    //     width,
-    //     height,
-    //   });
-    // };
-    const onNodeResize = () => { window.console.log('a'); };
+    const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
+      emitter.emit(NODE_SIZE_CHANGE, { node: props.node, width, height });
+    };
 
     const defaultDragActions = useDragNode(node);
     const readonlyDragActions = {

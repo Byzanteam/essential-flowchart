@@ -89,7 +89,6 @@ export default defineComponent({
   },
 
   setup (props) {
-    // const store = useStore();
     const node = computed(() => props.node);
 
     const { scale, readonly, portGap } = useConfig();
@@ -113,6 +112,7 @@ export default defineComponent({
       readonly.value ? readonlyDragActions : defaultDragActions
     ));
 
+    // TODO: move nodeRect watch to PortWrapper
     const nodeRect = computed<IRect>(() => ({
       x: node.value.x,
       y: node.value.y,

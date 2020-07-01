@@ -24,7 +24,6 @@ import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
 // import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import { useConfig } from '@/utils/config';
-// import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;

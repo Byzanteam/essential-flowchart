@@ -26,12 +26,11 @@
 <script lang="ts">
 import {
   defineComponent,
-  computed,
 } from '@vue/composition-api';
-// import useStore from '@/hooks/useStore';
 import { IPosition } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_CANVAS } from '@/emitter/events';
+import { useConfig } from '@/utils/config';
 import useCanvasContext from './hooks/useCanvasContext';
 import usePanZoomCanvas from './hooks/usePanZoomCanvas';
 import PanZoomComponent from './PanZoom.vue';
@@ -45,10 +44,10 @@ export default defineComponent({
 
   setup () {
     const { canvasInnerRef, canvasRef } = useCanvasContext();
-    // const store = useStore();
 
-    const scale = computed(() => 1);
-    const offset = computed(() => ({ x: 0, y: 0 }));
+    const {
+      scale, offset, minZoom, maxZoom,
+    } = useConfig();
 
     const onCanvasClick = (event: MouseEvent) => {
       emitter.emit(CLICK_CANVAS, event);
@@ -71,7 +70,9 @@ export default defineComponent({
 
       scale,
       offset,
-      ...usePanZoomCanvas(),
+      minZoom,
+      maxZoom,
+      ...usePanZoomCanvas(scale, offset),
       onCanvasClick,
 
       getPosition,

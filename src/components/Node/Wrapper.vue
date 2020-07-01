@@ -52,6 +52,7 @@ import {
   CLICK_NODE,
   NODE_SIZE_CHANGE,
 } from '@/emitter/events';
+import { useConfig } from '@/utils/config';
 import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
@@ -90,8 +91,8 @@ export default defineComponent({
   setup (props) {
     // const store = useStore();
     const node = computed(() => props.node);
-    const scale = computed(() => 1);
-    const readonly = computed(() => false);
+
+    const { scale, readonly, portGap } = useConfig();
 
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
@@ -124,7 +125,7 @@ export default defineComponent({
       const ports = calcPortPosition(
         Object.values(node.value.ports),
         rect,
-        10,
+        portGap.value,
       );
 
       Vue.set(node.value, 'ports', ports);

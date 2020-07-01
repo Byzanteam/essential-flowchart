@@ -21,11 +21,13 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueCompositionApi, {
-  // ref,
   defineComponent,
   PropType,
-  // watch,
+  watch,
+  provide,
+  reactive,
 } from '@vue/composition-api';
+import { buildConfig, ConfigSymbol, DEFAULT_CONFIG } from '@/utils/config';
 import useEmitter from '@/hooks/useEmitter';
 import {
   IConfigInput,
@@ -62,7 +64,6 @@ interface IFlowchartProps {
   config: IConfigInput;
 }
 
-// TODO: offset and scale
 export default defineComponent({
   name: 'Flowchart',
 
@@ -77,6 +78,7 @@ export default defineComponent({
       type: Object as PropType<IFlowchartProps['nodes']>,
       required: true,
     },
+
     links: {
       type: Object as PropType<IFlowchartProps['links']>,
       default: () => [],
@@ -107,6 +109,12 @@ export default defineComponent({
     //   // undefined -> false
     //   store.commit('updateReadonly', !!readonly);
     // }, { deep: true });
+    const config = reactive(DEFAULT_CONFIG);
+    watch(() => props.config, cfg => {
+      Object.assign(config, buildConfig(cfg));
+    });
+    provide(ConfigSymbol, config);
+
     const { canvasRef } = useFlowchartContext();
 
     const {
@@ -123,9 +131,6 @@ export default defineComponent({
       nodeComponent,
       portComponent,
       linkComponent,
-
-      // structNodes: computed(() => store.state.graph.nodes),
-      // structLinks: computed(() => store.state.graph.links),
 
       ...useApi({ canvasRef }),
     };

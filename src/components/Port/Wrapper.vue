@@ -21,6 +21,7 @@ import {
 } from '@/types';
 // import useStore from '@/hooks/useStore';
 
+// import { useConfig } from '@/utils/config';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;

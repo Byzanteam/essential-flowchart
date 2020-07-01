@@ -1,27 +1,20 @@
-import { computed } from '@vue/composition-api';
+import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
 import { CANVAS_PAN } from '@/emitter/events';
 import { PanZoom, Transform } from 'panzoom';
+import { IOffset } from '@/types';
 
-export default function usePanZoomCanvas () {
-  const minZoom = computed(() => 0.5);
-  const maxZoom = computed(() => 4);
-
-  function onCanvasZoom (_panZoom: PanZoom) {
-    // const transform: Transform = panZoom.getTransform();
+export default function usePanZoomCanvas (scale: Ref<number>, offset: Ref<IOffset>) {
+  function onCanvasZoom (panZoom: PanZoom) {
+    const transform: Transform = panZoom.getTransform();
     // num.toFixed(2) ?
-    // store.commit({
-    //   type: 'updateScale',
-    //   scale: transform.scale,
-    // });
+    scale.value = transform.scale;
+
     // for zoom, convert x and y to integer
-    // store.commit({
-    //   type: 'updateOffset',
-    //   offset: {
-    //     x: Math.ceil(transform.x),
-    //     y: Math.ceil(transform.y),
-    //   },
-    // });
+    offset.value = {
+      x: Math.ceil(transform.x),
+      y: Math.ceil(transform.y),
+    };
   }
 
   function onCanvasPan (panZoom: PanZoom) {
@@ -33,22 +26,16 @@ export default function usePanZoomCanvas () {
     });
   }
 
-  function onCanvasPanEnd (_panZoom: PanZoom) {
-    // const transform: Transform = panZoom.getTransform();
-    // // for pan, x and y are already integer
-    // store.commit({
-    //   type: 'updateOffset',
-    //   offset: {
-    //     x: transform.x,
-    //     y: transform.y,
-    //   },
-    // });
+  function onCanvasPanEnd (panZoom: PanZoom) {
+    const transform: Transform = panZoom.getTransform();
+    // for pan, x and y are already integer
+    offset.value = {
+      x: transform.x,
+      y: transform.y,
+    };
   }
 
   return {
-    minZoom,
-    maxZoom,
-
     onCanvasZoom,
     onCanvasPan,
     onCanvasPanEnd,

@@ -1,7 +1,7 @@
 import PF from 'pathfinding';
 import {
   Point, IPosition,
-  PortDirection, IConfig,
+  PortDirection,
   INodePort, INode, IRect,
 } from '@/types';
 import { pathFinder, markNodeWalkable } from '@/utils/grid';
@@ -62,28 +62,28 @@ function scalePosition (position: IPosition): IPosition {
   };
 }
 
-function getPaddingPoint ({ position, direction }: NodePort, config: IConfig): IPosition {
+function getPaddingPoint ({ position, direction }: NodePort, nodePadding: number): IPosition {
   switch (direction) {
     case PortDirection.TOP:
-      return { ...position, y: position.y - config.nodePadding };
+      return { ...position, y: position.y - nodePadding };
 
     case PortDirection.RIGHT:
-      return { ...position, x: position.x + config.nodePadding };
+      return { ...position, x: position.x + nodePadding };
 
     case PortDirection.BOTTOM:
-      return { ...position, y: position.y + config.nodePadding };
+      return { ...position, y: position.y + nodePadding };
 
     case PortDirection.LEFT:
-      return { ...position, x: position.x - config.nodePadding };
+      return { ...position, x: position.x - nodePadding };
 
     default:
       return { ...position };
   }
 }
 
-function fallbackPath (startPort: NodePort, endPort: NodePort, config: IConfig): Point[] {
-  const scaledStartPos = scalePosition(getPaddingPoint(startPort, config));
-  const scaledEndPos = scalePosition(getPaddingPoint(endPort, config));
+function fallbackPath (startPort: NodePort, endPort: NodePort, nodePadding: number): Point[] {
+  const scaledStartPos = scalePosition(getPaddingPoint(startPort, nodePadding));
+  const scaledEndPos = scalePosition(getPaddingPoint(endPort, nodePadding));
 
   const originalStartPos = scalePosition(startPort.position);
   const originalEndPos = scalePosition(endPort.position);
@@ -99,7 +99,7 @@ function buildGrid (
   pos1: IPosition,
   pos2: IPosition,
   nodes: INode[],
-  config: IConfig,
+  nodePadding: number,
 ) {
   const width = Math.abs(pos1.x - pos2.x) + GRID_PADDING * 2,
         height = Math.abs(pos1.y - pos2.y) + GRID_PADDING * 2;
@@ -141,7 +141,7 @@ function buildGrid (
         },
         nodePorts: Object.values(node.ports),
         walkable: false, // blocked
-        config,
+        nodePadding,
       });
     }
   });
@@ -165,7 +165,7 @@ export default function generatePath (
   startPort: NodePort,
   endPort: NodePort,
   nodes: INode[],
-  config: IConfig,
+  nodePadding: number,
 ): Point[] {
   const startPos = startPort.position;
   const endPos = endPort.position;
@@ -174,7 +174,7 @@ export default function generatePath (
     startPos,
     endPos,
     nodes,
-    config,
+    nodePadding,
   );
 
   const scaledStartPos = scalePosition({
@@ -197,10 +197,10 @@ export default function generatePath (
       ),
     ) as Point[];
 
-    if (!path.length) return fallbackPath(startPort, endPort, config);
+    if (!path.length) return fallbackPath(startPort, endPort, nodePadding);
 
     return scalePath(path, startPos, endPos, gridRect);
   } catch (e) {
-    return fallbackPath(startPort, endPort, config);
+    return fallbackPath(startPort, endPort, nodePadding);
   }
 }

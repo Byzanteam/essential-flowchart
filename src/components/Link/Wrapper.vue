@@ -23,8 +23,9 @@ import { ILink, INode } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
 // import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
+import { useConfig } from '@/utils/config';
+// import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
-import { buildConfig } from '../../utils/config';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
@@ -54,6 +55,9 @@ export default defineComponent({
     //   offsetX: 0,
     //   offsetY: 0,
     // });
+
+    // const graph = computed(() => store.state.graph);
+    const { nodePadding } = useConfig();
 
     // const graph = computed(() => store.state.graph);
 
@@ -87,8 +91,7 @@ export default defineComponent({
           startPort.value,
           endPort.value,
           Object.values(props.nodes),
-          buildConfig({}),
-          // store.state.config,
+          nodePadding.value,
         );
       }
       return [];

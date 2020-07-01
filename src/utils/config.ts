@@ -1,3 +1,4 @@
+import { inject, toRefs } from '@vue/composition-api';
 import { IConfigInput, IConfig, ILinkPipelinePhase } from '@/types';
 import {
   DEFAULT_NODE_PADDING, DEFAULT_PORT_GAP, DEFAULT_MIN_ZOOM, DEFAULT_MAX_ZOOM,
@@ -34,13 +35,15 @@ function validateLinkPipeline (linkPipeline: ILinkPipelinePhase[]) {
 // eslint-disable-next-line import/prefer-default-export
 export function buildConfig (
   {
+    offset = { x: 0, y: 0 },
+    scale = 1,
     nodePadding = DEFAULT_NODE_PADDING,
     portGap = DEFAULT_PORT_GAP,
     minZoom = DEFAULT_MIN_ZOOM,
     maxZoom = DEFAULT_MAX_ZOOM,
     linkPipeline = [generateLinkId, distinctFromNodeAndToNode],
     readonly = false,
-  }: IConfigInput,
+  }: IConfigInput = {},
 ): IConfig {
   // OPTIMIZE: skip validate default value
   validateNodePadding(nodePadding);
@@ -50,6 +53,8 @@ export function buildConfig (
   validateLinkPipeline(linkPipeline);
 
   return {
+    offset,
+    scale,
     nodePadding,
     portGap,
     minZoom,
@@ -57,4 +62,15 @@ export function buildConfig (
     linkPipeline,
     readonly,
   };
+}
+
+export const DEFAULT_CONFIG = buildConfig();
+
+export const ConfigSymbol = Symbol('config');
+
+export function useConfig () {
+  const config = inject<IConfig>(ConfigSymbol, DEFAULT_CONFIG);
+
+  // @ts-ignore
+  return toRefs(config);
 }

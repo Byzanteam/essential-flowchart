@@ -15,10 +15,11 @@
 
 <script lang="ts">
 import {
-  defineComponent, computed, PropType,
+  defineComponent,
+  computed,
+  PropType,
 } from '@vue/composition-api';
 
-// import useStore from '@/hooks/useStore';
 import { ILink, INode } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
@@ -83,6 +84,17 @@ export default defineComponent({
       // }
       return null;
     });
+
+    // watch(() => props.nodes, nodes => {
+    //   if (endPort.value) {
+    //     generatePath(
+    //       startPort.value,
+    //       endPort.value,
+    //       Object.values(nodes),
+    //       nodePadding.value,
+    //     );
+    //   }
+    // }, { deep: true });
 
     const path = computed(() => {
       if (endPort.value) {

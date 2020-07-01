@@ -3,17 +3,18 @@ import {
 } from '@/types';
 
 export default function useApi (instance: any) {
-  // function zoom (delta: number) {
-  // store.dispatch('updateScale', store.state.graph.scale + delta);
-  // }
+  function zoom (delta: number) {
+    const { config } = instance;
+    config.scale = delta + config.scale;
+  }
 
-  // function zoomIn () {
-  //   zoom(0.2);
-  // }
+  function zoomIn () {
+    zoom(0.2);
+  }
 
-  // function zoomOut () {
-  //   zoom(-0.2);
-  // }
+  function zoomOut () {
+    zoom(-0.2);
+  }
 
   function getPosition (clientX: number, clientY: number): IPosition | null {
     const { canvasRef } = instance;
@@ -36,9 +37,9 @@ export default function useApi (instance: any) {
   // }
 
   return {
-    // zoom,
-    // zoomIn,
-    // zoomOut,
+    zoom,
+    zoomIn,
+    zoomOut,
     getPosition,
 
     // addNode,

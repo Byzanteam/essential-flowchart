@@ -132,7 +132,7 @@ export default defineComponent({
       portComponent,
       linkComponent,
 
-      ...useApi({ canvasRef }),
+      ...useApi({ canvasRef, config }),
     };
   },
 });

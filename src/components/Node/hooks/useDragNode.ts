@@ -17,7 +17,7 @@ export default function useDragNode (node: Ref<INode>) {
 
   function onNodeDragging (left: number, top: number) {
     emitter.emit(NODE_POSITION_CHANGE, {
-      node,
+      node: node.value,
       position: {
         x: left,
         y: top,
@@ -30,7 +30,7 @@ export default function useDragNode (node: Ref<INode>) {
 
   function onNodeDragStop (left: number, top: number) {
     emitter.emit(NODE_POSITION_CHANGE, {
-      node,
+      node: node.value,
       position: {
         x: left,
         y: top,

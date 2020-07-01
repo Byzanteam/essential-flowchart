@@ -7,6 +7,8 @@
         scale: state.scale,
         offset: state.offset,
       }"
+      @node-size-change="handleNodeSizeChange"
+      @node-position-change="handleNodePositionChange"
     />
   </div>
 </template>
@@ -233,6 +235,18 @@ export default defineComponent({
 
     return {
       state,
+      // eslint-disable-next-line
+      handleNodeSizeChange (event: any) {
+        const { node, width, height } = event;
+        node.width = width;
+        node.height = height;
+      },
+      // eslint-disable-next-line
+      handleNodePositionChange (event: any) {
+        const { node, position } = event;
+        node.x = position.x;
+        node.y = position.y;
+      },
     };
   },
 });

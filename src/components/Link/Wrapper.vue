@@ -72,16 +72,11 @@ export default defineComponent({
         const toNode = props.nodes[link.to.nodeId];
         return toNode.ports[link.to.portId];
       }
-      // if (store.state.mousePosition) {
-      //   const { scale, offset } = store.state.graph;
-
-      //   return {
-      //     position: {
-      //       x: (store.state.mousePosition.x - canvasContext.offsetX - offset.x) / scale,
-      //       y: (store.state.mousePosition.y - canvasContext.offsetY - offset.y) / scale,
-      //     },
-      //   };
-      // }
+      if (link.mousePosition) {
+        return {
+          position: link.mousePosition,
+        };
+      }
       return null;
     });
 

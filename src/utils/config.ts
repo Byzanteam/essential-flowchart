@@ -1,10 +1,8 @@
 import { inject, toRefs } from '@vue/composition-api';
-import { IConfigInput, IConfig, ILinkPipelinePhase } from '@/types';
+import { IConfigInput, IConfig } from '@/types';
 import {
   DEFAULT_NODE_PADDING, DEFAULT_PORT_GAP, DEFAULT_MIN_ZOOM, DEFAULT_MAX_ZOOM,
 } from '@/utils/constants';
-import generateLinkId from '@/pipelines/generateLinkId';
-import distinctFromNodeAndToNode from '@/pipelines/distinctFromNodeAndToNode';
 
 function isNonNegativeInteger (input: number): boolean {
   return Number.isInteger(input) && input > 0;
@@ -28,10 +26,6 @@ function validateZoom (zoom: number) {
   }
 }
 
-function validateLinkPipeline (linkPipeline: ILinkPipelinePhase[]) {
-  if (!Array.isArray(linkPipeline)) throw new Error('');
-}
-
 // eslint-disable-next-line import/prefer-default-export
 export function buildConfig (
   {
@@ -41,7 +35,6 @@ export function buildConfig (
     portGap = DEFAULT_PORT_GAP,
     minZoom = DEFAULT_MIN_ZOOM,
     maxZoom = DEFAULT_MAX_ZOOM,
-    linkPipeline = [generateLinkId, distinctFromNodeAndToNode],
     readonly = false,
   }: IConfigInput = {},
 ): IConfig {
@@ -50,7 +43,6 @@ export function buildConfig (
   validatePortGap(portGap);
   validateZoom(minZoom);
   validateZoom(maxZoom);
-  validateLinkPipeline(linkPipeline);
 
   return {
     offset,
@@ -59,7 +51,6 @@ export function buildConfig (
     portGap,
     minZoom,
     maxZoom,
-    linkPipeline,
     readonly,
   };
 }

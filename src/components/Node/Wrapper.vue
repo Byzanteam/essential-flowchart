@@ -29,6 +29,7 @@
         :key="id"
         :node="node"
         :port="port"
+        :draft-link="draftLink"
         :port-component="portComponent"
       />
     </template>
@@ -46,7 +47,7 @@ import {
   defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
-import { INode, IRect } from '@/types';
+import { INode, IRect, ILink } from '@/types';
 import emitter from '@/emitter';
 import {
   CLICK_NODE,
@@ -77,7 +78,10 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
-
+    draftLink: {
+      type: Object as PropType<ILink | null>,
+      requried: true,
+    },
     nodeComponent: {
       type: Object as PropType<FlowchartComponent>,
       required: true,

@@ -17,7 +17,7 @@ import {
   defineComponent, PropType,
 } from '@vue/composition-api';
 import {
-  INode, INodePort,
+  INode, INodePort, ILink,
 } from '@/types';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
@@ -41,10 +41,15 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
+
+    draftLink: {
+      type: Object as PropType<ILink>,
+      default: null,
+    },
   },
 
   setup (props) {
-    const { onMouseDown } = useMouseDownOnPort(props.node, props.port);
+    const { onMouseDown } = useMouseDownOnPort(props);
 
     return {
       onMouseDown,

@@ -54,6 +54,7 @@ export interface ILink {
   id: Id;
   from: ILinkPort;
   to: Partial<ILinkPort>;
+  mousePosition?: IPosition;
 }
 
 export interface IGraph {

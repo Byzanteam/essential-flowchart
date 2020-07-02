@@ -14,7 +14,10 @@
       @panend="onCanvasPanEnd"
       @zoom="onCanvasZoom"
     >
-      <div class="canvas">
+      <div
+        ref="canvasInnerRef"
+        class="canvas"
+      >
         <slot />
       </div>
     </PanZoom>

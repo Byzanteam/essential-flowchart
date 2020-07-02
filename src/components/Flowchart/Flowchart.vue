@@ -6,6 +6,7 @@
       :node="node"
       :node-component="nodeComponent"
       :port-component="portComponent"
+      :draft-link="draftLink"
     />
 
     <LinkWrapperComponent
@@ -14,6 +15,14 @@
       :key="link.id"
       :link="link"
       :link-component="linkComponent"
+    />
+
+    <LinkWrapperComponent
+      v-if="draftLink"
+      :nodes="nodes"
+      :link-component="linkComponent"
+      :link="draftLink"
+      key="draftLink"
     />
   </CanvasComponent>
 </template>
@@ -93,22 +102,15 @@ export default defineComponent({
       type: Object as PropType<IFlowchartProps['config']>,
       default: () => ({}),
     },
+
+    draftLink: {
+      type: Object as PropType<ILink | null>,
+      default: null,
+    },
   },
 
   setup (props: IFlowchartProps, { emit }) {
     useEmitter(emit);
-    // TODO: why watch computed(() => [props.nodes, props.links]) not work
-    // watch([ref(props.nodes), ref(props.links)], ([nodes, links]) => {
-    //   useGraph(nodes as Record<string, INode>, links as Record<string, ILink>);
-    // }, { deep: true });
-    // store.commit('updateConfig', props.config);
-    // TODO: why watch(ref(props.config.readonly), cb) not work?
-    // deep option for update exist props
-    // watch(ref(props.config), ({ readonly }, oldConfig = {}) => {
-    //   if (readonly === oldConfig.readonly) return;
-    //   // undefined -> false
-    //   store.commit('updateReadonly', !!readonly);
-    // }, { deep: true });
     const config = reactive(DEFAULT_CONFIG);
     watch(() => props.config, cfg => {
       Object.assign(config, buildConfig(cfg));

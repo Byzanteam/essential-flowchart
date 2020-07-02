@@ -23,7 +23,6 @@ import {
 import { ILink, INode } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
-// import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import { useConfig } from '@/utils/config';
 import generatePath from './utils/generatePath';
 
@@ -50,16 +49,7 @@ export default defineComponent({
   },
 
   setup (props) {
-    // const store = useStore();
-    // const canvasContext: ICanvasContext = inject<ICanvasContext>(CanvasContextSymbol, {
-    //   offsetX: 0,
-    //   offsetY: 0,
-    // });
-
-    // const graph = computed(() => store.state.graph);
     const { nodePadding } = useConfig();
-
-    // const graph = computed(() => store.state.graph);
 
     const fromNode = computed(() => props.nodes[props.link.from.nodeId]);
 
@@ -79,17 +69,6 @@ export default defineComponent({
       }
       return null;
     });
-
-    // watch(() => props.nodes, nodes => {
-    //   if (endPort.value) {
-    //     generatePath(
-    //       startPort.value,
-    //       endPort.value,
-    //       Object.values(nodes),
-    //       nodePadding.value,
-    //     );
-    //   }
-    // }, { deep: true });
 
     const path = computed(() => {
       if (endPort.value) {

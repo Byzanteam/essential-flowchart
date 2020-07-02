@@ -24,27 +24,10 @@ export default function useApi (instance: any) {
     return null;
   }
 
-  // function addNode (node: INodeInput) {
-  //   store.dispatch('addNode', node);
-  // }
-
-  // function removeNode (nodeId: Id) {
-  //   store.dispatch('removeNode', nodeId);
-  // }
-
-  // function removeLink (linkId: Id) {
-  //   store.dispatch('removeLink', linkId);
-  // }
-
   return {
     zoom,
     zoomIn,
     zoomOut,
     getPosition,
-
-    // addNode,
-    // removeNode,
-
-    // removeLink,
   };
 }

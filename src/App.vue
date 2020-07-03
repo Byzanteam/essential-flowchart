@@ -9,7 +9,6 @@
         scale: state.scale,
         offset: state.offset,
       }"
-      @node-size-change="handleNodeSizeChange"
       @node-position-change="handleNodePositionChange"
       @add-draft-link="handleAddDraftLink"
       @update-draft-link="handleUpdateDraftLink"

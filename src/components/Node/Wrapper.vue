@@ -55,8 +55,6 @@ import { noop } from '@/utils/shared';
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
 
-import 'vue-resize/dist/vue-resize.css';
-
 type FlowchartComponent = ReturnType<typeof defineComponent>;
 
 export default defineComponent({

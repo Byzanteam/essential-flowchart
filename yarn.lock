@@ -10829,11 +10829,6 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
-vue-resize@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/vue-resize/-/vue-resize-0.5.0.tgz#f55bb2b721a0ebcdfad8f3c14dfd00e3fd0fd913"
-  integrity sha512-k5gOOwTIGSoWZb133Gx3IfSeiiAmve5GyWI7+pU8CvbNntpSAlrCYwZ26GB63NpxcLPK94+m0BDl5TxuZUI+Hw==
-
 vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.1.2.tgz#dedf349806f25ceb4e64f3ad7c0a44fba735fcf8"

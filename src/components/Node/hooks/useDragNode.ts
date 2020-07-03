@@ -1,8 +1,9 @@
 import { Ref } from '@vue/composition-api';
+import emitter from '@/emitter';
+import { NODE_POSITION_CHANGE } from '@/emitter/events';
+import { INode, IPosition } from '@/types';
 
-import { IPosition, INode, FlowchartStore } from '@/types';
-
-export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
+export default function useDragNode (node: Ref<INode>) {
   let draggingNodePosition: IPosition | null = null;
 
   function onNodeDragStart (e: MouseEvent) {
@@ -15,27 +16,28 @@ export default function useDragNode (store: FlowchartStore, node: Ref<INode>) {
   }
 
   function onNodeDragging (left: number, top: number) {
-    store.dispatch('dragNode', {
-      id: node.value.id,
+    emitter.emit(NODE_POSITION_CHANGE, {
+      node: node.value,
       position: {
         x: left,
         y: top,
       },
       prevPosition: {
-        x: node.value.x,
-        y: node.value.y,
+        ...draggingNodePosition,
       },
     });
   }
 
   function onNodeDragStop (left: number, top: number) {
-    store.dispatch('dragNodeStop', {
-      id: node.value.id,
+    emitter.emit(NODE_POSITION_CHANGE, {
+      node: node.value,
       position: {
         x: left,
         y: top,
       },
-      prevPosition: { ...draggingNodePosition },
+      prevPosition: {
+        ...draggingNodePosition,
+      },
     });
 
     draggingNodePosition = null;

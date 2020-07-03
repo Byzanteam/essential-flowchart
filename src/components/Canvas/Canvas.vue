@@ -15,6 +15,7 @@
       @zoom="onCanvasZoom"
     >
       <div
+        ref="canvasInnerRef"
         class="canvas"
       >
         <slot />

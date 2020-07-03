@@ -16,8 +16,6 @@
     @dragstop="dragActions.onNodeDragStop"
     @click.native="onNodeClick"
   >
-    <ResizeObserver @notify="onNodeResize" />
-
     <component
       :is="nodeComponent"
       :node="node"
@@ -29,6 +27,7 @@
         :key="id"
         :node="node"
         :port="port"
+        :draft-link="draftLink"
         :port-component="portComponent"
       />
     </template>
@@ -38,25 +37,23 @@
 <script lang="ts">
 // @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
-// @ts-ignore
-import { ResizeObserver } from 'vue-resize';
 import Vue from 'vue';
+
 import {
   defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
-import useStore from '@/hooks/useStore';
-import { INode, IRect } from '@/types';
+import { INode, IRect, IDraftLink } from '@/types';
 import emitter from '@/emitter';
-import { CLICK_NODE } from '@/emitter/events';
+import {
+  CLICK_NODE,
+} from '@/emitter/events';
 import { useConfig } from '@/utils/config';
 import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
 import PortWrapperComponent from '../Port/Wrapper.vue';
-
-import 'vue-resize/dist/vue-resize.css';
 
 type FlowchartComponent = ReturnType<typeof defineComponent>;
 
@@ -66,7 +63,6 @@ export default defineComponent({
   components: {
     VueDraggableResizable,
     PortWrapperComponent,
-    ResizeObserver,
   },
 
   props: {
@@ -74,7 +70,10 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
-
+    draftLink: {
+      type: Object as PropType<IDraftLink | null>,
+      requried: true,
+    },
     nodeComponent: {
       type: Object as PropType<FlowchartComponent>,
       required: true,
@@ -86,7 +85,6 @@ export default defineComponent({
   },
 
   setup (props) {
-    const store = useStore();
     const node = computed(() => props.node);
 
     const { scale, readonly, portGap } = useConfig();
@@ -95,16 +93,7 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
-      store.commit({
-        type: 'updateNodeSize',
-        id: props.node.id,
-        width,
-        height,
-      });
-    };
-
-    const defaultDragActions = useDragNode(store, node);
+    const defaultDragActions = useDragNode(node);
     const readonlyDragActions = {
       onNodeDragStart: noop,
       onNodeDragging: noop,
@@ -135,7 +124,6 @@ export default defineComponent({
 
     return {
       onNodeClick,
-      onNodeResize,
       scale,
       readonly,
 

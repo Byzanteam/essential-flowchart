@@ -56,6 +56,10 @@ export interface ILink {
   to: Partial<ILinkPort>;
 }
 
+export interface IDraftLink extends ILink {
+  mousePosition?: IPosition;
+}
+
 export interface IGraph {
   offset: IOffset;
 

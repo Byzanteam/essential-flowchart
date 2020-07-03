@@ -1,10 +1,11 @@
 import {
-  FlowchartStore, IPosition, INodeInput, Id,
+  IPosition,
 } from '@/types';
 
-export default function useApi (store: FlowchartStore, instance: any) {
+export default function useApi (instance: any) {
   function zoom (delta: number) {
-    store.dispatch('updateScale', store.state.graph.scale + delta);
+    const { config } = instance;
+    config.scale = delta + config.scale;
   }
 
   function zoomIn () {
@@ -23,27 +24,10 @@ export default function useApi (store: FlowchartStore, instance: any) {
     return null;
   }
 
-  function addNode (node: INodeInput) {
-    store.dispatch('addNode', node);
-  }
-
-  function removeNode (nodeId: Id) {
-    store.dispatch('removeNode', nodeId);
-  }
-
-  function removeLink (linkId: Id) {
-    store.dispatch('removeLink', linkId);
-  }
-
   return {
     zoom,
     zoomIn,
     zoomOut,
     getPosition,
-
-    addNode,
-    removeNode,
-
-    removeLink,
   };
 }

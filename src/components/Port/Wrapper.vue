@@ -14,14 +14,11 @@
 
 <script lang="ts">
 import {
-  defineComponent, PropType, computed,
+  defineComponent, PropType,
 } from '@vue/composition-api';
 import {
-  INode, INodePort,
+  INode, INodePort, IDraftLink,
 } from '@/types';
-import useStore from '@/hooks/useStore';
-
-import { useConfig } from '@/utils/config';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
@@ -44,22 +41,15 @@ export default defineComponent({
       type: Object as PropType<INode>,
       required: true,
     },
+
+    draftLink: {
+      type: Object as PropType<IDraftLink>,
+      default: null,
+    },
   },
 
   setup (props) {
-    const store = useStore();
-    const { readonly, linkPipeline } = useConfig();
-
-    const defaultMouseDownAction = useMouseDownOnPort(store, props.node, props.port, linkPipeline.value).onMouseDown;
-
-    const readonlyMouseDownAction = (evt: MouseEvent) => {
-      evt.stopPropagation();
-      evt.preventDefault();
-    };
-
-    const onMouseDown = computed(() => (
-      readonly.value ? readonlyMouseDownAction : defaultMouseDownAction
-    ));
+    const { onMouseDown } = useMouseDownOnPort(props);
 
     return {
       onMouseDown,

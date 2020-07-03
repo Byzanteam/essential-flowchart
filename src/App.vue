@@ -1,22 +1,47 @@
 <template>
   <div id="app">
     <flowchart
+      ref="flowchartRef"
       :nodes="state.nodes"
       :links="state.links"
+      :draft-link="state.draftLink"
       :config="{
         scale: state.scale,
         offset: state.offset,
       }"
+      @node-position-change="handleNodePositionChange"
+      @add-draft-link="handleAddDraftLink"
+      @update-draft-link="handleUpdateDraftLink"
+      @add-link="handleAddLink"
     />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from '@vue/composition-api';
-import { PortDirection } from '@/types';
+import Vue from 'vue';
+import {
+  defineComponent,
+  reactive,
+  ref,
+  Ref,
+} from '@vue/composition-api';
+import {
+  PortDirection,
+  INode,
+  INodePort,
+  IPosition,
+  IDraftLink,
+} from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
-const rawState = {
+// eslint-disable-next-line
+type IRecord = Record<string, any>
+
+interface IRawState extends IRecord {
+  draftLink: IDraftLink | null;
+}
+
+const rawState: IRawState = {
   offset: {
     x: 100,
     y: 100,
@@ -219,7 +244,12 @@ const rawState = {
       },
     },
   },
+  draftLink: null,
 };
+
+interface IFlowchartContext {
+  getPosition (clientX: number, clientY: number): IPosition | null;
+}
 
 export default defineComponent({
   name: 'App',
@@ -230,9 +260,47 @@ export default defineComponent({
 
   setup () {
     const state = reactive(rawState);
+    const flowchartRef: Ref<IFlowchartContext | null> = ref(null);
 
     return {
       state,
+      flowchartRef,
+      // eslint-disable-next-line
+      handleNodePositionChange (event: any) {
+        const { node, position } = event;
+        node.x = position.x;
+        node.y = position.y;
+      },
+      handleAddDraftLink (event: { node: INode; port: INodePort; event: MouseEvent }) {
+        if (flowchartRef.value) {
+          const position: IPosition | null = flowchartRef.value.getPosition(event.event.clientX, event.event.clientY);
+          Vue.set(state, 'draftLink', {
+            from: {
+              nodeId: event.node.id,
+              portId: event.port.id,
+            },
+            mousePosition: position,
+          });
+        }
+      },
+      handleUpdateDraftLink (event: MouseEvent) {
+        if (flowchartRef.value) {
+          const position: IPosition | null = flowchartRef.value.getPosition(event.clientX, event.clientY);
+          Vue.set(state, 'draftLink', {
+            ...(state.draftLink || {}),
+            mousePosition: position,
+          });
+        }
+      },
+      handleAddLink (event: null | { nodeId: string; portId: string }) {
+        if (event) {
+          Vue.set(state.links, `${Date.now()}`, {
+            from: (state.draftLink as IDraftLink).from,
+            to: event,
+          });
+        }
+        Vue.set(state, 'draftLink', null);
+      },
     };
   },
 });

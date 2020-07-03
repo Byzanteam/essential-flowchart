@@ -15,15 +15,15 @@
 
 <script lang="ts">
 import {
-  defineComponent, computed, PropType, inject,
+  defineComponent,
+  computed,
+  PropType,
 } from '@vue/composition-api';
 
-import useStore from '@/hooks/useStore';
-import { ILink, ICanvasContext } from '@/types';
+import { INode, IDraftLink } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
 import { useConfig } from '@/utils/config';
-import { CanvasContextSymbol } from '../Canvas/hooks/useCanvasContext';
 import generatePath from './utils/generatePath';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
@@ -33,7 +33,12 @@ export default defineComponent({
 
   props: {
     link: {
-      type: Object as PropType<ILink>,
+      type: Object as PropType<IDraftLink>,
+      required: true,
+    },
+
+    nodes: {
+      type: Object as PropType<Record<string, INode>>,
       required: true,
     },
 
@@ -44,17 +49,9 @@ export default defineComponent({
   },
 
   setup (props) {
-    const store = useStore();
-    const canvasContext: ICanvasContext = inject<ICanvasContext>(CanvasContextSymbol, {
-      offsetX: 0,
-      offsetY: 0,
-    });
+    const { nodePadding } = useConfig();
 
-    const { nodePadding, offset, scale } = useConfig();
-
-    const graph = computed(() => store.state.graph);
-
-    const fromNode = computed(() => graph.value.nodes[props.link.from.nodeId]);
+    const fromNode = computed(() => props.nodes[props.link.from.nodeId]);
 
     const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
     const endPort = computed(() => {
@@ -62,15 +59,12 @@ export default defineComponent({
 
       // the link can be draft
       if (link.to && link.to.nodeId && link.to.portId) {
-        const toNode = graph.value.nodes[link.to.nodeId];
+        const toNode = props.nodes[link.to.nodeId];
         return toNode.ports[link.to.portId];
       }
-      if (store.state.mousePosition) {
+      if (link.mousePosition) {
         return {
-          position: {
-            x: (store.state.mousePosition.x - canvasContext.offsetX - offset.value.x) / scale.value,
-            y: (store.state.mousePosition.y - canvasContext.offsetY - offset.value.y) / scale.value,
-          },
+          position: link.mousePosition,
         };
       }
       return null;
@@ -81,7 +75,7 @@ export default defineComponent({
         return generatePath(
           startPort.value,
           endPort.value,
-          Object.values(graph.value.nodes),
+          Object.values(props.nodes),
           nodePadding.value,
         );
       }

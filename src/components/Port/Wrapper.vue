@@ -17,7 +17,7 @@ import {
   defineComponent, PropType,
 } from '@vue/composition-api';
 import {
-  INode, INodePort, ILink,
+  INode, INodePort, IDraftLink,
 } from '@/types';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
 
@@ -43,7 +43,7 @@ export default defineComponent({
     },
 
     draftLink: {
-      type: Object as PropType<ILink>,
+      type: Object as PropType<IDraftLink>,
       default: null,
     },
   },

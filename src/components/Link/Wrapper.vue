@@ -20,7 +20,7 @@ import {
   PropType,
 } from '@vue/composition-api';
 
-import { ILink, INode } from '@/types';
+import { INode, IDraftLink } from '@/types';
 import emitter from '@/emitter';
 import { CLICK_LINK } from '@/emitter/events';
 import { useConfig } from '@/utils/config';
@@ -33,7 +33,7 @@ export default defineComponent({
 
   props: {
     link: {
-      type: Object as PropType<ILink>,
+      type: Object as PropType<IDraftLink>,
       required: true,
     },
 

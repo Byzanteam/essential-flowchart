@@ -16,8 +16,6 @@
     @dragstop="dragActions.onNodeDragStop"
     @click.native="onNodeClick"
   >
-    <ResizeObserver @notify="onNodeResize" />
-
     <component
       :is="nodeComponent"
       :node="node"
@@ -39,19 +37,16 @@
 <script lang="ts">
 // @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
-// @ts-ignore
-import { ResizeObserver } from 'vue-resize';
 import Vue from 'vue';
 
 import {
   defineComponent, computed, watch,
   PropType,
 } from '@vue/composition-api';
-import { INode, IRect, ILink } from '@/types';
+import { INode, IRect, IDraftLink } from '@/types';
 import emitter from '@/emitter';
 import {
   CLICK_NODE,
-  NODE_SIZE_CHANGE,
 } from '@/emitter/events';
 import { useConfig } from '@/utils/config';
 import { calcPortPosition } from '@/utils/graph';
@@ -70,7 +65,6 @@ export default defineComponent({
   components: {
     VueDraggableResizable,
     PortWrapperComponent,
-    ResizeObserver,
   },
 
   props: {
@@ -79,7 +73,7 @@ export default defineComponent({
       required: true,
     },
     draftLink: {
-      type: Object as PropType<ILink | null>,
+      type: Object as PropType<IDraftLink | null>,
       requried: true,
     },
     nodeComponent: {
@@ -101,10 +95,6 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const onNodeResize = ({ width, height }: Pick<INode, 'width' | 'height'>) => {
-      emitter.emit(NODE_SIZE_CHANGE, { node: props.node, width, height });
-    };
-
     const defaultDragActions = useDragNode(node);
     const readonlyDragActions = {
       onNodeDragStart: noop,
@@ -116,7 +106,6 @@ export default defineComponent({
       readonly.value ? readonlyDragActions : defaultDragActions
     ));
 
-    // TODO: move nodeRect watch to PortWrapper
     const nodeRect = computed<IRect>(() => ({
       x: node.value.x,
       y: node.value.y,
@@ -137,7 +126,6 @@ export default defineComponent({
 
     return {
       onNodeClick,
-      onNodeResize,
       scale,
       readonly,
 

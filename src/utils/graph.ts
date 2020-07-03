@@ -65,36 +65,4 @@ export function calcPortPosition (ports: INodePortInput[] | INodePort[], nodeRec
   }, {} as Record<string, INodePort>);
 }
 
-// function setGraph (graph: IGraph) {
-//   // const {
-//   //   nodes, links, scale, offset,
-//   // } = graph;
-
-//   // store.commit({
-//   //   type: 'updateScale',
-//   //   scale,
-//   // });
-
-//   // store.commit({
-//   //   type: 'updateOffset',
-//   //   offset,
-//   // });
-
-//   // Object.values(nodes).forEach(node => {
-//   //   store.commit('addNode', {
-//   //     node: { ...node },
-//   //   });
-//   // });
-
-//   // Object.values(links).forEach(link => {
-//   //   store.commit('addLink', {
-//   //     link: { ...link },
-//   //   });
-//   // });
-// }
-
-// export function buildGraph (graph: IGraph) {
-//   setGraph(graph);
-// }
-
 export default calcPortPosition;

@@ -56,10 +56,8 @@ export default function useMouseDownOnPort (portProps: { node: INode; port: INod
       emitter.emit(ADD_LINK, target);
     }
 
-    //   // add listeners
     window.addEventListener('mousemove', mouseMoveHandler, false);
     window.addEventListener('mouseup', mouseUpHandler, false);
-    // }
   };
 
   return {

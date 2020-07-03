@@ -31,20 +31,9 @@ import {
   INode,
   INodePort,
   IPosition,
+  IDraftLink,
 } from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
-
-interface IDraftLink {
-  from: {
-    nodeId: string;
-    portId: string;
-  };
-  mousePosition?: IPosition;
-  to?: {
-    nodeId: string;
-    portId: string;
-  };
-}
 
 // eslint-disable-next-line
 type IRecord = Record<string, any>
@@ -277,12 +266,6 @@ export default defineComponent({
     return {
       state,
       flowchartRef,
-      // eslint-disable-next-line
-      handleNodeSizeChange (event: any) {
-        const { node, width, height } = event;
-        node.width = width;
-        node.height = height;
-      },
       // eslint-disable-next-line
       handleNodePositionChange (event: any) {
         const { node, position } = event;

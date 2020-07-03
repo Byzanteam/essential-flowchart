@@ -42,6 +42,7 @@ import {
   IConfigInput,
   INode,
   ILink,
+  IDraftLink,
 } from '@/types';
 import useApi from './hooks/useApi';
 import useFlowchartContext from './hooks/useFlowchartContext';
@@ -65,6 +66,7 @@ interface IFlowchartComponents {
 interface IFlowchartProps {
   nodes: Record<string, INode>;
   links: Record<string, ILink>;
+  draftLink: IDraftLink;
   /**
    * Custom components
    */
@@ -104,7 +106,7 @@ export default defineComponent({
     },
 
     draftLink: {
-      type: Object as PropType<ILink | null>,
+      type: Object as PropType<IFlowchartProps['draftLink']>,
       default: null,
     },
   },

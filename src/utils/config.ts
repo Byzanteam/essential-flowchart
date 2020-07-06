@@ -50,12 +50,12 @@ export function buildConfig (
     maxZoom,
     readonly,
     getters: {
-      ...getters,
       ...DEFAULT_GETTERS,
+      ...getters,
     },
     mutations: {
-      ...mutations,
       ...DEFAULT_MUTATIONS,
+      ...mutations,
     },
   };
 }

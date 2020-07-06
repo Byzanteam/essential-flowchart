@@ -33,7 +33,7 @@ interface IPortProps {
 }
 
 export default function useMouseDownOnPort (portProps: IPortProps) {
-  const { node, port, draftLink } = portProps;
+  const { node, port } = portProps;
   const onMouseDown = (evt: MouseEvent) => {
     // prevent text selection
     evt.preventDefault();
@@ -47,7 +47,8 @@ export default function useMouseDownOnPort (portProps: IPortProps) {
     });
 
     function mouseMoveHandler (e: MouseEvent) {
-      if (!draftLink) return;
+      // must use portProps for reactive, if deconstruct at first, draftLink will not change when moved
+      if (!portProps.draftLink) return;
       emitter.emit(UPDATE_DRAFT_LINK, e);
     }
 
@@ -55,7 +56,7 @@ export default function useMouseDownOnPort (portProps: IPortProps) {
       window.removeEventListener('mouseup', mouseUpHandler, false);
       window.removeEventListener('mousemove', mouseMoveHandler, false);
 
-      if (!draftLink) return;
+      if (!portProps.draftLink) return;
 
       const target = findTarget(e.target as HTMLElement);
 

@@ -5,10 +5,6 @@
       :nodes="state.nodes"
       :links="state.links"
       :draft-link="state.draftLink"
-      :config="{
-        scale: state.scale,
-        offset: state.offset,
-      }"
       @node-position-change="handleNodePositionChange"
       @add-draft-link="handleAddDraftLink"
       @update-draft-link="handleUpdateDraftLink"
@@ -17,36 +13,11 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
-import {
-  defineComponent,
-  reactive,
-  ref,
-  Ref,
-} from '@vue/composition-api';
-import {
-  PortDirection,
-  INode,
-  INodePort,
-  IPosition,
-  IDraftLink,
-} from '@/types';
 import Flowchart from './components/Flowchart/Flowchart.vue';
 
-// eslint-disable-next-line
-type IRecord = Record<string, any>
-
-interface IRawState extends IRecord {
-  draftLink: IDraftLink | null;
-}
-
-const rawState: IRawState = {
-  offset: {
-    x: 100,
-    y: 100,
-  },
-  scale: 0.8,
+const rawState = {
   nodes: {
     node1: {
       id: 'node1',
@@ -57,7 +28,7 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
       },
     },
@@ -70,19 +41,19 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.TOP,
+          direction: 'top',
         },
         port2: {
           id: 'port2',
-          direction: PortDirection.RIGHT,
+          direction: 'right',
         },
         port3: {
           id: 'port3',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
         port4: {
           id: 'port4',
-          direction: PortDirection.LEFT,
+          direction: 'left',
         },
       },
     },
@@ -95,19 +66,19 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.TOP,
+          direction: 'top',
         },
         port2: {
           id: 'port2',
-          direction: PortDirection.RIGHT,
+          direction: 'right',
         },
         port3: {
           id: 'port3',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
         port4: {
           id: 'port4',
-          direction: PortDirection.LEFT,
+          direction: 'left',
         },
       },
     },
@@ -120,19 +91,19 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.TOP,
+          direction: 'top',
         },
         port2: {
           id: 'port2',
-          direction: PortDirection.RIGHT,
+          direction: 'right',
         },
         port3: {
           id: 'port3',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
         port4: {
           id: 'port4',
-          direction: PortDirection.LEFT,
+          direction: 'left',
         },
       },
     },
@@ -145,19 +116,19 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.TOP,
+          direction: 'top',
         },
         port2: {
           id: 'port2',
-          direction: PortDirection.RIGHT,
+          direction: 'right',
         },
         port3: {
           id: 'port3',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
         port4: {
           id: 'port4',
-          direction: PortDirection.LEFT,
+          direction: 'left',
         },
       },
     },
@@ -170,19 +141,19 @@ const rawState: IRawState = {
       ports: {
         port1: {
           id: 'port1',
-          direction: PortDirection.TOP,
+          direction: 'top',
         },
         port2: {
           id: 'port2',
-          direction: PortDirection.RIGHT,
+          direction: 'right',
         },
         port3: {
           id: 'port3',
-          direction: PortDirection.BOTTOM,
+          direction: 'bottom',
         },
         port4: {
           id: 'port4',
-          direction: PortDirection.LEFT,
+          direction: 'left',
         },
       },
     },
@@ -247,63 +218,56 @@ const rawState: IRawState = {
   draftLink: null,
 };
 
-interface IFlowchartContext {
-  getPosition (clientX: number, clientY: number): IPosition | null;
-}
-
-export default defineComponent({
+export default {
   name: 'App',
 
   components: {
     Flowchart,
   },
 
-  setup () {
-    const state = reactive(rawState);
-    const flowchartRef: Ref<IFlowchartContext | null> = ref(null);
-
+  data () {
     return {
-      state,
-      flowchartRef,
-      // eslint-disable-next-line
-      handleNodePositionChange (event: any) {
-        const { node, position } = event;
-        node.x = position.x;
-        node.y = position.y;
-      },
-      handleAddDraftLink (event: { node: INode; port: INodePort; event: MouseEvent }) {
-        if (flowchartRef.value) {
-          const position: IPosition | null = flowchartRef.value.getPosition(event.event.clientX, event.event.clientY);
-          Vue.set(state, 'draftLink', {
-            from: {
-              nodeId: event.node.id,
-              portId: event.port.id,
-            },
-            mousePosition: position,
-          });
-        }
-      },
-      handleUpdateDraftLink (event: MouseEvent) {
-        if (flowchartRef.value) {
-          const position: IPosition | null = flowchartRef.value.getPosition(event.clientX, event.clientY);
-          Vue.set(state, 'draftLink', {
-            ...(state.draftLink || {}),
-            mousePosition: position,
-          });
-        }
-      },
-      handleAddLink (event: null | { nodeId: string; portId: string }) {
-        if (event) {
-          Vue.set(state.links, `${Date.now()}`, {
-            from: (state.draftLink as IDraftLink).from,
-            to: event,
-          });
-        }
-        Vue.set(state, 'draftLink', null);
-      },
+      state: rawState,
     };
   },
-});
+
+  methods: {
+    handleNodePositionChange ({ node, position }) {
+      node.x = position.x;
+      node.y = position.y;
+    },
+    handleAddDraftLink ({ node, port, event }) {
+      if (this.$refs.flowchartRef) {
+        const position = this.$refs.flowchartRef.getPosition(event.clientX, event.clientY);
+        this.state.draftLink = {
+          from: {
+            nodeId: node.id,
+            portId: port.id,
+          },
+          mousePosition: position,
+        };
+      }
+    },
+    handleUpdateDraftLink (event) {
+      if (this.$refs.flowchartRef) {
+        const position = this.$refs.flowchartRef.getPosition(event.clientX, event.clientY);
+        this.state.draftLink = {
+          ...this.state.draftLink || {},
+          mousePosition: position,
+        };
+      }
+    },
+    handleAddLink (event) {
+      if (event) {
+        Vue.set(this.state.links, `${Date.now()}`, {
+          from: this.state.draftLink.from,
+          to: event,
+        });
+      }
+      this.state.draftLink = null;
+    },
+  },
+};
 </script>
 
 <style lang="scss">

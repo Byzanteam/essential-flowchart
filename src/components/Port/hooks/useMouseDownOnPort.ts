@@ -1,5 +1,5 @@
 import {
-  INode, INodePort, ILink, Id,
+  Id,
 } from '@/types';
 
 import emitter from '@/emitter';
@@ -26,8 +26,14 @@ function findTarget (el: HTMLElement): { nodeId: Id; portId: Id } | null {
   return target;
 }
 
-export default function useMouseDownOnPort (portProps: { node: INode; port: INodePort; draftLink: ILink }) {
-  const { node, port } = portProps;
+interface IPortProps {
+  node: Record<string, any>;
+  port: Record<string, any>;
+  draftLink: Record<string, any>;
+}
+
+export default function useMouseDownOnPort (portProps: IPortProps) {
+  const { node, port, draftLink } = portProps;
   const onMouseDown = (evt: MouseEvent) => {
     // prevent text selection
     evt.preventDefault();
@@ -41,7 +47,7 @@ export default function useMouseDownOnPort (portProps: { node: INode; port: INod
     });
 
     function mouseMoveHandler (e: MouseEvent) {
-      if (!portProps.draftLink) return;
+      if (!draftLink) return;
       emitter.emit(UPDATE_DRAFT_LINK, e);
     }
 
@@ -49,7 +55,7 @@ export default function useMouseDownOnPort (portProps: { node: INode; port: INod
       window.removeEventListener('mouseup', mouseUpHandler, false);
       window.removeEventListener('mousemove', mouseMoveHandler, false);
 
-      if (!portProps.draftLink) return;
+      if (!draftLink) return;
 
       const target = findTarget(e.target as HTMLElement);
 

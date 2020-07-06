@@ -49,26 +49,11 @@ export default defineComponent({
   },
 
   setup (props) {
-    const { nodePadding } = useConfig();
+    const { nodePadding, getters } = useConfig();
 
-    const fromNode = computed(() => props.nodes[props.link.from.nodeId]);
+    const startPort = computed(() => getters.value.getStartPortOfLink(props.nodes, props.link));
 
-    const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
-    const endPort = computed(() => {
-      const { link } = props;
-
-      // the link can be draft
-      if (link.to && link.to.nodeId && link.to.portId) {
-        const toNode = props.nodes[link.to.nodeId];
-        return toNode.ports[link.to.portId];
-      }
-      if (link.mousePosition) {
-        return {
-          position: link.mousePosition,
-        };
-      }
-      return null;
-    });
+    const endPort = computed(() => getters.value.getEndPortOfLink(props.nodes, props.link));
 
     const path = computed(() => {
       if (endPort.value) {
@@ -76,7 +61,10 @@ export default defineComponent({
           startPort.value,
           endPort.value,
           Object.values(props.nodes),
-          nodePadding.value,
+          {
+            nodePadding: nodePadding.value,
+            getters: getters.value,
+          },
         );
       }
       return [];

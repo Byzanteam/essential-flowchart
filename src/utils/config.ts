@@ -1,7 +1,11 @@
 import { inject, toRefs } from '@vue/composition-api';
 import { IConfigInput, IConfig } from '@/types';
 import {
-  DEFAULT_NODE_PADDING, DEFAULT_PORT_GAP, DEFAULT_MIN_ZOOM, DEFAULT_MAX_ZOOM,
+  DEFAULT_NODE_PADDING,
+  DEFAULT_MIN_ZOOM,
+  DEFAULT_MAX_ZOOM,
+  DEFAULT_GETTERS,
+  DEFAULT_MUTATIONS,
 } from '@/utils/constants';
 
 function isNonNegativeInteger (input: number): boolean {
@@ -11,12 +15,6 @@ function isNonNegativeInteger (input: number): boolean {
 function validateNodePadding (nodePadding: number) {
   if (!isNonNegativeInteger(nodePadding)) {
     throw new Error(`nodePadding must be a positive integer, but got ${JSON.stringify(nodePadding)}.`);
-  }
-}
-
-function validatePortGap (portGap: number) {
-  if (!isNonNegativeInteger(portGap)) {
-    throw new Error(`portGap must be a positive integer, but got ${JSON.stringify(portGap)}.`);
   }
 }
 
@@ -32,15 +30,15 @@ export function buildConfig (
     offset = { x: 0, y: 0 },
     scale = 1,
     nodePadding = DEFAULT_NODE_PADDING,
-    portGap = DEFAULT_PORT_GAP,
     minZoom = DEFAULT_MIN_ZOOM,
     maxZoom = DEFAULT_MAX_ZOOM,
     readonly = false,
+    getters = {},
+    mutations = {},
   }: IConfigInput = {},
 ): IConfig {
   // OPTIMIZE: skip validate default value
   validateNodePadding(nodePadding);
-  validatePortGap(portGap);
   validateZoom(minZoom);
   validateZoom(maxZoom);
 
@@ -48,10 +46,17 @@ export function buildConfig (
     offset,
     scale,
     nodePadding,
-    portGap,
     minZoom,
     maxZoom,
     readonly,
+    getters: {
+      ...getters,
+      ...DEFAULT_GETTERS,
+    },
+    mutations: {
+      ...mutations,
+      ...DEFAULT_MUTATIONS,
+    },
   };
 }
 

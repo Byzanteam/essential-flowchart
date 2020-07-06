@@ -1,18 +1,15 @@
 import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
 import { NODE_POSITION_CHANGE } from '@/emitter/events';
-import { INode, IPosition } from '@/types';
+import { INode, IPosition, IGetters } from '@/types';
 
-export default function useDragNode (node: Ref<INode>) {
+export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
   let draggingNodePosition: IPosition | null = null;
 
   function onNodeDragStart (e: MouseEvent) {
     e.stopPropagation(); // prevent canvas move
 
-    draggingNodePosition = {
-      x: node.value.x,
-      y: node.value.y,
-    };
+    draggingNodePosition = getters.value.getNodePosition(node.value);
   }
 
   function onNodeDragging (left: number, top: number) {

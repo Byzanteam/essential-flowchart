@@ -4,8 +4,6 @@
   "main": "dist/essential-flowchart.common.js",
   "files": [
     "dist",
-    "src",
-    "public",
     "types"
   ],
   "scripts": {

@@ -50,9 +50,10 @@ export default defineComponent({
     const { getters } = useConfig();
     const { onMouseDown } = useMouseDownOnPort(props);
 
-    const positionedPort = computed(() => getters.value.getNodePorts(props.node)[props.port.id]);
     const portId = computed(() => getters.value.getPortIdentifier(props.port));
     const nodeId = computed(() => getters.value.getNodeIdentifier(props.node));
+
+    const positionedPort = computed(() => getters.value.getNodePorts(props.node)[portId.value]);
 
     return {
       onMouseDown,

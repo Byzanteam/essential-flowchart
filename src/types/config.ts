@@ -11,11 +11,11 @@ export interface IGetters {
   getPortPosition: (node: any, port: any) => IPosition;
   getPortDirection: (port: any) => PortDirection;
   getNode: (nodes: any, nodeId: string) => any;
-  getStartNodeOfLink: (nodes: any, link: any) => any;
-  getStartPortOfLink: (nodes: any, link: any) => INodePort;
+  getFromNodeIdOfLink: (link: any) => string;
+  getToNodeIdOfLink: (link: any) => string;
+  getFromPortIdOfLink: (link: any) => string;
+  getToPortIdOfLink: (link: any) => string;
   getDraftPortOfLink: (link: any) => Pick<INodePort, 'position'>;
-  getEndNodeOfLink: (nodes: any, link: any) => any;
-  getEndPortOfLink: (nodes: any, link: any) => INodePort | { position: IPosition };
   isDraftLink: (link: any) => boolean;
   getLinkIdentifier: (link: any) => string;
   getNodeIdentifier: (node: any) => string;

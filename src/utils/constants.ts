@@ -49,23 +49,17 @@ export const DEFAULT_GETTERS: IGetters = {
   getNode (nodes: any, nodeId: string) {
     return nodes[nodeId];
   },
-  getStartNodeOfLink (nodes: any, link: any) {
-    return this.getNode(nodes, link.from.nodeId);
+  getFromNodeIdOfLink (link) {
+    return link.from.nodeId;
   },
-  getStartPortOfLink (nodes: any, link: any) {
-    const node = this.getStartNodeOfLink(nodes, link);
-    return this.getNodePort(node, link.from.portId);
+  getToNodeIdOfLink (link) {
+    return link.to.nodeId;
   },
-  getEndPortOfLink (nodes, link: any) {
-    const node = this.getEndNodeOfLink(nodes, link);
-    if (node) return this.getNodePort(node, link.to.portId);
-    return this.getDraftPortOfLink(link);
+  getFromPortIdOfLink (link) {
+    return link.from.portId;
   },
-  getEndNodeOfLink (nodes: any, link: any) {
-    if (this.isDraftLink(link)) {
-      return null;
-    }
-    return this.getNode(nodes, link.to.nodeId);
+  getToPortIdOfLink (link) {
+    return link.to.portId;
   },
   getDraftPortOfLink (link: any) {
     return { position: link.mousePosition };

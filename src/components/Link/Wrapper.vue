@@ -52,8 +52,10 @@ export default defineComponent({
     const { nodePadding, getters } = useConfig();
 
     const startPort = computed(() => {
-      const port = getters.value.getStartPortOfLink(props.nodes, props.link);
-      const node = getters.value.getStartNodeOfLink(props.nodes, props.link);
+      const portId = getters.value.getFromPortIdOfLink(props.link);
+      const nodeId = getters.value.getFromNodeIdOfLink(props.link);
+      const node = getters.value.getNode(props.nodes, nodeId);
+      const port = getters.value.getNodePort(node, portId);
       const portPosition = getters.value.getPortPosition(node, port);
       return {
         ...port,
@@ -62,10 +64,13 @@ export default defineComponent({
     });
 
     const endPort = computed(() => {
-      const port = getters.value.getEndPortOfLink(props.nodes, props.link);
-      if (getters.value.isDraftLink(props.link)) return port;
-
-      const node = getters.value.getEndNodeOfLink(props.nodes, props.link);
+      if (getters.value.isDraftLink(props.link)) {
+        return getters.value.getDraftPortOfLink(props.link);
+      }
+      const portId = getters.value.getToPortIdOfLink(props.link);
+      const nodeId = getters.value.getToNodeIdOfLink(props.link);
+      const node = getters.value.getNode(props.nodes, nodeId);
+      const port = getters.value.getNodePort(node, portId);
       return {
         ...port,
         position: getters.value.getPortPosition(node, port),

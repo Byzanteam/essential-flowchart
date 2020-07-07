@@ -29,13 +29,6 @@ export interface INodePositionChangeEvent {
   prevPosition: IPosition;
 }
 
-export interface IMutations {
-  // dragging
-  updateNodePosition: (event: INodePositionChangeEvent) => void;
-  // dragend
-  setNodePosition: (event: INodePositionChangeEvent) => void;
-}
-
 export interface IConfig {
   nodePadding: number;
   minZoom: number;
@@ -44,10 +37,8 @@ export interface IConfig {
   offset: IOffset;
   scale: number;
   getters: IGetters;
-  mutations: IMutations;
 }
 
-export interface IConfigInput extends Partial<Omit<IConfig, 'getters' | 'mutations'>> {
+export interface IConfigInput extends Partial<Omit<IConfig, 'getters'>> {
   getters?: Partial<IGetters>;
-  mutations?: Partial<IMutations>;
 }

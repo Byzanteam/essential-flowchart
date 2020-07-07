@@ -2,10 +2,10 @@ import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
 import { NODE_POSITION_CHANGE, MOVE_NODE } from '@/emitter/events';
 import {
-  INode, IPosition, IGetters, IMutations,
+  INode, IPosition, IGetters,
 } from '@/types';
 
-export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>, mutations: Ref<IMutations>) {
+export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
   let draggingNodePosition: IPosition | null = null;
 
   function onNodeDragStart (e: MouseEvent) {
@@ -23,9 +23,6 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>, m
       },
       prevPosition: draggingNodePosition as IPosition,
     };
-    if (mutations.value && mutations.value.updateNodePosition) {
-      mutations.value.updateNodePosition(payload);
-    }
     emitter.emit(MOVE_NODE, payload);
   }
 
@@ -38,9 +35,6 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>, m
       },
       prevPosition: draggingNodePosition as IPosition,
     };
-    if (mutations.value && mutations.value.setNodePosition) {
-      mutations.value.setNodePosition(payload);
-    }
     emitter.emit(NODE_POSITION_CHANGE, payload);
     draggingNodePosition = null;
   }

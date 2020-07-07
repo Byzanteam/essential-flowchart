@@ -5,6 +5,8 @@
       :nodes="state.nodes"
       :links="state.links"
       :draft-link="state.draftLink"
+      @move-node="handleMoveNode"
+      @node-position-change="handleMoveNode"
       @add-draft-link="handleAddDraftLink"
       @update-draft-link="handleUpdateDraftLink"
       @add-link="handleAddLink"
@@ -251,6 +253,10 @@ export default {
           mousePosition: position,
         };
       }
+    },
+    handleMoveNode ({ node, position }) {
+      node.x = position.x;
+      node.y = position.y;
     },
     handleAddLink (event) {
       if (event) {

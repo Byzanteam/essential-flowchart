@@ -1,6 +1,6 @@
 import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
-import { NODE_POSITION_CHANGE } from '@/emitter/events';
+import { NODE_POSITION_CHANGE, MOVE_NODE } from '@/emitter/events';
 import {
   INode, IPosition, IGetters, IMutations,
 } from '@/types';
@@ -26,7 +26,7 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>, m
     if (mutations.value && mutations.value.updateNodePosition) {
       mutations.value.updateNodePosition(payload);
     }
-    emitter.emit(NODE_POSITION_CHANGE, payload);
+    emitter.emit(MOVE_NODE, payload);
   }
 
   function onNodeDragStop (left: number, top: number) {
@@ -41,6 +41,7 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>, m
     if (mutations.value && mutations.value.setNodePosition) {
       mutations.value.setNodePosition(payload);
     }
+    emitter.emit(NODE_POSITION_CHANGE, payload);
     draggingNodePosition = null;
   }
 

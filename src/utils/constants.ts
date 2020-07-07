@@ -29,7 +29,7 @@ export const DEFAULT_GETTERS: IGetters = {
     return calcPortPosition(ports, {
       ...size,
       ...position,
-    }, DEFAULT_PORT_GAP);
+    }, this, DEFAULT_PORT_GAP);
   },
   getNode (nodes: any, nodeId: string) {
     return nodes[nodeId];

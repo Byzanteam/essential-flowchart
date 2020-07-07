@@ -1,5 +1,5 @@
 import {
-  IRect, PortDirection, INodePort, INodePortInput,
+  IRect, PortDirection, INodePort, INodePortInput, IGetters,
 } from '@/types';
 import { groupBy } from '@/utils/shared';
 
@@ -15,7 +15,12 @@ function nextDots (start: number, length: number, portGap: number): number[] {
   return dots;
 }
 
-export function calcPortPosition (ports: INodePortInput[] | INodePort[], nodeRect: IRect, portGap: number): {
+export function calcPortPosition (
+  ports: INodePortInput[] | INodePort[],
+  nodeRect: IRect,
+  getters: IGetters,
+  portGap: number,
+): {
   [id: string]: INodePort;
 } {
   const {
@@ -35,28 +40,28 @@ export function calcPortPosition (ports: INodePortInput[] | INodePort[], nodeRec
       case PortDirection.TOP:
         dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
-          acc[port.id] = { ...port, position: { x: dots[index], y } };
+          acc[getters.getPortIdentifier(port)] = { ...port, position: { x: dots[index], y } };
         });
         break;
 
       case PortDirection.RIGHT:
         dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
-          acc[port.id] = { ...port, position: { x: x + width, y: dots[index] } };
+          acc[getters.getPortIdentifier(port)] = { ...port, position: { x: x + width, y: dots[index] } };
         });
         break;
 
       case PortDirection.BOTTOM:
         dots = nextDots(x + (width - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
-          acc[port.id] = { ...port, position: { x: dots[index], y: y + height } };
+          acc[getters.getPortIdentifier(port)] = { ...port, position: { x: dots[index], y: y + height } };
         });
         break;
 
       case PortDirection.LEFT:
         dots = nextDots(y + (height - portsLength) / 2, length, portGap);
         ports.forEach((port, index) => {
-          acc[port.id] = { ...port, position: { x, y: dots[index] } };
+          acc[getters.getPortIdentifier(port)] = { ...port, position: { x, y: dots[index] } };
         });
         break;
     }

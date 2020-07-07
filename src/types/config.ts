@@ -30,7 +30,7 @@ export interface INodePositionChangeEvent {
 }
 
 export interface IMutations {
-  // draging
+  // dragging
   updateNodePosition: (event: INodePositionChangeEvent) => void;
   // dragend
   setNodePosition: (event: INodePositionChangeEvent) => void;

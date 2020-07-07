@@ -53,7 +53,13 @@ export default defineComponent({
     const portId = computed(() => getters.value.getPortIdentifier(props.port));
     const nodeId = computed(() => getters.value.getNodeIdentifier(props.node));
 
-    const positionedPort = computed(() => getters.value.getNodePorts(props.node)[portId.value]);
+    const positionedPort = computed(() => {
+      const portPosition = getters.value.getPortPosition(props.node, props.port);
+      return {
+        ...props.port,
+        position: portPosition,
+      };
+    });
 
     return {
       onMouseDown,

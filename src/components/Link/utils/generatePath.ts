@@ -126,6 +126,11 @@ function buildGrid (
       ...config.getters.getNodeSize(node),
       ...config.getters.getNodePosition(node),
     };
+    const nodePorts = Object.values(config.getters.getNodePorts(node))
+      .map(port => ({
+        direction: config.getters.getPortDirection(port),
+        position: config.getters.getPortPosition(node, port),
+      }));
     const intersectant = checkIntersect(gridRect, nodeRect);
 
     if (intersectant) {
@@ -133,7 +138,7 @@ function buildGrid (
         matrix,
         gridRect,
         nodeRect,
-        nodePorts: Object.values(config.getters.getNodePorts(node)),
+        nodePorts,
         walkable: false, // blocked
         nodePadding: config.nodePadding,
       });

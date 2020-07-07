@@ -51,9 +51,26 @@ export default defineComponent({
   setup (props) {
     const { nodePadding, getters } = useConfig();
 
-    const startPort = computed(() => getters.value.getStartPortOfLink(props.nodes, props.link));
+    const startPort = computed(() => {
+      const port = getters.value.getStartPortOfLink(props.nodes, props.link);
+      const node = getters.value.getStartNodeOfLink(props.nodes, props.link);
+      const portPosition = getters.value.getPortPosition(node, port);
+      return {
+        ...port,
+        position: portPosition,
+      };
+    });
 
-    const endPort = computed(() => getters.value.getEndPortOfLink(props.nodes, props.link));
+    const endPort = computed(() => {
+      const port = getters.value.getEndPortOfLink(props.nodes, props.link);
+      if (getters.value.isDraftLink(props.link)) return port;
+
+      const node = getters.value.getEndNodeOfLink(props.nodes, props.link);
+      return {
+        ...port,
+        position: getters.value.getPortPosition(node, port),
+      };
+    });
 
     const path = computed(() => {
       if (endPort.value) {

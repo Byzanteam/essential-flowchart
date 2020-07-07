@@ -23,7 +23,7 @@
 
     <template v-if="!readonly">
       <PortWrapperComponent
-        v-for="port in node.ports"
+        v-for="port in getters.getNodePorts(node)"
         :key="getters.getPortIdentifier(port)"
         :node="node"
         :port="port"

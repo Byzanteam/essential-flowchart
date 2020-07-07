@@ -89,7 +89,6 @@ export default defineComponent({
       scale,
       readonly,
       getters,
-      mutations,
     } = useConfig();
 
     const nodePosition = computed(() => getters.value.getNodePosition(props.node));
@@ -98,7 +97,7 @@ export default defineComponent({
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const defaultDragActions = useDragNode(node, getters, mutations);
+    const defaultDragActions = useDragNode(node, getters);
     const readonlyDragActions = {
       onNodeDragStart: noop,
       onNodeDragging: noop,

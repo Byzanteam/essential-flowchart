@@ -37,7 +37,7 @@ import VueCompositionApi, {
   reactive,
   computed,
 } from '@vue/composition-api';
-import { buildConfig, ConfigSymbol } from '@/utils/config';
+import { buildConfig, ConfigSymbol, DEFAULT_CONFIG } from '@/utils/config';
 import useEmitter from '@/hooks/useEmitter';
 import {
   IConfigInput,
@@ -114,11 +114,14 @@ export default defineComponent({
 
   setup (props: IFlowchartProps, { emit }) {
     useEmitter(emit);
-    const config = reactive(buildConfig(props.config));
+    const config = reactive(DEFAULT_CONFIG);
 
     watch(() => props.config, cfg => {
       Object.assign(config, buildConfig(cfg));
-    }, { deep: true });
+    }, {
+      deep: true,
+      immediate: true,
+    });
 
     provide(ConfigSymbol, config);
 

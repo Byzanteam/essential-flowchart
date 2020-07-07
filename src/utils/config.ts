@@ -5,7 +5,6 @@ import {
   DEFAULT_MIN_ZOOM,
   DEFAULT_MAX_ZOOM,
   DEFAULT_GETTERS,
-  DEFAULT_MUTATIONS,
 } from '@/utils/constants';
 
 function isNonNegativeInteger (input: number): boolean {
@@ -34,7 +33,6 @@ export function buildConfig (
     maxZoom = DEFAULT_MAX_ZOOM,
     readonly = false,
     getters = {},
-    mutations = {},
   }: IConfigInput = {},
 ): IConfig {
   // OPTIMIZE: skip validate default value
@@ -52,10 +50,6 @@ export function buildConfig (
     getters: {
       ...DEFAULT_GETTERS,
       ...getters,
-    },
-    mutations: {
-      ...DEFAULT_MUTATIONS,
-      ...mutations,
     },
   };
 }

@@ -85,13 +85,18 @@ export default defineComponent({
   setup (props) {
     const node = computed(() => props.node);
 
-    const { scale, readonly, getters } = useConfig();
+    const {
+      scale,
+      readonly,
+      getters,
+      mutations,
+    } = useConfig();
 
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const defaultDragActions = useDragNode(node, getters);
+    const defaultDragActions = useDragNode(node, getters, mutations);
     const readonlyDragActions = {
       onNodeDragStart: noop,
       onNodeDragging: noop,

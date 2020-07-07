@@ -114,9 +114,14 @@ export default defineComponent({
   setup (props: IFlowchartProps, { emit }) {
     useEmitter(emit);
     const config = reactive(DEFAULT_CONFIG);
+
     watch(() => props.config, cfg => {
       Object.assign(config, buildConfig(cfg));
+    }, {
+      deep: true,
+      immediate: true,
     });
+
     provide(ConfigSymbol, config);
 
     const { canvasRef } = useFlowchartContext();

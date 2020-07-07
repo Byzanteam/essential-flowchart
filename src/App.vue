@@ -5,7 +5,6 @@
       :nodes="state.nodes"
       :links="state.links"
       :draft-link="state.draftLink"
-      @node-position-change="handleNodePositionChange"
       @add-draft-link="handleAddDraftLink"
       @update-draft-link="handleUpdateDraftLink"
       @add-link="handleAddLink"
@@ -232,10 +231,6 @@ export default {
   },
 
   methods: {
-    handleNodePositionChange ({ node, position }) {
-      node.x = position.x;
-      node.y = position.y;
-    },
     handleAddDraftLink ({ node, port, event }) {
       if (this.$refs.flowchartRef) {
         const position = this.$refs.flowchartRef.getPosition(event.clientX, event.clientY);

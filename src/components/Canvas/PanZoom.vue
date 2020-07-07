@@ -91,7 +91,7 @@ export default defineComponent({
 
         watch(() => props.zoom, zoom => {
           panZoomInstance.zoomAbs(props.x, props.y, zoom);
-        }, { lazy: true });
+        });
       }
     });
 

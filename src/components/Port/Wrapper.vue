@@ -1,7 +1,7 @@
 <template>
   <div
-    :data-port-id="port.id"
-    :data-node-id="node.id"
+    :data-port-id="portId"
+    :data-node-id="nodeId"
     @mousedown="onMouseDown"
   >
     <component
@@ -51,10 +51,14 @@ export default defineComponent({
     const { onMouseDown } = useMouseDownOnPort(props);
 
     const positionedPort = computed(() => getters.value.getNodePorts(props.node)[props.port.id]);
+    const portId = computed(() => getters.value.getPortIdentifier(props.port));
+    const nodeId = computed(() => getters.value.getNodeIdentifier(props.node));
 
     return {
       onMouseDown,
       positionedPort,
+      portId,
+      nodeId,
     };
   },
 });

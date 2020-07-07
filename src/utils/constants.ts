@@ -15,62 +15,53 @@ export const DEFAULT_PORT_GAP = SCALE_FACTOR * 2;
 export const DEFAULT_MIN_ZOOM = 0.5;
 export const DEFAULT_MAX_ZOOM = 1.5;
 
-function getNodePosition (node: any) {
-  return {
-    x: node.x,
-    y: node.y,
-  };
-}
-
-function getNodeSize (node: any) {
-  return {
-    width: node.width,
-    height: node.height,
-  };
-}
-function getNodePorts (node: any) {
-  const position = getNodePosition(node);
-  const size = getNodeSize(node);
-  const ports: INodePortInput[] = Object.values(node.ports);
-  return calcPortPosition(ports, {
-    ...size,
-    ...position,
-  }, DEFAULT_PORT_GAP);
-}
-
-function getNode (nodes: any, nodeId: string) {
-  return nodes[nodeId];
-}
-
-function getStartPortOfLink (nodes: any, link: any) {
-  const node = getNode(nodes, link.from.nodeId);
-  const ports = getNodePorts(node);
-  return ports[link.from.portId];
-}
-
-
-function getDraftPortOfLink (link: any) {
-  return {
-    position: link.mousePosition,
-  };
-}
-
-function getEndPortOfLink (nodes: any, link: any) {
-  if (link.to && link.to.portId) {
-    const node = getNode(nodes, link.to.nodeId);
-    const ports = getNodePorts(node);
-    return ports[link.to.portId];
-  }
-  return getDraftPortOfLink(link);
-}
-
 export const DEFAULT_GETTERS: IGetters = {
-  getNodePosition,
-  getNodeSize,
-  getNodePorts,
-  getNode,
-  getStartPortOfLink,
-  getEndPortOfLink,
+  getNodePosition (node: any) {
+    return { x: node.x, y: node.y };
+  },
+  getNodeSize (node: any) {
+    return { width: node.width, height: node.height };
+  },
+  getNodePorts (node: any) {
+    const position = this.getNodePosition(node);
+    const size = this.getNodeSize(node);
+    const ports: INodePortInput[] = Object.values(node.ports);
+    return calcPortPosition(ports, {
+      ...size,
+      ...position,
+    }, DEFAULT_PORT_GAP);
+  },
+  getNode (nodes: any, nodeId: string) {
+    return nodes[nodeId];
+  },
+  getStartPortOfLink (nodes: any, link: any) {
+    const node = this.getNode(nodes, link.from.nodeId);
+    const ports = this.getNodePorts(node);
+    return ports[link.from.portId];
+  },
+  getDraftPortOfLink (link: any) {
+    return { position: link.mousePosition };
+  },
+  isDraftLink (link: any) {
+    return !(link.to && link.to.portId);
+  },
+  getEndPortOfLink (nodes: any, link: any) {
+    if (this.isDraftLink(link)) {
+      return this.getDraftPortOfLink(link);
+    }
+    const node = this.getNode(nodes, link.to.nodeId);
+    const ports = this.getNodePorts(node);
+    return ports[link.to.portId];
+  },
+  getLinkIdentifier (link: any) {
+    return link.id;
+  },
+  getNodeIdentifier (node: any) {
+    return node.id;
+  },
+  getPortIdentifier (port: any) {
+    return port.id;
+  },
 };
 
 export const DEFAULT_MUTATIONS: IMutations = {

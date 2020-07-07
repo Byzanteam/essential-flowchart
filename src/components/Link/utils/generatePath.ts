@@ -122,23 +122,17 @@ function buildGrid (
 
   // mark intersectant nodes blocked
   nodes.forEach(node => {
-    const intersectant = checkIntersect(gridRect, {
-      x: node.x,
-      y: node.y,
-      width: node.width,
-      height: node.height,
-    });
+    const nodeRect = {
+      ...config.getters.getNodeSize(node),
+      ...config.getters.getNodePosition(node),
+    };
+    const intersectant = checkIntersect(gridRect, nodeRect);
 
     if (intersectant) {
       markNodeWalkable({
         matrix,
         gridRect,
-        nodeRect: {
-          x: node.x,
-          y: node.y,
-          width: node.width,
-          height: node.height,
-        },
+        nodeRect,
         nodePorts: Object.values(config.getters.getNodePorts(node)),
         walkable: false, // blocked
         nodePadding: config.nodePadding,

@@ -1,8 +1,8 @@
 <template>
   <vue-draggable-resizable
     :onDragStart="dragActions.onNodeDragStart"
-    :x="node.x"
-    :y="node.y"
+    :x="nodePosition.x"
+    :y="nodePosition.y"
     :z="50"
     :draggable="!readonly"
     :resizable="false"
@@ -23,8 +23,8 @@
 
     <template v-if="!readonly">
       <PortWrapperComponent
-        v-for="(port, id) in node.ports"
-        :key="id"
+        v-for="port in node.ports"
+        :key="getters.getPortIdentifier(port)"
         :node="node"
         :port="port"
         :draft-link="draftLink"
@@ -92,6 +92,8 @@ export default defineComponent({
       mutations,
     } = useConfig();
 
+    const nodePosition = computed(() => getters.value.getNodePosition(props.node));
+
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
@@ -111,6 +113,8 @@ export default defineComponent({
       onNodeClick,
       scale,
       readonly,
+      nodePosition,
+      getters,
 
       dragActions,
     };

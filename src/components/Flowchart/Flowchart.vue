@@ -2,7 +2,7 @@
   <CanvasComponent ref="canvasRef">
     <NodeWrapperComponent
       v-for="node in nodes"
-      :key="node.id"
+      :key="getters.getNodeIdentifier(node)"
       :node="node"
       :node-component="nodeComponent"
       :port-component="portComponent"
@@ -12,7 +12,7 @@
     <LinkWrapperComponent
       v-for="link in links"
       :nodes="nodes"
-      :key="link.id"
+      :key="getters.getLinkIdentifier(link)"
       :link="link"
       :link-component="linkComponent"
     />
@@ -35,8 +35,9 @@ import VueCompositionApi, {
   watch,
   provide,
   reactive,
+  computed,
 } from '@vue/composition-api';
-import { buildConfig, ConfigSymbol, DEFAULT_CONFIG } from '@/utils/config';
+import { buildConfig, ConfigSymbol } from '@/utils/config';
 import useEmitter from '@/hooks/useEmitter';
 import {
   IConfigInput,
@@ -113,14 +114,11 @@ export default defineComponent({
 
   setup (props: IFlowchartProps, { emit }) {
     useEmitter(emit);
-    const config = reactive(DEFAULT_CONFIG);
+    const config = reactive(buildConfig(props.config));
 
     watch(() => props.config, cfg => {
       Object.assign(config, buildConfig(cfg));
-    }, {
-      deep: true,
-      immediate: true,
-    });
+    }, { deep: true });
 
     provide(ConfigSymbol, config);
 
@@ -134,12 +132,15 @@ export default defineComponent({
       } = {},
     } = props;
 
+    const getters = computed(() => config.getters);
+
     return {
       canvasRef,
 
       nodeComponent,
       portComponent,
       linkComponent,
+      getters,
 
       ...useApi({ canvasRef, config }),
     };

@@ -7,7 +7,12 @@ export interface IGetters {
   getNodePorts: (node: any) => Record<string, INodePort>;
   getNode: (nodes: any, nodeId: string) => any;
   getStartPortOfLink: (nodes: any, link: any) => INodePort;
+  getDraftPortOfLink: (link: any) => Pick<INodePort, 'position'>;
   getEndPortOfLink: (nodes: any, link: any) => INodePort | { position: IPosition };
+  isDraftLink: (link: any) => boolean;
+  getLinkIdentifier: (link: any) => string;
+  getNodeIdentifier: (node: any) => string;
+  getPortIdentifier: (port: any) => string;
 }
 
 export interface INodePositionChangeEvent {

@@ -1,8 +1,8 @@
 <template>
   <vue-draggable-resizable
     :onDragStart="dragActions.onNodeDragStart"
-    :x="node.x"
-    :y="node.y"
+    :x="nodePosition.x"
+    :y="nodePosition.y"
     :z="50"
     :draggable="!readonly"
     :resizable="false"
@@ -23,8 +23,8 @@
 
     <template v-if="!readonly">
       <PortWrapperComponent
-        v-for="(port, id) in node.ports"
-        :key="id"
+        v-for="port in getters.getNodePorts(node)"
+        :key="getters.getPortIdentifier(port)"
         :node="node"
         :port="port"
         :draft-link="draftLink"
@@ -37,19 +37,17 @@
 <script lang="ts">
 // @ts-ignore
 import VueDraggableResizable from 'vue-draggable-resizable';
-import Vue from 'vue';
 
 import {
-  defineComponent, computed, watch,
+  defineComponent, computed,
   PropType,
 } from '@vue/composition-api';
-import { INode, IRect, IDraftLink } from '@/types';
+import { INode, IDraftLink } from '@/types';
 import emitter from '@/emitter';
 import {
   CLICK_NODE,
 } from '@/emitter/events';
 import { useConfig } from '@/utils/config';
-import { calcPortPosition } from '@/utils/graph';
 import { noop } from '@/utils/shared';
 
 import useDragNode from './hooks/useDragNode';
@@ -87,13 +85,19 @@ export default defineComponent({
   setup (props) {
     const node = computed(() => props.node);
 
-    const { scale, readonly, portGap } = useConfig();
+    const {
+      scale,
+      readonly,
+      getters,
+    } = useConfig();
+
+    const nodePosition = computed(() => getters.value.getNodePosition(props.node));
 
     const onNodeClick = (event: MouseEvent) => {
       emitter.emit(CLICK_NODE, { event, node: props.node });
     };
 
-    const defaultDragActions = useDragNode(node);
+    const defaultDragActions = useDragNode(node, getters);
     const readonlyDragActions = {
       onNodeDragStart: noop,
       onNodeDragging: noop,
@@ -104,28 +108,12 @@ export default defineComponent({
       readonly.value ? readonlyDragActions : defaultDragActions
     ));
 
-    const nodeRect = computed<IRect>(() => ({
-      x: node.value.x,
-      y: node.value.y,
-      width: node.value.width,
-      height: node.value.height,
-    }));
-
-    // watch node rect to update node port
-    watch(nodeRect, rect => {
-      const ports = calcPortPosition(
-        Object.values(node.value.ports),
-        rect,
-        portGap.value,
-      );
-
-      Vue.set(node.value, 'ports', ports);
-    });
-
     return {
       onNodeClick,
       scale,
       readonly,
+      nodePosition,
+      getters,
 
       dragActions,
     };

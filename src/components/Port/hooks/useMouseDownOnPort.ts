@@ -1,5 +1,5 @@
 import {
-  INode, INodePort, ILink, Id,
+  Id,
 } from '@/types';
 
 import emitter from '@/emitter';
@@ -26,7 +26,13 @@ function findTarget (el: HTMLElement): { nodeId: Id; portId: Id } | null {
   return target;
 }
 
-export default function useMouseDownOnPort (portProps: { node: INode; port: INodePort; draftLink: ILink }) {
+interface IPortProps {
+  node: Record<string, any>;
+  port: Record<string, any>;
+  draftLink: Record<string, any>;
+}
+
+export default function useMouseDownOnPort (portProps: IPortProps) {
   const { node, port } = portProps;
   const onMouseDown = (evt: MouseEvent) => {
     // prevent text selection
@@ -41,6 +47,7 @@ export default function useMouseDownOnPort (portProps: { node: INode; port: INod
     });
 
     function mouseMoveHandler (e: MouseEvent) {
+      // must use portProps for reactive, if deconstruct at first, draftLink will not change when moved
       if (!portProps.draftLink) return;
       emitter.emit(UPDATE_DRAFT_LINK, e);
     }

@@ -2,7 +2,7 @@ import PF from 'pathfinding';
 import {
   Point, IPosition,
   PortDirection,
-  INodePort, INode, IRect,
+  INodePort, INode, IRect, IConfig,
 } from '@/types';
 import { pathFinder, markNodeWalkable } from '@/utils/grid';
 import { SCALE_FACTOR, GRID_PADDING } from '@/utils/constants';
@@ -99,7 +99,7 @@ function buildGrid (
   pos1: IPosition,
   pos2: IPosition,
   nodes: INode[],
-  nodePadding: number,
+  config: Pick<IConfig, 'nodePadding' | 'getters'>,
 ) {
   const width = Math.abs(pos1.x - pos2.x) + GRID_PADDING * 2,
         height = Math.abs(pos1.y - pos2.y) + GRID_PADDING * 2;
@@ -122,26 +122,25 @@ function buildGrid (
 
   // mark intersectant nodes blocked
   nodes.forEach(node => {
-    const intersectant = checkIntersect(gridRect, {
-      x: node.x,
-      y: node.y,
-      width: node.width,
-      height: node.height,
-    });
+    const nodeRect = {
+      ...config.getters.getNodeSize(node),
+      ...config.getters.getNodePosition(node),
+    };
+    const nodePorts = Object.values(config.getters.getNodePorts(node))
+      .map(port => ({
+        direction: config.getters.getPortDirection(port),
+        position: config.getters.getPortPosition(node, port),
+      }));
+    const intersectant = checkIntersect(gridRect, nodeRect);
 
     if (intersectant) {
       markNodeWalkable({
         matrix,
         gridRect,
-        nodeRect: {
-          x: node.x,
-          y: node.y,
-          width: node.width,
-          height: node.height,
-        },
-        nodePorts: Object.values(node.ports),
+        nodeRect,
+        nodePorts,
         walkable: false, // blocked
-        nodePadding,
+        nodePadding: config.nodePadding,
       });
     }
   });
@@ -165,7 +164,7 @@ export default function generatePath (
   startPort: NodePort,
   endPort: NodePort,
   nodes: INode[],
-  nodePadding: number,
+  config: Pick<IConfig, 'nodePadding' | 'getters'>,
 ): Point[] {
   const startPos = startPort.position;
   const endPos = endPort.position;
@@ -174,7 +173,7 @@ export default function generatePath (
     startPos,
     endPos,
     nodes,
-    nodePadding,
+    config,
   );
 
   const scaledStartPos = scalePosition({
@@ -197,10 +196,10 @@ export default function generatePath (
       ),
     ) as Point[];
 
-    if (!path.length) return fallbackPath(startPort, endPort, nodePadding);
+    if (!path.length) return fallbackPath(startPort, endPort, config.nodePadding);
 
     return scalePath(path, startPos, endPos, gridRect);
   } catch (e) {
-    return fallbackPath(startPort, endPort, nodePadding);
+    return fallbackPath(startPort, endPort, config.nodePadding);
   }
 }

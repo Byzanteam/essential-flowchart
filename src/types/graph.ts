@@ -15,7 +15,6 @@ export enum PortDirection {
 export type Point = [number, number];
 
 export interface INodePortInput {
-  id: Id;
   direction: PortDirection;
 }
 
@@ -25,8 +24,6 @@ export type INodePort = INodePortInput & {
 
 // A node of a graph
 interface IBasicNode {
-  id: Id;
-
   x: number;
   y: number;
   width: number;
@@ -51,7 +48,6 @@ export interface ILinkPort {
 
 // A link of a graph
 export interface ILink {
-  id: Id;
   from: ILinkPort;
   to: Partial<ILinkPort>;
 }

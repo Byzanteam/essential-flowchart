@@ -49,25 +49,32 @@ export default defineComponent({
   },
 
   setup (props) {
-    const { nodePadding } = useConfig();
+    const { nodePadding, getters } = useConfig();
 
-    const fromNode = computed(() => props.nodes[props.link.from.nodeId]);
+    const startPort = computed(() => {
+      const portId = getters.value.getFromPortIdOfLink(props.link);
+      const nodeId = getters.value.getFromNodeIdOfLink(props.link);
+      const node = getters.value.getNode(props.nodes, nodeId);
+      const port = getters.value.getNodePort(node, portId);
+      const portPosition = getters.value.getPortPosition(node, port);
+      return {
+        ...port,
+        position: portPosition,
+      };
+    });
 
-    const startPort = computed(() => fromNode.value.ports[props.link.from.portId]);
     const endPort = computed(() => {
-      const { link } = props;
-
-      // the link can be draft
-      if (link.to && link.to.nodeId && link.to.portId) {
-        const toNode = props.nodes[link.to.nodeId];
-        return toNode.ports[link.to.portId];
+      if (getters.value.isDraftLink(props.link)) {
+        return getters.value.getDraftPortOfLink(props.link);
       }
-      if (link.mousePosition) {
-        return {
-          position: link.mousePosition,
-        };
-      }
-      return null;
+      const portId = getters.value.getToPortIdOfLink(props.link);
+      const nodeId = getters.value.getToNodeIdOfLink(props.link);
+      const node = getters.value.getNode(props.nodes, nodeId);
+      const port = getters.value.getNodePort(node, portId);
+      return {
+        ...port,
+        position: getters.value.getPortPosition(node, port),
+      };
     });
 
     const path = computed(() => {
@@ -76,7 +83,10 @@ export default defineComponent({
           startPort.value,
           endPort.value,
           Object.values(props.nodes),
-          nodePadding.value,
+          {
+            nodePadding: nodePadding.value,
+            getters: getters.value,
+          },
         );
       }
       return [];

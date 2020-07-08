@@ -124,7 +124,7 @@ export function markNodeWalkable ({
   matrix: number[][];
   gridRect: IRect;
   nodeRect: IRect;
-  nodePorts: INodePort[];
+  nodePorts: Array<INodePort>;
   walkable: boolean;
   nodePadding: number;
 }) {
@@ -157,8 +157,14 @@ export function markNodeWalkable ({
 
     () => {
       // mark ports
-      Object.values(nodePorts).forEach(
-        port => markPort(matrix, gridRect, port, walkable, { nodePadding }),
+      nodePorts.forEach(
+        port => markPort(
+          matrix,
+          gridRect,
+          port,
+          walkable,
+          { nodePadding },
+        ),
       );
     },
   ];

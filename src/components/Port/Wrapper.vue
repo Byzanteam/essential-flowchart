@@ -1,25 +1,23 @@
 <template>
   <div
-    :data-port-id="port.id"
-    :data-node-id="node.id"
+    :data-port-id="portId"
+    :data-node-id="nodeId"
     @mousedown="onMouseDown"
   >
     <component
       :is="portComponent"
       :node="node"
-      :port="port"
+      :port="positionedPort"
     />
   </div>
 </template>
 
 <script lang="ts">
 import {
-  defineComponent, PropType,
+  defineComponent, PropType, computed,
 } from '@vue/composition-api';
-import {
-  INode, INodePort, IDraftLink,
-} from '@/types';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
+import { useConfig } from '../../utils/config';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
 
@@ -33,26 +31,41 @@ export default defineComponent({
     },
 
     port: {
-      type: Object as PropType<INodePort>,
+      type: Object,
       required: true,
     },
 
     node: {
-      type: Object as PropType<INode>,
+      type: Object,
       required: true,
     },
 
     draftLink: {
-      type: Object as PropType<IDraftLink>,
+      type: Object,
       default: null,
     },
   },
 
   setup (props) {
+    const { getters } = useConfig();
     const { onMouseDown } = useMouseDownOnPort(props);
+
+    const portId = computed(() => getters.value.getPortIdentifier(props.port));
+    const nodeId = computed(() => getters.value.getNodeIdentifier(props.node));
+
+    const positionedPort = computed(() => {
+      const portPosition = getters.value.getPortPosition(props.node, props.port);
+      return {
+        ...props.port,
+        position: portPosition,
+      };
+    });
 
     return {
       onMouseDown,
+      positionedPort,
+      portId,
+      nodeId,
     };
   },
 });

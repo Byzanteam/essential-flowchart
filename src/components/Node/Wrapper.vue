@@ -126,6 +126,11 @@ export default defineComponent({
   display: inline-block;
   position: absolute;
   cursor: pointer;
+  user-select: none !important;
+
+  &.dragging {
+    z-index: 51 !important;
+  }
 
   &.draggable {
     cursor: grab;

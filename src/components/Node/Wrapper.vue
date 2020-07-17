@@ -14,7 +14,6 @@
     class="node-wrapper"
     @dragging="dragActions.onNodeDragging"
     @dragstop="dragActions.onNodeDragStop"
-    @click.native="onNodeClick"
   >
     <component
       :is="nodeComponent"
@@ -43,10 +42,6 @@ import {
   PropType,
 } from '@vue/composition-api';
 import { INode, IDraftLink } from '@/types';
-import emitter from '@/emitter';
-import {
-  CLICK_NODE,
-} from '@/emitter/events';
 import { useConfig } from '@/utils/config';
 import { noop } from '@/utils/shared';
 
@@ -93,10 +88,6 @@ export default defineComponent({
 
     const nodePosition = computed(() => getters.value.getNodePosition(props.node));
 
-    const onNodeClick = (event: MouseEvent) => {
-      emitter.emit(CLICK_NODE, { event, node: props.node });
-    };
-
     const defaultDragActions = useDragNode(node, getters);
     const readonlyDragActions = {
       onNodeDragStart: noop,
@@ -109,7 +100,6 @@ export default defineComponent({
     ));
 
     return {
-      onNodeClick,
       scale,
       readonly,
       nodePosition,

@@ -137,6 +137,10 @@ export default defineComponent({
 
     const getters = computed(() => config.getters);
 
+    const apis = useApi({ canvasRef, config });
+
+    provide('getPosition', apis.getPosition);
+
     return {
       canvasRef,
 
@@ -145,7 +149,7 @@ export default defineComponent({
       linkComponent,
       getters,
 
-      ...useApi({ canvasRef, config }),
+      ...apis,
     };
   },
 });

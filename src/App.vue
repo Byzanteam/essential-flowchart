@@ -233,26 +233,20 @@ export default {
   },
 
   methods: {
-    handleAddDraftLink ({ node, port, event }) {
-      if (this.$refs.flowchartRef) {
-        const position = this.$refs.flowchartRef.getPosition(event.clientX, event.clientY);
-        this.state.draftLink = {
-          from: {
-            nodeId: node.id,
-            portId: port.id,
-          },
-          mousePosition: position,
-        };
-      }
+    handleAddDraftLink ({ node, port, position }) {
+      this.state.draftLink = {
+        from: {
+          nodeId: node.id,
+          portId: port.id,
+        },
+        mousePosition: position,
+      };
     },
-    handleUpdateDraftLink (event) {
-      if (this.$refs.flowchartRef) {
-        const position = this.$refs.flowchartRef.getPosition(event.clientX, event.clientY);
-        this.state.draftLink = {
-          ...this.state.draftLink || {},
-          mousePosition: position,
-        };
-      }
+    handleUpdateDraftLink (position) {
+      this.state.draftLink = {
+        ...this.state.draftLink || {},
+        mousePosition: position,
+      };
     },
     handleMoveNode ({ node, position }) {
       node.x = position.x;

@@ -1,12 +1,13 @@
 import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
-import { NODE_POSITION_CHANGE, MOVE_NODE } from '@/emitter/events';
+import { NODE_POSITION_CHANGE, MOVE_NODE, CLICK_NODE } from '@/emitter/events';
 import {
   INode, IPosition, IGetters,
 } from '@/types';
 
 export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
   let draggingNodePosition: IPosition | null = null;
+  let moved = false;
 
   function onNodeDragStart (e: MouseEvent) {
     e.stopPropagation(); // prevent canvas move
@@ -15,6 +16,7 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
   }
 
   function onNodeDragging (left: number, top: number) {
+    moved = true;
     const payload = {
       node: node.value,
       position: {
@@ -35,7 +37,11 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
       },
       prevPosition: draggingNodePosition as IPosition,
     };
-    emitter.emit(NODE_POSITION_CHANGE, payload);
+    if (moved) {
+      emitter.emit(NODE_POSITION_CHANGE, payload);
+    } else {
+      emitter.emit(CLICK_NODE, { node: node.value });
+    }
     draggingNodePosition = null;
   }
 

@@ -17,6 +17,7 @@ import {
   defineComponent, PropType, computed,
 } from '@vue/composition-api';
 import useMouseDownOnPort from './hooks/useMouseDownOnPort';
+import useGetPositionApi from './hooks/useGetPositionApi';
 import { useConfig } from '../../utils/config';
 
 type IFlowchartComponent = ReturnType<typeof defineComponent>;
@@ -48,7 +49,8 @@ export default defineComponent({
 
   setup (props) {
     const { getters } = useConfig();
-    const { onMouseDown } = useMouseDownOnPort(props);
+    const getPositionApi = useGetPositionApi();
+    const { onMouseDown } = useMouseDownOnPort(props, getPositionApi);
 
     const portId = computed(() => getters.value.getPortIdentifier(props.port));
     const nodeId = computed(() => getters.value.getNodeIdentifier(props.node));

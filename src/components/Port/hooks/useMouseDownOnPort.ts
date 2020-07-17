@@ -1,5 +1,5 @@
 import {
-  Id,
+  Id, IPosition,
 } from '@/types';
 
 import emitter from '@/emitter';
@@ -32,7 +32,9 @@ interface IPortProps {
   draftLink: Record<string, any>;
 }
 
-export default function useMouseDownOnPort (portProps: IPortProps) {
+type PositionApi = (clientX: number, clientY: number) => IPosition | null
+
+export default function useMouseDownOnPort (portProps: IPortProps, getPositionApi: PositionApi) {
   const { node, port } = portProps;
   const onMouseDown = (evt: MouseEvent) => {
     // prevent text selection
@@ -43,13 +45,13 @@ export default function useMouseDownOnPort (portProps: IPortProps) {
     emitter.emit(ADD_DRAFT_LINK, {
       node,
       port,
-      event: evt,
+      position: getPositionApi(evt.clientX, evt.clientY),
     });
 
     function mouseMoveHandler (e: MouseEvent) {
       // must use portProps for reactive, if deconstruct at first, draftLink will not change when moved
       if (!portProps.draftLink) return;
-      emitter.emit(UPDATE_DRAFT_LINK, e);
+      emitter.emit(UPDATE_DRAFT_LINK, getPositionApi(e.clientX, e.clientY));
     }
 
     function mouseUpHandler (e: MouseEvent) {

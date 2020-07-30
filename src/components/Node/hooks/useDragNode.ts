@@ -42,6 +42,7 @@ export default function useDragNode (node: Ref<INode>, getters: Ref<IGetters>) {
     } else {
       emitter.emit(CLICK_NODE, { node: node.value });
     }
+    moved = false;
     draggingNodePosition = null;
   }
 

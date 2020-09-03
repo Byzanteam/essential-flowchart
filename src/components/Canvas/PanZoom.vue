@@ -92,6 +92,10 @@ export default defineComponent({
         watch(() => props.zoom, zoom => {
           panZoomInstance.zoomAbs(props.x, props.y, zoom);
         });
+
+        watch(() => [props.x, props.y], ([x, y]) => {
+          panZoomInstance.moveTo(x, y);
+        });
       }
     });
 

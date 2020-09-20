@@ -10,6 +10,8 @@
       @add-draft-link="handleAddDraftLink"
       @update-draft-link="handleUpdateDraftLink"
       @add-link="handleAddLink"
+      @zoom-change="handleZoomChange"
+      @offset-change="handleOffsetChange"
     />
   </div>
 </template>
@@ -260,6 +262,12 @@ export default {
         });
       }
       this.state.draftLink = null;
+    },
+    handleZoomChange (scale) {
+      console.log(`The scale has changed to ${scale}`);
+    },
+    handleOffsetChange (offset) {
+      console.log(`The offset has changed to [${offset.x}, ${offset.y}]`);
     },
   },
 };

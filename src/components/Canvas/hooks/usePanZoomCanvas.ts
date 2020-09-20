@@ -1,6 +1,6 @@
 import { Ref } from '@vue/composition-api';
 import emitter from '@/emitter';
-import { CANVAS_PAN, ZOOM_CHANGE } from '@/emitter/events';
+import { CANVAS_PAN, ZOOM_CHANGE, OFFSET_CHANGE } from '@/emitter/events';
 import { PanZoom, Transform } from 'panzoom';
 import { IOffset } from '@/types';
 
@@ -17,6 +17,7 @@ export default function usePanZoomCanvas (scale: Ref<number>, offset: Ref<IOffse
     };
 
     emitter.emit(ZOOM_CHANGE, transform.scale);
+    emitter.emit(OFFSET_CHANGE, offset.value);
   }
 
   function onCanvasPan (panZoom: PanZoom) {
@@ -35,6 +36,8 @@ export default function usePanZoomCanvas (scale: Ref<number>, offset: Ref<IOffse
       x: transform.x,
       y: transform.y,
     };
+
+    emitter.emit(OFFSET_CHANGE, offset.value);
   }
 
   return {

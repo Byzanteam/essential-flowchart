@@ -88,11 +88,25 @@ function fallbackPath (startPort: NodePort, endPort: NodePort, nodePadding: numb
   const originalStartPos = scalePosition(startPort.position);
   const originalEndPos = scalePosition(endPort.position);
 
-  return scalePath([
+  const path: Point[] = [
     [originalStartPos.x, originalStartPos.y],
     ...generateRightAnglePath(scaledStartPos, scaledEndPos, originalStartPos, originalEndPos),
     [originalEndPos.x, originalEndPos.y],
-  ], startPort.position, endPort.position);
+  ];
+
+  const compressedPath: Point[] = [];
+
+  path.reduce((prev, point) => {
+    if (!prev) {
+      compressedPath.push(point);
+    } else if (prev[0] !== point[0] || prev[1] !== point[1]) {
+      compressedPath.push(point);
+    }
+
+    return point;
+  });
+
+  return scalePath(compressedPath, startPort.position, endPort.position);
 }
 
 function buildGrid (

@@ -34,9 +34,9 @@ function markLine (
 function markPort (
   matrix: number[][],
   gridRect: IRect,
+  nodeRect: IRect,
   port: INodePort,
   walkable: boolean,
-  { nodePadding }: { nodePadding: number },
 ) {
   const { direction, position } = port;
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -45,40 +45,38 @@ function markPort (
   x = Math.ceil((x - gridRect.x) / SCALE_FACTOR);
   y = Math.ceil((y - gridRect.y) / SCALE_FACTOR);
 
-  const scaledNodePadding = nodePadding / SCALE_FACTOR;
-
   // eslint-disable-next-line default-case
   switch (direction) {
     case PortDirection.TOP:
       setMatrixWalkable(matrix, { x, y: y + 1 }, walkable);
-      setMatrixWalkable(matrix, { x, y: y - scaledNodePadding }, !walkable);
+      setMatrixWalkable(matrix, { x, y: nodeRect.y }, !walkable);
 
-      markLine(matrix, [[x - 1, y], [x - 1, y - scaledNodePadding + 1]], walkable);
-      markLine(matrix, [[x + 1, y], [x + 1, y - scaledNodePadding + 1]], walkable);
+      markLine(matrix, [[x - 1, y], [x - 1, nodeRect.y - 1]], walkable);
+      markLine(matrix, [[x + 1, y], [x + 1, nodeRect.y - 1]], walkable);
       break;
 
     case PortDirection.RIGHT:
       setMatrixWalkable(matrix, { x: x - 1, y }, walkable);
-      setMatrixWalkable(matrix, { x: x + scaledNodePadding, y }, !walkable);
+      setMatrixWalkable(matrix, { x: nodeRect.x + nodeRect.width, y }, !walkable);
 
-      markLine(matrix, [[x, y - 1], [x + scaledNodePadding - 1, y - 1]], walkable);
-      markLine(matrix, [[x, y + 1], [x + scaledNodePadding - 1, y + 1]], walkable);
+      markLine(matrix, [[x, y - 1], [nodeRect.x + nodeRect.width - 1, y - 1]], walkable);
+      markLine(matrix, [[x, y + 1], [nodeRect.x + nodeRect.width - 1, y + 1]], walkable);
       break;
 
     case PortDirection.BOTTOM:
       setMatrixWalkable(matrix, { x, y: y - 1 }, walkable);
-      setMatrixWalkable(matrix, { x, y: y + scaledNodePadding }, !walkable);
+      setMatrixWalkable(matrix, { x, y: nodeRect.y + nodeRect.height }, !walkable);
 
-      markLine(matrix, [[x + 1, y], [x + 1, y + scaledNodePadding - 1]], walkable);
-      markLine(matrix, [[x - 1, y], [x - 1, y + scaledNodePadding - 1]], walkable);
+      markLine(matrix, [[x + 1, y], [x + 1, nodeRect.y + nodeRect.height - 1]], walkable);
+      markLine(matrix, [[x - 1, y], [x - 1, nodeRect.y + nodeRect.height - 1]], walkable);
       break;
 
     case PortDirection.LEFT:
       setMatrixWalkable(matrix, { x: x + 1, y }, walkable);
-      setMatrixWalkable(matrix, { x: x - scaledNodePadding, y }, !walkable);
+      setMatrixWalkable(matrix, { x: nodeRect.x, y }, !walkable);
 
-      markLine(matrix, [[x, y + 1], [x - scaledNodePadding + 1, y + 1]], walkable);
-      markLine(matrix, [[x, y - 1], [x - scaledNodePadding + 1, y - 1]], walkable);
+      markLine(matrix, [[x, y + 1], [nodeRect.x - 1, y + 1]], walkable);
+      markLine(matrix, [[x, y - 1], [nodeRect.x - 1, y - 1]], walkable);
       break;
   }
 }
@@ -149,6 +147,13 @@ export function markNodeWalkable ({
     [PortDirection.LEFT]: [bottomLeft, topLeft],
   };
 
+  const nodeRectInGrid: IRect = {
+    x,
+    y,
+    width,
+    height,
+  };
+
   const steps: Function[] = [
     () => {
       // mark rectangle
@@ -161,9 +166,9 @@ export function markNodeWalkable ({
         port => markPort(
           matrix,
           gridRect,
+          nodeRectInGrid,
           port,
           walkable,
-          { nodePadding },
         ),
       );
     },

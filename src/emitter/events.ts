@@ -1,6 +1,7 @@
 export const CLICK_CANVAS = 'click-canvas';
 export const CANVAS_PAN = 'canvas-pan';
 export const ZOOM_CHANGE = 'zoom-change';
+export const OFFSET_CHANGE = 'offset-change';
 
 export const CLICK_NODE = 'click-node';
 export const MOVE_NODE = 'move-node';

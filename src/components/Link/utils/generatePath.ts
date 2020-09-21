@@ -11,36 +11,51 @@ import generateRightAnglePath from './generateRightAnglePath';
 
 type NodePort = Pick<INodePort, 'position'> & Partial<Omit<INodePort, 'position'>>;
 
+function twistPath (start: Point, end: Point): Point[] {
+  const [sx, sy] = start,
+        [ex, ey] = end,
+        deltaX = Math.abs(sx - ex),
+        deltaY = Math.abs(sy - ey),
+        mdx = Math.ceil((sx + ex) / 2),
+        mdy = Math.ceil((sy + ey) / 2);
+  // line of start to end is parallel to the coordinate axis
+  if (deltaX * deltaY === 0) return [start, end];
+  if (Math.min(deltaX, deltaY) < 2) return [start, [sx, ey], end];
+  if (deltaX > deltaY) {
+    return [start, [mdx, sy], [mdx, ey], end];
+  }
+  return [start, [sx, mdy], [ex, mdy], end];
+}
+
+function tweakFirstSegment (path: Point[], dest: Point): Point[] {
+  const [x, y] = dest;
+  const [first, second, ...rest] = path;
+  const newSecond = [...second] as Point;
+
+  if (first[0] === second[0]) {
+    newSecond[0] = x;
+  } else {
+    newSecond[1] = y;
+  }
+
+  return [dest, newSecond, ...rest];
+}
+
 function tweakPath (path: Point[], startPos: IPosition, endPos: IPosition): Point[] {
+  if (path.length < 2) return path;
+
   const { x: sx, y: sy } = startPos,
-        { x: ex, y: ey } = endPos,
-        [first, second] = path.slice(0, 2),
-        [lastSecond, last] = path.slice(-2),
-        rest = path.length > 4 ? path.slice(2, path.length - 2) : [],
-        tweakStart = second.slice(0) as Point,
-        // if path.length is 3, then tweakEnd = tweakStart
-        tweakEnd = path.length > 3 ? lastSecond.slice(0) as Point : tweakStart;
-  // directly connected end to end
-  if (path.length < 3) {
-    return path;
+        { x: ex, y: ey } = endPos;
+
+  // connect directly
+  if (path.length === 2) {
+    return twistPath([sx, sy], [ex, ey]);
   }
-  // tweak start segment by startPort
-  // vertical direction
-  if (second[0] === first[0]) {
-    tweakStart[0] = sx;
-  } else {
-    tweakStart[1] = sy;
-  }
-  // tweak end segment by endPort
-  if (lastSecond[0] === last[0]) {
-    tweakEnd[0] = ex;
-  } else {
-    tweakEnd[1] = ey;
-  }
-  if (path.length === 3) {
-    return [[sx, sy], tweakStart, [ex, ey]];
-  }
-  return [[sx, sy], tweakStart, ...rest, tweakEnd, [ex, ey]];
+
+  return tweakFirstSegment(
+    tweakFirstSegment(path, [sx, sy]).reverse(),
+    [ex, ey],
+  ).reverse();
 }
 
 function scalePath (path: Point[], startPos: IPosition, endPos: IPosition, gridRect?: IRect): Point[] {
